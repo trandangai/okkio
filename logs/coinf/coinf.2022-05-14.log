@@ -1,0 +1,165 @@
+2022-05-14 14:07:47,916 INFO  [restartedMain] OkkioApplication: Starting OkkioApplication using Java 13.0.8 on Ais-MacBook-Pro with PID 16953 (/Users/aitd/IdeaProjects/okkio-be/okkio-api/target/classes started by aitd in /Users/aitd/IdeaProjects/okkio-be)
+2022-05-14 14:07:47,922 INFO  [restartedMain] OkkioApplication: The following profiles are active: swagger,dev
+2022-05-14 14:07:48,026 INFO  [restartedMain] DevToolsPropertyDefaultsPostProcessor: Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-05-14 14:07:48,026 INFO  [restartedMain] DevToolsPropertyDefaultsPostProcessor: For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2022-05-14 14:07:49,482 INFO  [restartedMain] RepositoryConfigurationDelegate: Multiple Spring Data modules found, entering strict repository configuration mode!
+2022-05-14 14:07:49,483 INFO  [restartedMain] RepositoryConfigurationDelegate: Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2022-05-14 14:07:49,587 INFO  [restartedMain] RepositoryConfigurationDelegate: Finished Spring Data repository scanning in 97 ms. Found 3 JPA repository interfaces.
+2022-05-14 14:07:49,613 INFO  [restartedMain] RepositoryConfigurationDelegate: Multiple Spring Data modules found, entering strict repository configuration mode!
+2022-05-14 14:07:49,614 INFO  [restartedMain] RepositoryConfigurationDelegate: Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2022-05-14 14:07:49,630 INFO  [restartedMain] RepositoryConfigurationExtensionSupport: Spring Data Redis - Could not safely identify store assignment for repository candidate interface io.okkio.repository.RefreshTokenRepository. If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository.
+2022-05-14 14:07:49,634 INFO  [restartedMain] RepositoryConfigurationExtensionSupport: Spring Data Redis - Could not safely identify store assignment for repository candidate interface io.okkio.repository.RoleRepository. If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository.
+2022-05-14 14:07:49,639 INFO  [restartedMain] RepositoryConfigurationExtensionSupport: Spring Data Redis - Could not safely identify store assignment for repository candidate interface io.okkio.repository.UserRepository. If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository.
+2022-05-14 14:07:49,640 INFO  [restartedMain] RepositoryConfigurationDelegate: Finished Spring Data repository scanning in 18 ms. Found 0 Redis repository interfaces.
+2022-05-14 14:07:50,242 INFO  [restartedMain] PostProcessorRegistrationDelegate$BeanPostProcessorChecker: Bean 'org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler@42079c2a' of type [org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-14 14:07:50,251 INFO  [restartedMain] PostProcessorRegistrationDelegate$BeanPostProcessorChecker: Bean 'methodSecurityMetadataSource' of type [org.springframework.security.access.method.DelegatingMethodSecurityMetadataSource] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-14 14:07:50,544 INFO  [restartedMain] TomcatWebServer: Tomcat initialized with port(s): 8092 (http)
+2022-05-14 14:07:50,551 INFO  [restartedMain] StandardService: Starting service [Tomcat]
+2022-05-14 14:07:50,551 INFO  [restartedMain] StandardEngine: Starting Servlet engine: [Apache Tomcat/9.0.52]
+2022-05-14 14:07:50,626 INFO  [restartedMain] [/]: Initializing Spring embedded WebApplicationContext
+2022-05-14 14:07:50,627 INFO  [restartedMain] ServletWebServerApplicationContext: Root WebApplicationContext: initialization completed in 2600 ms
+2022-05-14 14:07:51,230 INFO  [restartedMain] HikariDataSource: HikariPool-1 - Starting...
+2022-05-14 14:07:51,731 INFO  [restartedMain] HikariDataSource: HikariPool-1 - Start completed.
+2022-05-14 14:07:52,323 INFO  [restartedMain] LocalContainerEntityManagerFactoryBean: Initialized JPA EntityManagerFactory for persistence unit 'default'
+2022-05-14 14:07:52,397 WARN  [restartedMain] JpaBaseConfiguration$JpaWebConfiguration: spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2022-05-14 14:07:53,337 INFO  [restartedMain] PropertySourcedRequestMappingHandlerMapping: Mapped URL path [/v2/api-docs] onto method [springfox.documentation.swagger2.web.Swagger2Controller#getDocumentation(String, HttpServletRequest)]
+2022-05-14 14:07:53,419 INFO  [restartedMain] UserDetailsServiceAutoConfiguration: 
+
+Using generated security password: f0d31a9d-e731-4673-af5e-d652411909f2
+
+2022-05-14 14:07:53,496 INFO  [restartedMain] DefaultSecurityFilterChain: Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@4681d24d, org.springframework.security.web.context.SecurityContextPersistenceFilter@7828a613, org.springframework.security.web.header.HeaderWriterFilter@79d2bacb, org.springframework.web.filter.CorsFilter@2d03dd70, org.springframework.security.web.authentication.logout.LogoutFilter@3e1149b3, io.okkio.security.JwtAuthenticationFilter@bf1d753, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@3d5eac1c, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@3adff337, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@25d393e, org.springframework.security.web.session.SessionManagementFilter@9dade01, org.springframework.security.web.access.ExceptionTranslationFilter@181af47b, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@3238bf35]
+2022-05-14 14:07:53,700 INFO  [restartedMain] OptionalLiveReloadServer: LiveReload server is running on port 35729
+2022-05-14 14:07:53,775 WARN  [restartedMain] ThymeleafAutoConfiguration$DefaultTemplateResolverConfiguration: Cannot find template location: classpath:/templates/ (please add some templates or check your Thymeleaf configuration)
+2022-05-14 14:07:54,135 INFO  [restartedMain] TomcatWebServer: Tomcat started on port(s): 8092 (http) with context path ''
+2022-05-14 14:07:54,142 INFO  [restartedMain] DocumentationPluginsBootstrapper: Context refreshed
+2022-05-14 14:07:54,201 INFO  [restartedMain] DocumentationPluginsBootstrapper: Found 1 custom documentation plugin(s)
+2022-05-14 14:07:54,269 INFO  [restartedMain] ApiListingReferenceScanner: Scanning for api listing references
+2022-05-14 14:07:54,463 INFO  [restartedMain] CachingOperationNameGenerator: Generating unique operation named: insertUsingPOST_1
+2022-05-14 14:07:54,512 INFO  [restartedMain] OkkioApplication: Started OkkioApplication in 7.486 seconds (JVM running for 8.804)
+2022-05-14 14:15:25,858 INFO  [http-nio-8092-exec-2] [/]: Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-05-14 14:15:25,861 INFO  [http-nio-8092-exec-2] DispatcherServlet: Initializing Servlet 'dispatcherServlet'
+2022-05-14 14:15:25,866 INFO  [http-nio-8092-exec-2] DispatcherServlet: Completed initialization in 4 ms
+2022-05-14 14:18:38,182 INFO  [restartedMain] OkkioApplication: Starting OkkioApplication using Java 13.0.8 on Ais-MacBook-Pro with PID 16998 (/Users/aitd/IdeaProjects/okkio-be/okkio-api/target/classes started by aitd in /Users/aitd/IdeaProjects/okkio-be)
+2022-05-14 14:18:38,188 INFO  [restartedMain] OkkioApplication: The following profiles are active: swagger,dev
+2022-05-14 14:18:38,249 INFO  [restartedMain] DevToolsPropertyDefaultsPostProcessor: Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-05-14 14:18:38,249 INFO  [restartedMain] DevToolsPropertyDefaultsPostProcessor: For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2022-05-14 14:18:39,444 INFO  [restartedMain] RepositoryConfigurationDelegate: Multiple Spring Data modules found, entering strict repository configuration mode!
+2022-05-14 14:18:39,445 INFO  [restartedMain] RepositoryConfigurationDelegate: Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2022-05-14 14:18:39,531 INFO  [restartedMain] RepositoryConfigurationDelegate: Finished Spring Data repository scanning in 81 ms. Found 3 JPA repository interfaces.
+2022-05-14 14:18:39,554 INFO  [restartedMain] RepositoryConfigurationDelegate: Multiple Spring Data modules found, entering strict repository configuration mode!
+2022-05-14 14:18:39,554 INFO  [restartedMain] RepositoryConfigurationDelegate: Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2022-05-14 14:18:39,567 INFO  [restartedMain] RepositoryConfigurationExtensionSupport: Spring Data Redis - Could not safely identify store assignment for repository candidate interface io.okkio.repository.RefreshTokenRepository. If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository.
+2022-05-14 14:18:39,567 INFO  [restartedMain] RepositoryConfigurationExtensionSupport: Spring Data Redis - Could not safely identify store assignment for repository candidate interface io.okkio.repository.RoleRepository. If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository.
+2022-05-14 14:18:39,569 INFO  [restartedMain] RepositoryConfigurationExtensionSupport: Spring Data Redis - Could not safely identify store assignment for repository candidate interface io.okkio.repository.UserRepository. If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository.
+2022-05-14 14:18:39,570 INFO  [restartedMain] RepositoryConfigurationDelegate: Finished Spring Data repository scanning in 11 ms. Found 0 Redis repository interfaces.
+2022-05-14 14:18:40,094 INFO  [restartedMain] PostProcessorRegistrationDelegate$BeanPostProcessorChecker: Bean 'org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler@d6071f9' of type [org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-14 14:18:40,102 INFO  [restartedMain] PostProcessorRegistrationDelegate$BeanPostProcessorChecker: Bean 'methodSecurityMetadataSource' of type [org.springframework.security.access.method.DelegatingMethodSecurityMetadataSource] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-14 14:18:40,351 INFO  [restartedMain] TomcatWebServer: Tomcat initialized with port(s): 8092 (http)
+2022-05-14 14:18:40,356 INFO  [restartedMain] StandardService: Starting service [Tomcat]
+2022-05-14 14:18:40,356 INFO  [restartedMain] StandardEngine: Starting Servlet engine: [Apache Tomcat/9.0.52]
+2022-05-14 14:18:40,428 INFO  [restartedMain] [/]: Initializing Spring embedded WebApplicationContext
+2022-05-14 14:18:40,428 INFO  [restartedMain] ServletWebServerApplicationContext: Root WebApplicationContext: initialization completed in 2178 ms
+2022-05-14 14:18:40,925 INFO  [restartedMain] HikariDataSource: HikariPool-1 - Starting...
+2022-05-14 14:18:41,289 INFO  [restartedMain] HikariDataSource: HikariPool-1 - Start completed.
+2022-05-14 14:18:41,905 INFO  [restartedMain] LocalContainerEntityManagerFactoryBean: Initialized JPA EntityManagerFactory for persistence unit 'default'
+2022-05-14 14:18:41,997 WARN  [restartedMain] JpaBaseConfiguration$JpaWebConfiguration: spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2022-05-14 14:18:43,174 INFO  [restartedMain] PropertySourcedRequestMappingHandlerMapping: Mapped URL path [/v2/api-docs] onto method [springfox.documentation.swagger2.web.Swagger2Controller#getDocumentation(String, HttpServletRequest)]
+2022-05-14 14:18:43,274 INFO  [restartedMain] UserDetailsServiceAutoConfiguration: 
+
+Using generated security password: 63534e92-f03d-46c2-bda4-6aa395258474
+
+2022-05-14 14:18:43,333 INFO  [restartedMain] DefaultSecurityFilterChain: Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@3ec4119d, org.springframework.security.web.context.SecurityContextPersistenceFilter@50e4c6b6, org.springframework.security.web.header.HeaderWriterFilter@e54fab5, org.springframework.web.filter.CorsFilter@3b52d296, org.springframework.security.web.authentication.logout.LogoutFilter@76eac020, io.okkio.security.JwtAuthenticationFilter@5016a5e2, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@2819721e, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@13b3143a, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@27063280, org.springframework.security.web.session.SessionManagementFilter@795a82c9, org.springframework.security.web.access.ExceptionTranslationFilter@4be22708, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@3cad8140]
+2022-05-14 14:18:43,513 INFO  [restartedMain] OptionalLiveReloadServer: LiveReload server is running on port 35729
+2022-05-14 14:18:43,604 WARN  [restartedMain] ThymeleafAutoConfiguration$DefaultTemplateResolverConfiguration: Cannot find template location: classpath:/templates/ (please add some templates or check your Thymeleaf configuration)
+2022-05-14 14:18:43,969 INFO  [restartedMain] TomcatWebServer: Tomcat started on port(s): 8092 (http) with context path ''
+2022-05-14 14:18:43,972 INFO  [restartedMain] DocumentationPluginsBootstrapper: Context refreshed
+2022-05-14 14:18:43,981 INFO  [restartedMain] DocumentationPluginsBootstrapper: Found 1 custom documentation plugin(s)
+2022-05-14 14:18:44,000 INFO  [restartedMain] ApiListingReferenceScanner: Scanning for api listing references
+2022-05-14 14:18:44,149 INFO  [restartedMain] CachingOperationNameGenerator: Generating unique operation named: insertUsingPOST_1
+2022-05-14 14:18:44,184 INFO  [restartedMain] OkkioApplication: Started OkkioApplication in 6.688 seconds (JVM running for 7.915)
+2022-05-14 14:18:54,552 INFO  [http-nio-8092-exec-2] [/]: Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-05-14 14:18:54,557 INFO  [http-nio-8092-exec-2] DispatcherServlet: Initializing Servlet 'dispatcherServlet'
+2022-05-14 14:18:54,563 INFO  [http-nio-8092-exec-2] DispatcherServlet: Completed initialization in 5 ms
+2022-05-14 14:23:15,705 INFO  [restartedMain] OkkioApplication: Starting OkkioApplication using Java 13.0.8 on Ais-MacBook-Pro with PID 17044 (/Users/aitd/IdeaProjects/okkio-be/okkio-api/target/classes started by aitd in /Users/aitd/IdeaProjects/okkio-be)
+2022-05-14 14:23:15,712 INFO  [restartedMain] OkkioApplication: The following profiles are active: swagger,dev
+2022-05-14 14:23:15,834 INFO  [restartedMain] DevToolsPropertyDefaultsPostProcessor: Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-05-14 14:23:15,834 INFO  [restartedMain] DevToolsPropertyDefaultsPostProcessor: For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2022-05-14 14:23:17,140 INFO  [restartedMain] RepositoryConfigurationDelegate: Multiple Spring Data modules found, entering strict repository configuration mode!
+2022-05-14 14:23:17,142 INFO  [restartedMain] RepositoryConfigurationDelegate: Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2022-05-14 14:23:17,232 INFO  [restartedMain] RepositoryConfigurationDelegate: Finished Spring Data repository scanning in 80 ms. Found 3 JPA repository interfaces.
+2022-05-14 14:23:17,255 INFO  [restartedMain] RepositoryConfigurationDelegate: Multiple Spring Data modules found, entering strict repository configuration mode!
+2022-05-14 14:23:17,256 INFO  [restartedMain] RepositoryConfigurationDelegate: Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2022-05-14 14:23:17,269 INFO  [restartedMain] RepositoryConfigurationExtensionSupport: Spring Data Redis - Could not safely identify store assignment for repository candidate interface io.okkio.repository.RefreshTokenRepository. If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository.
+2022-05-14 14:23:17,272 INFO  [restartedMain] RepositoryConfigurationExtensionSupport: Spring Data Redis - Could not safely identify store assignment for repository candidate interface io.okkio.repository.RoleRepository. If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository.
+2022-05-14 14:23:17,276 INFO  [restartedMain] RepositoryConfigurationExtensionSupport: Spring Data Redis - Could not safely identify store assignment for repository candidate interface io.okkio.repository.UserRepository. If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository.
+2022-05-14 14:23:17,277 INFO  [restartedMain] RepositoryConfigurationDelegate: Finished Spring Data repository scanning in 15 ms. Found 0 Redis repository interfaces.
+2022-05-14 14:23:17,772 INFO  [restartedMain] PostProcessorRegistrationDelegate$BeanPostProcessorChecker: Bean 'org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler@2311f660' of type [org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-14 14:23:17,780 INFO  [restartedMain] PostProcessorRegistrationDelegate$BeanPostProcessorChecker: Bean 'methodSecurityMetadataSource' of type [org.springframework.security.access.method.DelegatingMethodSecurityMetadataSource] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-14 14:23:18,058 INFO  [restartedMain] TomcatWebServer: Tomcat initialized with port(s): 8092 (http)
+2022-05-14 14:23:18,064 INFO  [restartedMain] StandardService: Starting service [Tomcat]
+2022-05-14 14:23:18,064 INFO  [restartedMain] StandardEngine: Starting Servlet engine: [Apache Tomcat/9.0.52]
+2022-05-14 14:23:18,131 INFO  [restartedMain] [/]: Initializing Spring embedded WebApplicationContext
+2022-05-14 14:23:18,132 INFO  [restartedMain] ServletWebServerApplicationContext: Root WebApplicationContext: initialization completed in 2297 ms
+2022-05-14 14:23:18,635 INFO  [restartedMain] HikariDataSource: HikariPool-1 - Starting...
+2022-05-14 14:23:19,005 INFO  [restartedMain] HikariDataSource: HikariPool-1 - Start completed.
+2022-05-14 14:23:19,577 INFO  [restartedMain] LocalContainerEntityManagerFactoryBean: Initialized JPA EntityManagerFactory for persistence unit 'default'
+2022-05-14 14:23:19,651 WARN  [restartedMain] JpaBaseConfiguration$JpaWebConfiguration: spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2022-05-14 14:23:20,693 INFO  [restartedMain] PropertySourcedRequestMappingHandlerMapping: Mapped URL path [/v2/api-docs] onto method [springfox.documentation.swagger2.web.Swagger2Controller#getDocumentation(String, HttpServletRequest)]
+2022-05-14 14:23:20,777 INFO  [restartedMain] UserDetailsServiceAutoConfiguration: 
+
+Using generated security password: ebb4b7b3-f71b-4883-9581-49f2b1f87e94
+
+2022-05-14 14:23:20,836 INFO  [restartedMain] DefaultSecurityFilterChain: Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@74d17792, org.springframework.security.web.context.SecurityContextPersistenceFilter@42680604, org.springframework.security.web.header.HeaderWriterFilter@7f493a93, org.springframework.web.filter.CorsFilter@3370ae22, org.springframework.security.web.authentication.logout.LogoutFilter@1902b94f, io.okkio.security.JwtAuthenticationFilter@673e2deb, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@5d961dc4, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@660f3305, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@73d8eb29, org.springframework.security.web.session.SessionManagementFilter@513c3f4a, org.springframework.security.web.access.ExceptionTranslationFilter@1ee01df2, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@7d85ee07]
+2022-05-14 14:23:21,003 INFO  [restartedMain] OptionalLiveReloadServer: LiveReload server is running on port 35729
+2022-05-14 14:23:21,092 WARN  [restartedMain] ThymeleafAutoConfiguration$DefaultTemplateResolverConfiguration: Cannot find template location: classpath:/templates/ (please add some templates or check your Thymeleaf configuration)
+2022-05-14 14:23:21,453 INFO  [restartedMain] TomcatWebServer: Tomcat started on port(s): 8092 (http) with context path ''
+2022-05-14 14:23:21,457 INFO  [restartedMain] DocumentationPluginsBootstrapper: Context refreshed
+2022-05-14 14:23:21,465 INFO  [restartedMain] DocumentationPluginsBootstrapper: Found 1 custom documentation plugin(s)
+2022-05-14 14:23:21,483 INFO  [restartedMain] ApiListingReferenceScanner: Scanning for api listing references
+2022-05-14 14:23:21,624 INFO  [restartedMain] CachingOperationNameGenerator: Generating unique operation named: insertUsingPOST_1
+2022-05-14 14:23:21,652 INFO  [restartedMain] OkkioApplication: Started OkkioApplication in 6.719 seconds (JVM running for 7.631)
+2022-05-14 14:23:36,056 INFO  [http-nio-8092-exec-1] [/]: Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-05-14 14:23:36,060 INFO  [http-nio-8092-exec-1] DispatcherServlet: Initializing Servlet 'dispatcherServlet'
+2022-05-14 14:23:36,065 INFO  [http-nio-8092-exec-1] DispatcherServlet: Completed initialization in 4 ms
+2022-05-14 14:32:28,097 WARN  [HikariPool-1 housekeeper] HikariPool: HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1m38s871ms).
+2022-05-14 14:32:48,107 INFO  [restartedMain] OkkioApplication: Starting OkkioApplication using Java 13.0.8 on Ais-MacBook-Pro with PID 17116 (/Users/aitd/IdeaProjects/okkio-be/okkio-api/target/classes started by aitd in /Users/aitd/IdeaProjects/okkio-be)
+2022-05-14 14:32:48,111 INFO  [restartedMain] OkkioApplication: The following profiles are active: swagger,dev
+2022-05-14 14:32:48,178 INFO  [restartedMain] DevToolsPropertyDefaultsPostProcessor: Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2022-05-14 14:32:48,178 INFO  [restartedMain] DevToolsPropertyDefaultsPostProcessor: For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2022-05-14 14:32:49,545 INFO  [restartedMain] RepositoryConfigurationDelegate: Multiple Spring Data modules found, entering strict repository configuration mode!
+2022-05-14 14:32:49,546 INFO  [restartedMain] RepositoryConfigurationDelegate: Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2022-05-14 14:32:49,646 INFO  [restartedMain] RepositoryConfigurationDelegate: Finished Spring Data repository scanning in 93 ms. Found 3 JPA repository interfaces.
+2022-05-14 14:32:49,668 INFO  [restartedMain] RepositoryConfigurationDelegate: Multiple Spring Data modules found, entering strict repository configuration mode!
+2022-05-14 14:32:49,669 INFO  [restartedMain] RepositoryConfigurationDelegate: Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2022-05-14 14:32:49,682 INFO  [restartedMain] RepositoryConfigurationExtensionSupport: Spring Data Redis - Could not safely identify store assignment for repository candidate interface io.okkio.repository.RefreshTokenRepository. If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository.
+2022-05-14 14:32:49,686 INFO  [restartedMain] RepositoryConfigurationExtensionSupport: Spring Data Redis - Could not safely identify store assignment for repository candidate interface io.okkio.repository.RoleRepository. If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository.
+2022-05-14 14:32:49,690 INFO  [restartedMain] RepositoryConfigurationExtensionSupport: Spring Data Redis - Could not safely identify store assignment for repository candidate interface io.okkio.repository.UserRepository. If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository.
+2022-05-14 14:32:49,690 INFO  [restartedMain] RepositoryConfigurationDelegate: Finished Spring Data repository scanning in 16 ms. Found 0 Redis repository interfaces.
+2022-05-14 14:32:50,201 INFO  [restartedMain] PostProcessorRegistrationDelegate$BeanPostProcessorChecker: Bean 'org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler@6876d8ab' of type [org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-14 14:32:50,208 INFO  [restartedMain] PostProcessorRegistrationDelegate$BeanPostProcessorChecker: Bean 'methodSecurityMetadataSource' of type [org.springframework.security.access.method.DelegatingMethodSecurityMetadataSource] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2022-05-14 14:32:50,468 INFO  [restartedMain] TomcatWebServer: Tomcat initialized with port(s): 8092 (http)
+2022-05-14 14:32:50,474 INFO  [restartedMain] StandardService: Starting service [Tomcat]
+2022-05-14 14:32:50,474 INFO  [restartedMain] StandardEngine: Starting Servlet engine: [Apache Tomcat/9.0.52]
+2022-05-14 14:32:50,543 INFO  [restartedMain] [/]: Initializing Spring embedded WebApplicationContext
+2022-05-14 14:32:50,543 INFO  [restartedMain] ServletWebServerApplicationContext: Root WebApplicationContext: initialization completed in 2364 ms
+2022-05-14 14:32:51,064 INFO  [restartedMain] HikariDataSource: HikariPool-1 - Starting...
+2022-05-14 14:32:51,426 INFO  [restartedMain] HikariDataSource: HikariPool-1 - Start completed.
+2022-05-14 14:32:52,028 INFO  [restartedMain] LocalContainerEntityManagerFactoryBean: Initialized JPA EntityManagerFactory for persistence unit 'default'
+2022-05-14 14:32:52,111 WARN  [restartedMain] JpaBaseConfiguration$JpaWebConfiguration: spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2022-05-14 14:32:53,164 INFO  [restartedMain] PropertySourcedRequestMappingHandlerMapping: Mapped URL path [/v2/api-docs] onto method [springfox.documentation.swagger2.web.Swagger2Controller#getDocumentation(String, HttpServletRequest)]
+2022-05-14 14:32:53,249 INFO  [restartedMain] UserDetailsServiceAutoConfiguration: 
+
+Using generated security password: 7779ac7e-b7e4-44fc-8cf5-a19c9ca9c78f
+
+2022-05-14 14:32:53,311 INFO  [restartedMain] DefaultSecurityFilterChain: Will secure any request with [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@18f1f372, org.springframework.security.web.context.SecurityContextPersistenceFilter@12999bef, org.springframework.security.web.header.HeaderWriterFilter@361b5a06, org.springframework.web.filter.CorsFilter@13d63001, org.springframework.security.web.authentication.logout.LogoutFilter@2b62f93c, io.okkio.security.JwtAuthenticationFilter@60cf2683, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@31170d7b, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@30f4d067, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@7683e3a4, org.springframework.security.web.session.SessionManagementFilter@2735846a, org.springframework.security.web.access.ExceptionTranslationFilter@6de0b95d, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@7f656b1]
+2022-05-14 14:32:53,478 INFO  [restartedMain] OptionalLiveReloadServer: LiveReload server is running on port 35729
+2022-05-14 14:32:53,567 WARN  [restartedMain] ThymeleafAutoConfiguration$DefaultTemplateResolverConfiguration: Cannot find template location: classpath:/templates/ (please add some templates or check your Thymeleaf configuration)
+2022-05-14 14:32:53,919 INFO  [restartedMain] TomcatWebServer: Tomcat started on port(s): 8092 (http) with context path ''
+2022-05-14 14:32:53,921 INFO  [restartedMain] DocumentationPluginsBootstrapper: Context refreshed
+2022-05-14 14:32:53,930 INFO  [restartedMain] DocumentationPluginsBootstrapper: Found 1 custom documentation plugin(s)
+2022-05-14 14:32:53,952 INFO  [restartedMain] ApiListingReferenceScanner: Scanning for api listing references
+2022-05-14 14:32:54,094 INFO  [restartedMain] CachingOperationNameGenerator: Generating unique operation named: insertUsingPOST_1
+2022-05-14 14:32:54,122 INFO  [restartedMain] OkkioApplication: Started OkkioApplication in 6.75 seconds (JVM running for 7.594)
+2022-05-14 14:33:08,530 INFO  [http-nio-8092-exec-2] [/]: Initializing Spring DispatcherServlet 'dispatcherServlet'
+2022-05-14 14:33:08,535 INFO  [http-nio-8092-exec-2] DispatcherServlet: Initializing Servlet 'dispatcherServlet'
+2022-05-14 14:33:08,541 INFO  [http-nio-8092-exec-2] DispatcherServlet: Completed initialization in 6 ms
