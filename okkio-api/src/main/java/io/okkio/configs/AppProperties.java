@@ -17,4 +17,6 @@ public class AppProperties {
 	private Long refreshTokenDurationMs;
 	private int redisPort;
 	private String redisHost;
+	private String email;
+	private String password;
 }

@@ -19,12 +19,10 @@ import io.okkio.services.UserServices;
 import io.okkio.util.ResponseUtil;
 import io.okkio.util.StringUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,19 +66,36 @@ public class AuthController {
         if (StringUtils.isEmpty(dto.getPassword())) {
             return ResponseUtil.badRequest(Constants.MESSAGE_BAD_REQUEST);
         }
-        if (StringUtils.isEmpty(dto.getRePassword())) {
+        if (StringUtils.isEmpty(dto.getFirstName())) {
             return ResponseUtil.badRequest(Constants.MESSAGE_BAD_REQUEST);
         }
-        if (!dto.getPassword().equals(dto.getRePassword())) {
+        if (StringUtils.isEmpty(dto.getLastName())) {
             return ResponseUtil.badRequest(Constants.MESSAGE_BAD_REQUEST);
+        }
+        UserDto userDtoTemp = new UserDto();
+        if (StringUtils.isEmpty(dto.getAccountType())) {
+            return ResponseUtil.badRequest(Constants.MESSAGE_BAD_REQUEST);
+        } else {
+            String accountType = dto.getAccountType().toUpperCase();
+            if ("FACEBOOK".equals(accountType)
+                    || "GOOGLE".equals(accountType)
+                    || "LOCAL".equals(accountType)) {
+                userDtoTemp.setAccountType(accountType);
+            } else {
+                return ResponseUtil.badRequest(Constants.MESSAGE_BAD_REQUEST);
+            }
         }
         boolean isExisted = userServices.findUserByEmail(dto.getEmail());
         if (isExisted) {
             return ResponseUtil.ok(Constants.MESSAGE_USER_IS_EXISTED, null);
         }
-        UserDto userDtoTemp = new UserDto();
         userDtoTemp.setEmail(dto.getEmail());
         userDtoTemp.setPassword(dto.getPassword());
+        userDtoTemp.setFirstName(dto.getFirstName());
+        userDtoTemp.setLastName(dto.getLastName());
+        if (!StringUtils.isEmpty(dto.getSocialId())) {
+            userDtoTemp.setSocialId(dto.getSocialId());
+        }
 
         UserDto userDto = userServices.insert(userDtoTemp);
         ResponseRegister result = new ResponseRegister();
@@ -165,5 +180,20 @@ public class AuthController {
         List<ResponseTokenRefresh> results = new ArrayList<>();
         results.add(result);
         return ResponseUtil.ok(Constants.MESSAGE_REFRESH_TOKEN_SUCCESS, results);
+    }
+
+    @GetMapping("/forget-password")
+    public ResponseEntity<?> refreshToken(@Param("email") String email) {
+        if (StringUtils.isEmpty(email)) {
+            return ResponseUtil.badRequest(Constants.MESSAGE_BAD_REQUEST);
+        }
+        boolean isExisted = userServices.findUserByEmail(email);
+        if (!isExisted) {
+            return ResponseUtil.notFound(Constants.MESSAGE_EMAIL_IS_NOT_EXISTED);
+        }
+        if (userServices.resetPassword(email)) {
+            return ResponseUtil.ok(Constants.MESSAGE_SEND_EMAIL_SUCCESS, null);
+        }
+        return ResponseUtil.ok(Constants.MESSAGE_SEND_EMAIL_FAILED, null);
     }
 }

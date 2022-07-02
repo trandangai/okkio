@@ -4,15 +4,23 @@ import io.okkio.domain.User;
 import io.okkio.dto.UserDto;
 import io.okkio.mapper.UserMapper;
 import io.okkio.repository.UserRepository;
+import io.okkio.services.EmailServices;
 import io.okkio.services.UserServices;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import java.util.List;
 import java.util.Optional;
+import java.util.Properties;
+import java.util.Random;
 
 /**
  * UserServicesImpl
@@ -29,6 +37,9 @@ public class UserServicesImpl extends BaseServiceImpl<User, Long> implements Use
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
+    private EmailServices emailServices;
 
     public UserServicesImpl(JpaRepository<User, Long> jpaRepository) {
         super(jpaRepository);
@@ -60,6 +71,14 @@ public class UserServicesImpl extends BaseServiceImpl<User, Long> implements Use
         // By default user role
         dto.setRoleId(1);
         User user = userMapper.toEntity(dto);
+        if (dto.getAccountType().equals("FACEBOOK")) {
+            user.setSocialFacebook("FACEBOOK");
+        } else if (dto.getAccountType().equals("GOOGLE")) {
+            user.setSocialGoogle("GOOGLE");
+        }
+        if (!StringUtils.isEmpty(dto.getSocialId())) {
+            user.setSocialId(dto.getSocialId());
+        }
         return userMapper.toDto(save(user));
     }
 
@@ -76,8 +95,8 @@ public class UserServicesImpl extends BaseServiceImpl<User, Long> implements Use
     }
 
     @Override
-    public UserDto getUserByEmail(String email) {
-        return userMapper.toDto(userRepository.findUserByEmail(email));
+    public User getUserByEmail(String email) {
+        return userRepository.findUserByEmail(email);
     }
 
     @Override
@@ -112,6 +131,19 @@ public class UserServicesImpl extends BaseServiceImpl<User, Long> implements Use
         return userMapper.toDto(user);
     }
 
+    @Override
+    public boolean resetPassword(String email) {
+        String newPassword = RandomStringUtils.randomAlphanumeric(8);
+        User user = getUserByEmail(email);
+        if (emailServices.sendMailForgetPassword(email, user.getFirstName(), newPassword)) {
+            user.setPassword(newPassword);
+            save(user);
+            log.info("Sent mail*****");
+            return true;
+        }
+        return false;
+    }
+
     private User createdUserGuest() {
         User user = new User();
         user.setUsername("guest");
@@ -119,5 +151,4 @@ public class UserServicesImpl extends BaseServiceImpl<User, Long> implements Use
         user.setEmail("guest@gmail.com");
         return user;
     }
-
 }

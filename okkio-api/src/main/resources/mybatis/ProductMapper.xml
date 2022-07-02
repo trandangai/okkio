@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.okkio.mybatis.ProductMybatis">
+    <!--Get Region Office-->
+<!--    <resultMap id="RolePermissionMapping" type="com.aia.apps.mdm.dto.RolePermissionBaseDto">-->
+<!--        <result property="roleId" column="ROLE_ID"/>-->
+<!--        <result property="roleName" column="ROLE_NAME"/>-->
+<!--        <result property="permissionId" column="PERMISSION_ID"/>-->
+<!--        <result property="permissionName" column="PERMISSION_NAME"/>-->
+<!--    </resultMap>-->
+<!--    <select id="getUserRolePermission" parameterType="String" resultMap="RolePermissionMapping">-->
+<!--        select roles.id as ROLE_ID, roles.NAME AS ROLE_NAME, permissions.id AS PERMISSION_ID, permissions.NAME AS PERMISSION_NAME-->
+<!--        from sys_user users-->
+<!--        inner join sys_user_role user_role on user_role.username = users.username-->
+<!--        inner join sys_role roles on roles.id = user_role.ROLE_ID-->
+<!--        inner join sys_role_permission role_permission on role_permission.ROLE_ID = user_role.ROLE_ID-->
+<!--        inner join sys_permission permissions on permissions.ID = role_permission.PERMISSION_ID-->
+<!--        where users.username = #{username}-->
+<!--        order by roles.NAME-->
+<!--    </select>-->
+
+    <update id="updateProductDetailByIds">
+        update okkio.util cd
+        set cd.status = #{status} and cd.name = #{name}
+        and cd.description = #{description} and cd.productDetailId = #{productDetailId}
+        and cd.categoryId = #{categoryId}
+        where 1=1
+        <if test="ids > -1">
+            and cd.id = #{ids}
+        </if>
+    </update>
+
+</mapper>

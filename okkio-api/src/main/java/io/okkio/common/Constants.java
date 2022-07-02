@@ -5,6 +5,10 @@ public class Constants {
     public static final String MESSAGE_BAD_REQUEST = "Bad request";
     public static final String MESSAGE_NOT_FOUND = "Not found";
     public static final String MESSAGE_USER_IS_EXISTED = "User is existed! ";
+    public static final String MESSAGE_CATEGORY_IS_EXISTED = "Category is existed! ";
+    public static final String MESSAGE_CATEGORY_IS_NOT_EXISTED = "Category is not existed! ";
+    public static final String MESSAGE_DATA_IS_NOT_EXISTED = "Data is not existed! ";
+    public static final String MESSAGE_EMAIL_IS_NOT_EXISTED = "Email is not existed! ";
     public static final String MESSAGE_USER_IS_NOT_EXISTED = "User is not existed or password is wrong";
     public static final String TOKEN_TYPE = "Bearer";
     public static final String ACTIVATED_STATUS = "ACTIVATED";
@@ -15,6 +19,8 @@ public class Constants {
     public static final String MESSAGE_PROFILE_SUCCESS = "Get Profile To Success!";
     public static final String MESSAGE_TOKEN_EXPIRED = "Token is expired!";
     public static final String MESSAGE_TOKEN_NOT_EXISTED = "Token is not existed!";
+    public static final String MESSAGE_SEND_EMAIL_SUCCESS = "SENT EMAIL TO SUCCESS!";
+    public static final String MESSAGE_SEND_EMAIL_FAILED = "SENT EMAIL TO FAILED!";
     public static final String ROLE_USER = "CF_USER";
     public static final String ROLE_ADMIN = "CF_ADMIN";
 
@@ -79,6 +85,11 @@ public class Constants {
     public static final String MESSAGE_GET_USER_SUCCESS = "Get User Success!";
     public static final String MESSAGE_GET_DATA_SUCCESS = "Get Data Success!";
     public static final String MESSAGE_INSERT_USER_SUCCESS = "Insert user Success!";
+    public static final String MESSAGE_INSERT_DATA_SUCCESS = "Insert data Success!";
+    public static final String MESSAGE_DELETE_DATA_SUCCESS = "Delete Data Success!";
+    public static final String MESSAGE_UPDATED_CATEGORY_SUCCESS = "Updated category to success!";
+    public static final String MESSAGE_UPDATED_DATA_SUCCESS = "Updated data to success!";
+
 
     public static final String MESSAGE_ERROR_WITH_IDS = "Database don't have the ids: ";
 

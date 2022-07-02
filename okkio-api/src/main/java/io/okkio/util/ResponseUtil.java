@@ -44,7 +44,7 @@ public class ResponseUtil {
     }
 
     public static <T> ResponseEntity<T> badRequest(String message) {
-        return new ResponseEntity<>((T) responseError(HttpStatus.BAD_REQUEST.name(),message, HttpStatus.BAD_REQUEST.value()), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>((T) responseError(HttpStatus.BAD_REQUEST.name(),message, HttpStatus.BAD_REQUEST.value()), HttpStatus.OK);
     }
 
     public static <T> ResponseEntity<T> notFound(String message) {

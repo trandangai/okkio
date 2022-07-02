@@ -12,5 +12,6 @@ public class RequestRegister {
     private String lastName;
     private String email;
     private String password;
-    private String rePassword;
+    private String socialId;
+    private String accountType;
 }

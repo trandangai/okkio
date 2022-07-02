@@ -88,14 +88,17 @@ public class User extends AbstractAuditingEntity implements Serializable {
 	@Column(name = "SOCIAL_FACEBOOK")
 	private String socialFacebook;
 
-	@Column(name = "SOCIAL_INSTAGRAM")
-	private String socialInstagram;
+	@Column(name = "SOCIAL_GOOGLE")
+	private String socialGoogle;
 
-	@Column(name = "SOCIAL_TWITTER")
-	private String socialTwitter;
+	@Column(name = "SOCIAL_ID")
+	private String socialId;
 
 	@Column(name = "REGION")
 	private String region;
+
+	@Column(name = "ORDER_ID")
+	private Long orderId;
 
 	@Override
 	public boolean equals(Object o) {
