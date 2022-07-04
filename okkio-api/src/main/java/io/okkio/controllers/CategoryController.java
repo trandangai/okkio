@@ -47,8 +47,7 @@ public class CategoryController {
         return ResponseUtil.ok(Constants.MESSAGE_INSERT_USER_SUCCESS, result);
     }
 
-    @PreAuthorize("hasAnyRole('OKKIO_USER', 'OKKIO_GUEST', 'OKKIO_ADMIN')")
-    @GetMapping
+    @GetMapping("/get-all")
     public ResponseEntity<List<Categories>> getAllCategories() {
         return ResponseUtil.ok(Constants.MESSAGE_GET_DATA_SUCCESS, categoryServices.getAllCategories());
     }

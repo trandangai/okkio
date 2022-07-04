@@ -3,7 +3,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="io.okkio.mybatis.UtilMybatis">
+<mapper namespace="io.okkio.mybatis.LocationMybatis">
     <!--Get Region Office-->
 <!--    <resultMap id="RolePermissionMapping" type="com.aia.apps.mdm.dto.RolePermissionBaseDto">-->
 <!--        <result property="roleId" column="ROLE_ID"/>-->
@@ -22,20 +22,35 @@
 <!--        order by roles.NAME-->
 <!--    </select>-->
 
-    <update id="updateUtilByIds">
-        update okkio.util cd
+    <update id="updateLocationByIds">
+        update okkio.location cd
         set cd.status = #{status}
         <if test="name != null">
             ,cd.name = #{name}
         </if>
+        <if test="address != null">
+            ,cd.address = #{address}
+        </if>
+        <if test="phone != null">
+            ,cd.phone = #{phone}
+        </if>
+        <if test="title != null">
+            ,cd.title = #{title}
+        </if>
         <if test="description != null">
             ,cd.description = #{description}
         </if>
-        <if test="type != null">
-            ,cd.type = #{type}
+        <if test="openTime != null">
+            ,cd.openTime = #{openTime}
         </if>
-        <if test="code != null">
-            ,cd.code = #{code}
+        <if test="openDay != null">
+            ,cd.openDay = #{openDay}
+        </if>
+        <if test="conceptStore != null">
+            ,cd.conceptStore = #{conceptStore}
+        </if>
+        <if test="images != null">
+            ,cd.images = #{images}
         </if>
         where 1=1
         <if test="ids > -1">

@@ -59,7 +59,7 @@ public class UserController {
     @GetMapping
     public ResponseEntity<UserDto> get(@RequestHeader("Authorization") String token) {
         Long id = jwtTokenProvider.getUserIdFromBearerToken(token);
-        if (id == null) {
+        if (id < 1) {
             return ResponseUtil.ok(Constants.MESSAGE_TOKEN_NOT_EXISTED, null);
         }
         UserDtoResponse result = userMybatis.getUserById(id);
@@ -70,4 +70,6 @@ public class UserController {
         results.add(result);
         return ResponseUtil.ok(Constants.MESSAGE_GET_USER_SUCCESS, results);
     }
+
+    // TODO update user information
 }

@@ -1,8 +1,7 @@
 package io.okkio.services.impl;
 
-import io.okkio.domain.Categories;
 import io.okkio.domain.Util;
-import io.okkio.dto.request.RequestCategoryDto;
+import io.okkio.dto.UtilDto;
 import io.okkio.dto.request.RequestUtilDto;
 import io.okkio.mapper.UtilMapper;
 import io.okkio.mybatis.UtilMybatis;
@@ -72,5 +71,14 @@ public class UtilServicesImpl extends BaseServiceImpl<Util, Long> implements Uti
     @Override
     public List<Util> getUtilByName(String name) {
         return utilRepository.findUtilByName(name);
+    }
+
+    @Override
+    public UtilDto initUtil() {
+        UtilDto result = new UtilDto();
+        result.setGrinds(utilRepository.findUtilByName("GRIND"));
+        result.setSizes(utilRepository.findUtilByName("SIZE"));
+        result.setSubscriptions(utilRepository.findUtilByName("SUBSCRIPTION"));
+        return result;
     }
 }

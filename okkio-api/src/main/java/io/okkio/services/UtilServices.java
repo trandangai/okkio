@@ -2,6 +2,7 @@ package io.okkio.services;
 
 
 import io.okkio.domain.Util;
+import io.okkio.dto.UtilDto;
 import io.okkio.dto.request.RequestCategoryDto;
 import io.okkio.dto.request.RequestUtilDto;
 
@@ -14,4 +15,5 @@ public interface UtilServices {
     void deleteUtilById(Long id);
     boolean update(RequestUtilDto dto);
     List<Util> getUtilByName(String name);
+    UtilDto initUtil();
 }

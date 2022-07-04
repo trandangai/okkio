@@ -62,7 +62,6 @@ public class ProductController {
         return ResponseUtil.ok(Constants.MESSAGE_GET_DATA_SUCCESS, productServices.getAllProduct());
     }
 
-    @PreAuthorize("hasAnyRole('OKKIO_USER', 'OKKIO_GUEST', 'OKKIO_ADMIN')")
     @GetMapping("/by-category-id")
     public ResponseEntity<List<Product>> getByCategoryId(@Param("categoryId") Long categoryId) {
         Categories categories = categoryServices.getCategoriesById(categoryId);

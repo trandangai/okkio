@@ -79,7 +79,6 @@ public class ProductDetailController {
         return ResponseUtil.ok(Constants.MESSAGE_DELETE_DATA_SUCCESS + " with id" + id, null);
     }
 
-    @PreAuthorize("hasAnyRole('OKKIO_USER', 'OKKIO_GUEST', 'OKKIO_ADMIN')")
     @GetMapping("/get-by-id")
     public ResponseEntity<ProductDetailDto> getProductDetailById(@Param("id") Long id) {
         ProductDetailDto result = productDetailServices.getProductDetailById(id);
