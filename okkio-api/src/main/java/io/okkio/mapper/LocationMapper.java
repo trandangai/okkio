@@ -17,7 +17,10 @@ public abstract class LocationMapper {
     @Mapping(target = "images", ignore = true)
     public abstract LocationDto toDto(Location entity);
 
-    public abstract List<ResponseLocationDto> toResponseDto(List<Location> entities);
+    public abstract List<ResponseLocationDto> toResponseDtos(List<Location> entities);
+
+    @Mapping(target = "images", ignore = true)
+    public abstract ResponseLocationDto toResponseDto(Location entities);
 
 
 //    @Mapping(target = "headerImages", ignore = true)

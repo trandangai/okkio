@@ -65,6 +65,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/product/by-category-id").permitAll()
                 .antMatchers("/api/product-detail/get-by-id").permitAll()
                 .antMatchers("/api/utils/init").permitAll()
+                .antMatchers("/api/contact/**").permitAll()
                 .anyRequest().authenticated()
                 .and().addFilter(new JwtAuthenticationFilter(authenticationManager(), tokenProvider, customUserDetailsService, roleServices, redisUtil))
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

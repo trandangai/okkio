@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -41,7 +42,16 @@ public class LocationServicesImpl extends BaseServiceImpl<Location, Long> implem
 
     @Override
     public List<ResponseLocationDto> getAllLocation() {
-        return locationMapper.toResponseDto(super.findAll());
+        List<Location> locations = super.findAll();
+        List<ResponseLocationDto> result = new ArrayList<>();
+        if (locations != null && !locations.isEmpty()) {
+            for (Location location : locations) {
+                ResponseLocationDto dto = locationMapper.toResponseDto(location);
+                dto.setImages(Stream.of(location.getImages().split("'")).collect(Collectors.toList()));
+                result.add(dto);
+            }
+        }
+        return result;
     }
 
     @Override

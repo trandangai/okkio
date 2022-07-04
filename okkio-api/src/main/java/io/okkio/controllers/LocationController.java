@@ -84,7 +84,7 @@ public class LocationController {
     }
 
     @GetMapping("/get-by-id")
-    public ResponseEntity<LocationDto> getUtilByName(@Param("id") Long id) {
+    public ResponseEntity<LocationDto> getLocationById(@Param("id") Long id) {
         LocationDto result = locationServices.getLocationById(id);
         if (result == null) {
             return ResponseUtil.ok(Constants.MESSAGE_DATA_IS_NOT_EXISTED, null);
