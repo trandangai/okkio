@@ -8,15 +8,18 @@ import lombok.ToString;
 @Setter
 @ToString
 public class RequestUserDto {
+    private Long id;
     private String username;
     private String status;
     private String password;
+    private String oldPassword;
     private String email;
-    private String role;
+    private int roleId;
     private String avatar;
     private String token;
     private String activationKey;
     private String fullName;
+    private String firstName;
     private String lastName;
     private String birthday;
     private String gender;

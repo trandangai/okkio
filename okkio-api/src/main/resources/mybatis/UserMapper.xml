@@ -32,9 +32,45 @@
         <result property="id" column="ID"/>
     </resultMap>
     <select id="getUserById" parameterType="Long" resultMap="UserMapping">
-        select u.USERNAME, u.EMAIL, u.ID, r.ROLE_NAME from user u
+        select u.USERNAME, u.EMAIL, u.ID, r.ROLE_NAME from okkio.user u
         inner join role r on u.role_id = r.id
         where u.id = #{id}
     </select>
+
+    <update id="updateInfoUser">
+        update okkio.user cd
+        set cd.status = #{status}
+        <if test="email != null">
+            ,cd.email = #{email}
+        </if>
+        <if test="role > 0">
+            ,cd.role_id = #{role}
+        </if>
+        <if test="address != null">
+            ,cd.address = #{address}
+        </if>
+        <if test="phoneNumber != null">
+            ,cd.phoneNumber = #{phoneNumber}
+        </if>
+        <if test="firstName != null">
+            ,cd.firstName = #{firstName}
+        </if>
+        <if test="lastName != null">
+            ,cd.lastName = #{lastName}
+        </if>
+        <if test="fullName != null">
+            ,cd.fullName = #{fullName}
+        </if>
+        <if test="username != null">
+            ,cd.username = #{username}
+        </if>
+        <if test="password != null">
+            ,cd.password = #{password}
+        </if>
+        where 1=1
+        <if test="ids > -1">
+            and cd.id = #{ids}
+        </if>
+    </update>
 
 </mapper>

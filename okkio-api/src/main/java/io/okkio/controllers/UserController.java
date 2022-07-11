@@ -1,7 +1,11 @@
 package io.okkio.controllers;
 
 import io.okkio.common.Constants;
+import io.okkio.domain.Product;
+import io.okkio.domain.User;
 import io.okkio.dto.UserDto;
+import io.okkio.dto.request.RequestProductDto;
+import io.okkio.dto.request.RequestUserDto;
 import io.okkio.dto.response.UserDtoResponse;
 import io.okkio.mybatis.UserMybatis;
 import io.okkio.security.JwtTokenProvider;
@@ -70,6 +74,32 @@ public class UserController {
         results.add(result);
         return ResponseUtil.ok(Constants.MESSAGE_GET_USER_SUCCESS, results);
     }
-
-    // TODO update user information
+    @PreAuthorize("hasAnyRole('OKKIO_USER', 'OKKIO_ADMIN')")
+    @PutMapping
+    public ResponseEntity<?> update(@RequestHeader("Authorization") String token, @RequestBody RequestUserDto dto) {
+        Long id = jwtTokenProvider.getUserIdFromBearerToken(token);
+        if (id < 1) {
+            return ResponseUtil.ok(Constants.MESSAGE_TOKEN_NOT_EXISTED, null);
+        }
+        User user = userServices.findUserById(id);
+        if (user == null) {
+            return ResponseUtil.notFound(Constants.MESSAGE_NOT_FOUND);
+        }
+        if (dto.getId() != null) {
+            if (dto.getId() < 1 || !(dto.getId().equals(id))) {
+                return ResponseUtil.notFound(Constants.MESSAGE_BAD_REQUEST);
+            }
+        } else {
+            // Change password
+            dto.setId(id);
+            if (StringUtils.isEmpty(dto.getOldPassword()) || StringUtils.isEmpty(dto.getPassword())) {
+                return ResponseUtil.badRequest(Constants.MESSAGE_BAD_REQUEST);
+            }
+            if (!dto.getOldPassword().equals(user.getPassword())) {
+                return ResponseUtil.badRequest(Constants.MESSAGE_USER_WRONG_PASSWORD);
+            }
+        }
+        // will update email, role, address, phone number, full name, last name, password, username.
+        return ResponseUtil.ok(Constants.MESSAGE_UPDATED_DATA_SUCCESS, userServices.update(dto));
+    }
 }

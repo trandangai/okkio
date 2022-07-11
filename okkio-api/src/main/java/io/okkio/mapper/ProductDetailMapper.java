@@ -1,6 +1,7 @@
 package io.okkio.mapper;
 
 import io.okkio.domain.ProductDetail;
+import io.okkio.dto.PDShoppingCartDto;
 import io.okkio.dto.ProductDetailDto;
 import io.okkio.dto.request.RequestProductDetailDto;
 import io.okkio.dto.response.ResponseProductDetailCategoryDto;
@@ -16,6 +17,8 @@ public abstract class ProductDetailMapper {
     @Mapping(target = "headerImages", ignore = true)
     @Mapping(target = "suggestion", ignore = true)
     public abstract ProductDetailDto toDto(ProductDetail entity);
+    @Mapping(target = "headerImages", ignore = true)
+    public abstract PDShoppingCartDto toDtoSCart(ProductDetail entity);
     @Mapping(target = "headerImages", ignore = true)
     public abstract ResponseProductDetailCategoryDto toCategoryDto(ProductDetail entity);
 }

@@ -2,7 +2,9 @@ package io.okkio.services.impl;
 
 import io.okkio.domain.User;
 import io.okkio.dto.UserDto;
+import io.okkio.dto.request.RequestUserDto;
 import io.okkio.mapper.UserMapper;
+import io.okkio.mybatis.UserMybatis;
 import io.okkio.repository.UserRepository;
 import io.okkio.services.EmailServices;
 import io.okkio.services.UserServices;
@@ -34,6 +36,9 @@ public class UserServicesImpl extends BaseServiceImpl<User, Long> implements Use
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private UserMybatis userMybatis;
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -142,6 +147,21 @@ public class UserServicesImpl extends BaseServiceImpl<User, Long> implements Use
             return true;
         }
         return false;
+    }
+
+    @Override
+    public boolean update(RequestUserDto dto) {
+        if (dto.getPassword() != null) {
+            dto.setPassword(bCryptPasswordEncoder.encode(dto.getPassword()));
+        }
+        int isUpdated = userMybatis.updateInfoUser(dto.getId(), dto.getStatus(), dto.getEmail(), dto.getRoleId(),
+                dto.getAddress(), dto.getPhoneNumber(), dto.getFirstName(), dto.getLastName(), dto.getFullName(),
+                dto.getUsername(), dto.getPassword());
+        if (isUpdated < 0) {
+            log.warn("Can't update User with dto: " + dto);
+            return false;
+        }
+        return true;
     }
 
     private User createdUserGuest() {

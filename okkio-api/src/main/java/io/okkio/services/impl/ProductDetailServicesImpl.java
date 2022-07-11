@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Strings;
 import io.okkio.domain.ProductDetail;
+import io.okkio.dto.PDShoppingCartDto;
 import io.okkio.dto.ProductDetailDto;
 import io.okkio.dto.request.RequestProductDetailDto;
 import io.okkio.dto.request.RequestProductDetailUpdateDto;
@@ -100,6 +101,26 @@ public class ProductDetailServicesImpl extends BaseServiceImpl<ProductDetail, Lo
             log.warn("ProductDetailServicesImpl - JsonProcessingException with id: " + id + e);
             throw new RuntimeException(e);
         }
+        return result;
+    }
+
+    @Override
+    public PDShoppingCartDto getProductDetailShoppingCartById(Long id) {
+        ProductDetail productDetail = productDetailRepository.findProductDetailById(id);
+        if (productDetail == null) {
+            log.warn("ProductDetailServicesImpl - getProductDetailById null with id: " + id);
+            return null;
+        }
+        //Temporary to get suggestion logic
+        List<ProductDetail> data = productDetailRepository.findAll();
+        List<ResponseProductDetailCategoryDto> suggestions = new ArrayList<>();
+        for (int i = 0; i < 2; i++) {
+            ResponseProductDetailCategoryDto dto = productDetailMapper.toCategoryDto(data.get(i));
+            dto.setHeaderImages(Stream.of(data.get(i).getHeaderImages().split(",")).collect(Collectors.toList()));
+            suggestions.add(dto);
+        }
+        PDShoppingCartDto result = productDetailMapper.toDtoSCart(productDetail);
+        result.setHeaderImages(Stream.of(productDetail.getHeaderImages().split(",")).collect(Collectors.toList()));
         return result;
     }
 

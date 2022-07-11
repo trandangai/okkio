@@ -10,6 +10,7 @@ public class Constants {
     public static final String MESSAGE_DATA_IS_NOT_EXISTED = "Data is not existed! ";
     public static final String MESSAGE_EMAIL_IS_NOT_EXISTED = "Email is not existed! ";
     public static final String MESSAGE_USER_IS_NOT_EXISTED = "User is not existed or password is wrong";
+    public static final String MESSAGE_USER_WRONG_PASSWORD = "Password was wrong or was not match current password";
     public static final String TOKEN_TYPE = "Bearer";
     public static final String ACTIVATED_STATUS = "ACTIVATED";
     public static final String DEACTIVATED_STATUS = "DEACTIVATED";

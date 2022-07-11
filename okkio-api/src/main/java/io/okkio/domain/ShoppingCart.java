@@ -22,7 +22,9 @@ public class ShoppingCart extends AbstractAuditingEntity implements Serializable
     @Column(name = "USER_ID")
     private Long userId;
 
-    @Column(name = "PRODUCT_ID")
-    private Long productId;
+    @Column(name = "PRODUCT_DETAIL_ID")
+    private Long productDetailId;
 
+    @Column(name = "STATUS")
+    private String status;
 }

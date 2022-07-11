@@ -13,7 +13,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Entity
 @Table(name = "SHIPMENT_ITEM")
-public class Shipment_Item extends AbstractAuditingEntity implements Serializable  {
+public class ShipmentItem extends AbstractAuditingEntity implements Serializable  {
     @Id
     @Column(name = "ID")
     @GeneratedValue(strategy=GenerationType.IDENTITY)

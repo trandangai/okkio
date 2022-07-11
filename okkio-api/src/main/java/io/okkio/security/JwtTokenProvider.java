@@ -1,6 +1,8 @@
 package io.okkio.security;
 
 import io.okkio.common.Constants;
+import io.okkio.domain.User;
+import io.okkio.services.UserServices;
 import io.okkio.util.RedisUtil;
 import io.okkio.util.StringUtil;
 import io.jsonwebtoken.*;
@@ -20,6 +22,9 @@ public class JwtTokenProvider {
 
     @Autowired
     private RedisUtil redisUtil;
+
+    @Autowired
+    private UserServices userServices;
 
     public String generateToken(Long userId, Long expired, boolean isExpired) {
         Date now = new Date();
@@ -55,6 +60,11 @@ public class JwtTokenProvider {
                 .parseClaimsJws(token)
                 .getBody();
         return Long.parseLong(claims.getSubject());
+    }
+
+    public User getUserFromJWT(String token) {
+        Long userId = getUserIdFromBearerToken(token);
+        return userServices.findUserById(userId);
     }
 
     public Long getUserIdFromBearerToken(String bearerToken) {
