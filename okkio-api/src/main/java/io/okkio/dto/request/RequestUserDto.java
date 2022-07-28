@@ -24,8 +24,9 @@ public class RequestUserDto {
     private String birthday;
     private String gender;
     private String address;
-    private int provinceId;
-    private int districtId;
+    private String province;
+    private String district;
+    private String ward;
     private String city;
     private String state;
     private String zipCode;

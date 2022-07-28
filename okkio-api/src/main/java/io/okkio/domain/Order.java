@@ -12,15 +12,19 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "ORDER")
+@Table(name = "`ORDER`")
 public class Order extends AbstractAuditingEntity implements Serializable  {
     @Id
     @Column(name = "ID")
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "NAME")
-    private String name;
+    @Column(name = "ORDER_CODE")
+    private String orderCode;
+
+    // DRAFT , WAITING, APPROVED, CANCELLED, CANCELLED
+    @Column(name = "OKKIO_STATUS_ID")
+    private Long okkioStatusId;
 
     @Column(name = "DESCRIPTION")
     private String description;
@@ -28,12 +32,6 @@ public class Order extends AbstractAuditingEntity implements Serializable  {
     @Column(name = "STATUS")
     private String status;
 
-    @Column(name = "RECEIPT_ID")
-    private Long receiptId;
-
-    @Column(name = "SHIPMENT_ID")
-    private Long shipmentId;
-
-    @Column(name = "ORDER_ITEM_ID")
-    private Long orderItemId;
+    @Column(name = "USER_ID")
+    private Long userId;
 }

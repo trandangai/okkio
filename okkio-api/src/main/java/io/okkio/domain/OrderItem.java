@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 @Builder
 @Getter
@@ -19,24 +20,33 @@ public class OrderItem extends AbstractAuditingEntity implements Serializable  {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "NAME")
-    private String name;
-
-    @Column(name = "DESCRIPTION")
-    private String description;
-
-    @Column(name = "CODE")
-    private String code;
-
-    @Column(name = "ORDER_ITEM_STATUS_ID")
-    private int orderItemStatusId;
-
-    @Column(name = "SHIPMENT_ITEM_ID")
-    private Long shipmentItemId;
+    @Column(name = "OKKIO_STATUS_ID")
+    private Long okkioStatusId;
 
     @Column(name = "PRODUCT_DETAIL_ID")
     private Long productDetailId;
 
     @Column(name = "ORDER_ID")
-    private Long orderItemId;
+    private Long orderId;
+
+    @Column(name = "SALE_ID")
+    private Long saleId;
+
+    @Column(name = "PRICE")
+    private BigDecimal price;
+
+    @Column(name = "GRIND")
+    private String grind;
+
+    @Column(name = "SIZE")
+    private String size;
+
+    @Column(name = "SUBSCRIPTION")
+    private String subscription;
+
+    @Column(name = "QUANTITY")
+    private int quantity;
+
+    @Column(name = "SALE_PRICE")
+    private BigDecimal salePrice;
 }

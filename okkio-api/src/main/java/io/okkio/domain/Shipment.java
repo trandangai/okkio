@@ -25,6 +25,12 @@ public class Shipment extends AbstractAuditingEntity implements Serializable  {
     @Column(name = "DETAIL")
     private String detail;
 
+    @Column(name = "SHIPPING_TO")
+    private String shippingTo;
+
+    @Column(name = "TYPE")
+    private String type;
+
     @Column(name = "STATUS")
     private String status;
 

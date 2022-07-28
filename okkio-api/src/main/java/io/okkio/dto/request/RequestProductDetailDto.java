@@ -29,5 +29,4 @@ public class RequestProductDetailDto {
     private String footerImages;
     private String suggestion;
     private BigDecimal price;
-    private Long orderItemId;
 }

@@ -17,4 +17,5 @@ public interface ShoppingCartServices {
     boolean update(RequestShoppingCartDto dto, String token);
     boolean deleteShoppingCartById(Long id, String status, String token);
     ShoppingCartDto getShoppingCartByUser(List<ShoppingCart> shoppingCarts);
+    boolean updateStatusShoppingCart(Long id, String status);
 }

@@ -19,18 +19,15 @@ public class Receipt extends AbstractAuditingEntity implements Serializable  {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "CODE")
-    private String code;
-
     @Column(name = "DETAIL")
     private String detail;
 
     @Column(name = "STATUS")
     private String status;
 
-    @Column(name = "SHIPMENT_ID")
-    private Long shipmentId;
+    @Column(name = "OKKIO_STATUS_ID")
+    private Long okkioStatusId;
 
-    @Column(name = "PAYMENT_ID")
-    private Long paymentId;
+    @Column(name = "ORDER_ID")
+    private Long orderId;
 }

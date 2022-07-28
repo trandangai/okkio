@@ -120,4 +120,15 @@ public class ShoppingCartServicesImpl extends BaseServiceImpl<ShoppingCart, Long
         result.setShoppingCarts(detailDtoList);
         return result;
     }
+
+    @Override
+    public boolean updateStatusShoppingCart(Long id, String status) {
+        int updated = shoppingCartRepository.updateStatusShoppingCart(id, status);
+        if (updated > 0) {
+            log.info("updateStatusShoppingCart success with shopping cart id: " + id);
+            return true;
+        }
+        log.info("updateStatusShoppingCart failed with shopping cart id: " + id);
+        return false;
+    }
 }

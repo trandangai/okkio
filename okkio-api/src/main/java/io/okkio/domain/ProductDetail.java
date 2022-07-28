@@ -67,7 +67,4 @@ public class ProductDetail extends AbstractAuditingEntity implements Serializabl
 
     @Column(name = "PRICE")
     private BigDecimal price;
-
-    @Column(name = "ORDER_ITEM_ID")
-    private Long orderItemId;
 }

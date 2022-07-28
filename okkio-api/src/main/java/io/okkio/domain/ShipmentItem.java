@@ -19,8 +19,8 @@ public class ShipmentItem extends AbstractAuditingEntity implements Serializable
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "RECEIPT_ID")
-    private Long receiptId;
+    @Column(name = "SHIPMENT_ID")
+    private Long shipmentId;
 
     @Column(name = "ORDER_ITEM_ID")
     private Long orderItemId;

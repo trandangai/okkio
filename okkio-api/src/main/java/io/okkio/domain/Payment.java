@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "RECEIPT")
+@Table(name = "PAYMENT")
 public class Payment extends AbstractAuditingEntity implements Serializable  {
     @Id
     @Column(name = "ID")

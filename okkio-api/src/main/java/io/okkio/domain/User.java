@@ -64,14 +64,23 @@ public class User extends AbstractAuditingEntity implements Serializable {
 	@Column(name = "ADDRESS")
 	private String address;
 
-	@Column(name = "PROVINCE_ID")
-	private int provinceId;
+	@Column(name = "ADDRESS2")
+	private String address2;
 
-	@Column(name = "DISTRICT_ID")
-	private int districtId;
+	@Column(name = "ADDRESS3")
+	private String address3;
+
+	@Column(name = "PROVINCE")
+	private String province;
+
+	@Column(name = "DISTRICT")
+	private String district;
 
 	@Column(name = "CITY")
 	private String city;
+
+	@Column(name = "WARD")
+	private String ward;
 
 	@Column(name = "STATE")
 	private String state;
@@ -96,9 +105,6 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
 	@Column(name = "REGION")
 	private String region;
-
-	@Column(name = "ORDER_ID")
-	private Long orderId;
 
 	@Override
 	public boolean equals(Object o) {

@@ -12,13 +12,14 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "ORDER_ITEM_STATUS")
-public class OrderItemStatus extends AbstractAuditingEntity implements Serializable  {
+@Table(name = "OKKIO_STATUS")
+public class OkkioStatus extends AbstractAuditingEntity implements Serializable  {
     @Id
     @Column(name = "ID")
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
+    // Delivered, Sold out, stocking
     @Column(name = "NAME")
     private String name;
 
@@ -27,4 +28,7 @@ public class OrderItemStatus extends AbstractAuditingEntity implements Serializa
 
     @Column(name = "STATUS")
     private String status;
+
+    @Column(name = "TYPE")
+    private String type;
 }
