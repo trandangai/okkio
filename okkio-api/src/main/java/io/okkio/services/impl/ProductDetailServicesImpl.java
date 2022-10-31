@@ -105,7 +105,7 @@ public class ProductDetailServicesImpl extends BaseServiceImpl<ProductDetail, Lo
     }
 
     @Override
-    public PDShoppingCartDto getProductDetailShoppingCartById(Long id) {
+    public PDShoppingCartDto getProductDetailShoppingCartById(Long id, Long shoppingCartId) {
         ProductDetail productDetail = productDetailRepository.findProductDetailById(id);
         if (productDetail == null) {
             log.warn("ProductDetailServicesImpl - getProductDetailById null with id: " + id);
@@ -121,6 +121,7 @@ public class ProductDetailServicesImpl extends BaseServiceImpl<ProductDetail, Lo
         }
         PDShoppingCartDto result = productDetailMapper.toDtoSCart(productDetail);
         result.setHeaderImages(Stream.of(productDetail.getHeaderImages().split(",")).collect(Collectors.toList()));
+        result.setShoppingCartId(shoppingCartId);
         return result;
     }
 
@@ -141,8 +142,9 @@ public class ProductDetailServicesImpl extends BaseServiceImpl<ProductDetail, Lo
 
     @Override
     public boolean update(RequestProductDetailUpdateDto dto) {
+        String headerImages = String.join(",", dto.getHeaderImages());
         int isUpdated = productDetailMybatis.updateProductDetailByIds(dto.getId(), dto.getStatus(), dto.getName(), dto.getDescription(),
-                dto.getHeaderImages(), dto.getFooterImages());
+                headerImages, dto.getFooterImages());
         if (isUpdated < 0) {
             log.warn("Can't update Util with dto: " + dto);
             return false;

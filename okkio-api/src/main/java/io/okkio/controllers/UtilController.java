@@ -76,7 +76,6 @@ public class UtilController {
         return ResponseUtil.ok(Constants.MESSAGE_DELETE_DATA_SUCCESS + " with id" + id, null);
     }
 
-    @PreAuthorize("hasAnyRole('OKKIO_USER', 'OKKIO_GUEST', 'OKKIO_ADMIN')")
     @GetMapping("/get-by-name")
     public ResponseEntity<List<Util>> getUtilByName(@Param("name") String name) {
         List<Util> result = utilServices.getUtilByName(name.toUpperCase());

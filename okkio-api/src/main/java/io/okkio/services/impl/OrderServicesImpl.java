@@ -60,7 +60,7 @@ public class OrderServicesImpl extends BaseServiceImpl<Order, Long> implements O
             return null;
         }
         for (ShoppingCart dto : shoppingCarts) {
-            PDShoppingCartDto productDetailDto = productDetailServices.getProductDetailShoppingCartById(dto.getProductDetailId());
+            PDShoppingCartDto productDetailDto = productDetailServices.getProductDetailShoppingCartById(dto.getProductDetailId(), dto.getId());
             if (productDetailDto != null) {
                 OrderItem item = new OrderItem();
                 item.setOrderId(result.getId());
@@ -98,10 +98,14 @@ public class OrderServicesImpl extends BaseServiceImpl<Order, Long> implements O
             log.warn("OrderServicesImpl - Updated with receipt id: " + receiptId + " and status: " + okkioStatusId);
             // Get order detail with PAID receipt status
             OrderDto result = orderMybatis.getOrderDto(orderId);
-            List<ShoppingCart> shoppingCarts = shoppingCartServices.getAllShoppingCartByUserId(userId, Constants.WAITING_STATUS);
+            List<ShoppingCart> shoppingCarts = shoppingCartServices.getAllShoppingCartByUserId(userId, Constants.ACTIVATED_STATUS);
             ShoppingCartDto dto = shoppingCartServices.getShoppingCartByUser(shoppingCarts);
             result.setOrderDetail(dto);
             result.setTotal(dto.getTotal());
+            // Update deactivate status shopping cart
+            for (ShoppingCart cart : shoppingCarts) {
+                shoppingCartServices.updateStatusShoppingCart(cart.getId(), Constants.DEACTIVATED_STATUS);
+            }
             return result;
         }
         log.warn("Cant updated receipt status and get order detail");

@@ -110,10 +110,11 @@ public class ShoppingCartServicesImpl extends BaseServiceImpl<ShoppingCart, Long
         List<PDShoppingCartDto> detailDtoList = new ArrayList<>();
         BigDecimal total = BigDecimal.valueOf(0);
         for (ShoppingCart dto : shoppingCarts) {
-            PDShoppingCartDto productDetailDto = productDetailServices.getProductDetailShoppingCartById(dto.getProductDetailId());
+            PDShoppingCartDto productDetailDto = productDetailServices.getProductDetailShoppingCartById(dto.getProductDetailId(), dto.getId());
             if (productDetailDto != null) {
                 detailDtoList.add(productDetailDto);
-                total = total.add(productDetailDto.getPrice());
+                BigDecimal quantity = new BigDecimal(productDetailDto.getQuantity());
+                total = total.add(quantity.multiply(productDetailDto.getPrice()));
             }
         }
         result.setTotal(total);

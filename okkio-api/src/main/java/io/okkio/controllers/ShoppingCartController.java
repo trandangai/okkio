@@ -134,13 +134,8 @@ public class ShoppingCartController {
         if (id < 0) {
             return ResponseUtil.ok(Constants.MESSAGE_TOKEN_NOT_EXISTED, null);
         }
-        if (!StringUtils.isEmpty(dto.getStatus())) {
-            if (!validatedStatus(dto.getStatus())) {
-                return ResponseUtil.badRequest(Constants.MESSAGE_BAD_REQUEST);
-            }
-        }
-        shoppingCartServices.deleteShoppingCartById(dto.getId(), dto.getStatus(), token);
-        return ResponseUtil.ok(Constants.MESSAGE_DELETE_DATA_SUCCESS + " with id" + id, null);
+        shoppingCartServices.deleteShoppingCartById(dto.getId(), Constants.DEACTIVATED_STATUS, token);
+        return ResponseUtil.ok(Constants.MESSAGE_DELETE_DATA_SUCCESS + " with id: " + id, null);
     }
 
     private boolean validatedStatus(String status) {

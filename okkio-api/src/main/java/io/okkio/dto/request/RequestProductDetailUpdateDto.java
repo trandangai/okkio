@@ -5,6 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Getter
 @Setter
@@ -14,6 +15,6 @@ public class RequestProductDetailUpdateDto {
     private String name;
     private String status;
     private String description;
-    private String headerImages;
+    private List<String> headerImages;
     private String footerImages;
 }

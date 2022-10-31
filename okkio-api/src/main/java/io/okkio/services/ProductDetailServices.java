@@ -14,7 +14,7 @@ public interface ProductDetailServices {
     List<ProductDetail> getAllProductDetail();
     ProductDetail addProductDetail(RequestProductDetailDto dto);
     ProductDetailDto getProductDetailById(Long id);
-    PDShoppingCartDto getProductDetailShoppingCartById(Long id);
+    PDShoppingCartDto getProductDetailShoppingCartById(Long id, Long shoppingCartId);
     void deleteProductDetailById(Long id);
     boolean isExistedProductDetail(String name);
     boolean update(RequestProductDetailUpdateDto dto);

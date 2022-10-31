@@ -68,9 +68,10 @@ public class OrderController {
             return ResponseUtil.ok(Constants.MESSAGE_INSERT_DATA_FAILED, null);
         }
         // Waiting shopping cart after created order and order items.
-        for (ShoppingCart cart: shoppingCarts) {
-            shoppingCartServices.updateStatusShoppingCart(cart.getId(), Constants.WAITING_STATUS);
-        }
+        // Don't need to update waiting status shopping cart.
+//        for (ShoppingCart cart: shoppingCarts) {
+//            shoppingCartServices.updateStatusShoppingCart(cart.getId(), Constants.WAITING_STATUS);
+//        }
         return ResponseUtil.ok(Constants.MESSAGE_INSERT_DATA_SUCCESS, shoppingCartServices.getShoppingCartByUser(shoppingCarts));
     }
 

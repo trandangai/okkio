@@ -21,4 +21,5 @@ public class PDShoppingCartDto {
     private int quantity;
     private List<String> headerImages;
     private BigDecimal price;
+    private Long shoppingCartId;
 }
