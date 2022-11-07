@@ -1,1 +1,5 @@
-/logs/
+okkio-api/logs/
+okkio-api/target
+.vscode
+.idea
+logs/

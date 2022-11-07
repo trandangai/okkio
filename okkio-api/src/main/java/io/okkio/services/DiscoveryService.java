@@ -1,0 +1,52 @@
+package io.okkio.services;
+
+import io.okkio.domain.Blogs;
+import io.okkio.domain.Careers;
+import io.okkio.domain.CustomerSupports;
+import io.okkio.domain.Location;
+import io.okkio.domain.PartnerShip;
+import io.okkio.dto.BlogDto;
+import io.okkio.dto.CareerDto;
+import io.okkio.dto.CustomerSupportDto;
+import io.okkio.dto.LocationDto;
+import io.okkio.dto.PartnerShipDto;
+import io.okkio.dto.request.RequestLocationDto;
+import io.okkio.dto.response.ResponseLocationDto;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+public interface DiscoveryService {
+    List<CareerDto> getAllCareers();
+
+    List<BlogDto> getAllBlogs();
+
+    List<PartnerShipDto> getAllPartnerShip();
+
+    List<CustomerSupportDto> getAllCustomerSupports();
+
+    Careers addNewCareer(CareerDto dto) throws Exception;
+
+    Blogs addNewBlog(BlogDto dto) throws Exception;
+
+    PartnerShip addNewPartnerShip(PartnerShipDto dto) throws Exception;
+
+    CustomerSupports addNewCustomerSupport(CustomerSupportDto dto) throws Exception;
+
+    Careers getCareerById(Long id);
+
+    Blogs getBlogById(Long id);
+
+    PartnerShip getPartnerShipById(Long id);
+
+    CustomerSupports getCustomerSupportsById(Long id);
+
+    CareerDto updateCareer(CareerDto dto);
+
+    BlogDto updateBlog(BlogDto dto);
+
+    PartnerShipDto updatePartnerShip(PartnerShipDto dto);
+
+    CustomerSupportDto updateCustomerSupports(CustomerSupportDto dto);
+}

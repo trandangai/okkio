@@ -43,7 +43,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable().authorizeRequests()
@@ -57,7 +56,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/auth/login").permitAll()
                 .antMatchers("/api/auth/profile").permitAll()
                 .antMatchers("/api/auth/refresh-token").permitAll()
-                //Un-authorization
+                // Un-authorization
                 .antMatchers("/api/auth/forget-password").permitAll()
                 .antMatchers("/api/categories/get-all").permitAll()
                 .antMatchers("/api/location/get-all").permitAll()
@@ -66,8 +65,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/product-detail/get-by-id").permitAll()
                 .antMatchers("/api/utils/init").permitAll()
                 .antMatchers("/api/contact/**").permitAll()
+                .antMatchers("/api/discovery/**").permitAll()
                 .anyRequest().authenticated()
-                .and().addFilter(new JwtAuthenticationFilter(authenticationManager(), tokenProvider, customUserDetailsService, roleServices, redisUtil))
+                .and()
+                .addFilter(new JwtAuthenticationFilter(authenticationManager(), tokenProvider, customUserDetailsService,
+                        roleServices, redisUtil))
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 

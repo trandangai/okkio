@@ -61,11 +61,11 @@ public class Constants {
     public static final String REDIS_ALL_BLOCKCHAINS_ORDER = "REDIS_ALL_BLOCKCHAINS_ORDER_";
     public static final String REDIS_ALL_BLOCKCHAINS_ORDERS = "REDIS_ALL_BLOCKCHAINS_ORDERS_";
 
-    //All coins by category id
+    // All coins by category id
     public static final String REDIS_ALL_COINS_BY_CATEGORY_ID = "REDIS_ALL_COINS_BY_CATEGORY_ID_";
     public static final String REDIS_COIN_BY_COIN_ID_IS_CHART = "REDIS_COIN_BY_COIN_ID_IS_CHART_";
 
-    //CoinFullData by FatherId and CategoryId
+    // CoinFullData by FatherId and CategoryId
     public static final String REDIS_COIN_FULL_DATA_CATEGORY_BY_FATHER_ID = "REDIS_COIN_FULL_DATA_CATEGORY_BY_FATHER_ID_";
 
     public static final String LINE_CHART_IN_COIN_GECKO_IN_7D_CATEGORIES = "https://www.coingecko.com/en/categories/%d/sparkline";
@@ -104,10 +104,13 @@ public class Constants {
     public static final String MESSAGE_UPDATED_CATEGORY_SUCCESS = "Updated category to success!";
     public static final String MESSAGE_UPDATED_DATA_SUCCESS = "Updated data to success!";
 
-
     public static final String MESSAGE_ERROR_WITH_IDS = "Database don't have the ids: ";
 
     public static final String TYPE_COIN = "Coin";
     public static final String TYPE_TOKEN = "Token";
     public static final String BINANCE_IDENTIFIER_EXCHANGE_NAME = "binance";
+
+    public final static class DATE_TIME_FORMAT {
+        public static final String DD_MM_YYYY = "dd-MM-YYYY";
+    }
 }
