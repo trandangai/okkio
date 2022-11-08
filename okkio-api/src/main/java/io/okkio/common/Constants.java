@@ -104,6 +104,8 @@ public class Constants {
     public static final String MESSAGE_UPDATED_CATEGORY_SUCCESS = "Updated category to success!";
     public static final String MESSAGE_UPDATED_DATA_SUCCESS = "Updated data to success!";
 
+    public static final String MESSAGE_UPDATED_DATA_FAILED = "Updated data Failed!";
+
     public static final String MESSAGE_ERROR_WITH_IDS = "Database don't have the ids: ";
 
     public static final String TYPE_COIN = "Coin";

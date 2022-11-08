@@ -70,7 +70,7 @@ public class DiscoveryController {
             dto.setId(result.getId());
             return ResponseUtil.ok(Constants.MESSAGE_INSERT_USER_SUCCESS, dto);
         } catch (Exception e) {
-            return ResponseUtil.internalServerError(Constants.MESSAGE_INSERT_USER_SUCCESS);
+            return ResponseUtil.internalServerError(Constants.MESSAGE_INSERT_DATA_FAILED);
         }
     }
 
@@ -88,7 +88,7 @@ public class DiscoveryController {
             dto.setId(result.getId());
             return ResponseUtil.ok(Constants.MESSAGE_INSERT_USER_SUCCESS, dto);
         } catch (Exception e) {
-            return ResponseUtil.internalServerError(Constants.MESSAGE_INSERT_USER_SUCCESS);
+            return ResponseUtil.internalServerError(Constants.MESSAGE_INSERT_DATA_FAILED);
         }
     }
 
@@ -109,7 +109,7 @@ public class DiscoveryController {
             dto.setId(result.getId());
             return ResponseUtil.ok(Constants.MESSAGE_INSERT_USER_SUCCESS, dto);
         } catch (Exception e) {
-            return ResponseUtil.internalServerError(Constants.MESSAGE_INSERT_USER_SUCCESS);
+            return ResponseUtil.internalServerError(Constants.MESSAGE_INSERT_DATA_FAILED);
         }
     }
 
@@ -127,7 +127,7 @@ public class DiscoveryController {
             dto.setId(result.getId());
             return ResponseUtil.ok(Constants.MESSAGE_INSERT_USER_SUCCESS, dto);
         } catch (Exception e) {
-            return ResponseUtil.internalServerError(Constants.MESSAGE_INSERT_USER_SUCCESS);
+            return ResponseUtil.internalServerError(Constants.MESSAGE_INSERT_DATA_FAILED);
         }
     }
 
@@ -146,7 +146,7 @@ public class DiscoveryController {
         }
         CareerDto response = discoveryService.updateCareer(dto);
         if (response == null) {
-            return ResponseUtil.internalServerError(Constants.MESSAGE_UPDATED_DATA_SUCCESS);
+            return ResponseUtil.internalServerError(Constants.MESSAGE_UPDATED_DATA_FAILED);
         }
         return ResponseUtil.ok(Constants.MESSAGE_UPDATED_DATA_SUCCESS, response);
     }
@@ -177,7 +177,7 @@ public class DiscoveryController {
         }
         BlogDto response = discoveryService.updateBlog(dto);
         if (response == null) {
-            return ResponseUtil.internalServerError(Constants.MESSAGE_UPDATED_DATA_SUCCESS);
+            return ResponseUtil.internalServerError(Constants.MESSAGE_UPDATED_DATA_FAILED);
         }
         return ResponseUtil.ok(Constants.MESSAGE_UPDATED_DATA_SUCCESS, response);
     }
@@ -207,7 +207,7 @@ public class DiscoveryController {
 
         PartnerShipDto response = discoveryService.updatePartnerShip(dto);
         if (response == null) {
-            return ResponseUtil.internalServerError(Constants.MESSAGE_UPDATED_DATA_SUCCESS);
+            return ResponseUtil.internalServerError(Constants.MESSAGE_UPDATED_DATA_FAILED);
         }
         return ResponseUtil.ok(Constants.MESSAGE_UPDATED_DATA_SUCCESS, response);
     }
@@ -227,7 +227,7 @@ public class DiscoveryController {
         }
         CustomerSupportDto response = discoveryService.updateCustomerSupports(dto);
         if (response == null) {
-            return ResponseUtil.internalServerError(Constants.MESSAGE_UPDATED_DATA_SUCCESS);
+            return ResponseUtil.internalServerError(Constants.MESSAGE_UPDATED_DATA_FAILED);
         }
         return ResponseUtil.ok(Constants.MESSAGE_UPDATED_DATA_SUCCESS, response);
     }
