@@ -54,6 +54,9 @@ public class DiscoveryController {
         if (StringUtils.isEmpty(dto.getName())) {
             return ResponseUtil.badRequest(Constants.MESSAGE_BAD_REQUEST);
         }
+        if (!validatedStatus(dto.getStatus())) {
+            return ResponseUtil.badRequest(Constants.MESSAGE_BAD_REQUEST);
+        }
         CareerDto result;
         try {
             result = discoveryService.addNewCareer(dto);
@@ -66,6 +69,9 @@ public class DiscoveryController {
     @PostMapping("/blog")
     public ResponseEntity<CareerDto> add(@RequestBody BlogDto dto) {
         if (StringUtils.isEmpty(dto.getName())) {
+            return ResponseUtil.badRequest(Constants.MESSAGE_BAD_REQUEST);
+        }
+        if (!validatedStatus(dto.getStatus())) {
             return ResponseUtil.badRequest(Constants.MESSAGE_BAD_REQUEST);
         }
         if (StringUtils.isEmpty(dto.getImage())) {
@@ -83,6 +89,9 @@ public class DiscoveryController {
     @PostMapping("/partner-ship")
     public ResponseEntity<CareerDto> add(@RequestBody PartnerShipDto dto) {
         if (StringUtils.isEmpty(dto.getName())) {
+            return ResponseUtil.badRequest(Constants.MESSAGE_BAD_REQUEST);
+        }
+        if (!validatedStatus(dto.getStatus())) {
             return ResponseUtil.badRequest(Constants.MESSAGE_BAD_REQUEST);
         }
         if (StringUtils.isEmpty(dto.getImage())) {
@@ -103,6 +112,9 @@ public class DiscoveryController {
     @PostMapping("/customer-support")
     public ResponseEntity<CareerDto> add(@RequestBody CustomerSupportDto dto) {
         if (StringUtils.isEmpty(dto.getName())) {
+            return ResponseUtil.badRequest(Constants.MESSAGE_BAD_REQUEST);
+        }
+        if (!validatedStatus(dto.getStatus())) {
             return ResponseUtil.badRequest(Constants.MESSAGE_BAD_REQUEST);
         }
         if (CUSTOMER_SUPPORT_TITLE.indexOf(dto.getTitle()) < 0) {
