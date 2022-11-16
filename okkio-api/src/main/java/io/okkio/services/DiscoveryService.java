@@ -3,19 +3,13 @@ package io.okkio.services;
 import io.okkio.domain.Blogs;
 import io.okkio.domain.Careers;
 import io.okkio.domain.CustomerSupports;
-import io.okkio.domain.Location;
 import io.okkio.domain.PartnerShip;
 import io.okkio.dto.BlogDto;
 import io.okkio.dto.CareerDto;
 import io.okkio.dto.CustomerSupportDto;
-import io.okkio.dto.LocationDto;
 import io.okkio.dto.PartnerShipDto;
-import io.okkio.dto.request.RequestLocationDto;
-import io.okkio.dto.response.ResponseLocationDto;
 
 import java.util.List;
-
-import org.springframework.stereotype.Service;
 
 public interface DiscoveryService {
     List<CareerDto> getAllCareers();
@@ -26,13 +20,13 @@ public interface DiscoveryService {
 
     List<CustomerSupportDto> getAllCustomerSupports();
 
-    Careers addNewCareer(CareerDto dto) throws Exception;
+    CareerDto addNewCareer(CareerDto dto) throws Exception;
 
-    Blogs addNewBlog(BlogDto dto) throws Exception;
+    BlogDto addNewBlog(BlogDto dto) throws Exception;
 
-    PartnerShip addNewPartnerShip(PartnerShipDto dto) throws Exception;
+    PartnerShipDto addNewPartnerShip(PartnerShipDto dto) throws Exception;
 
-    CustomerSupports addNewCustomerSupport(CustomerSupportDto dto) throws Exception;
+    CustomerSupportDto addNewCustomerSupport(CustomerSupportDto dto) throws Exception;
 
     Careers getCareerById(Long id);
 

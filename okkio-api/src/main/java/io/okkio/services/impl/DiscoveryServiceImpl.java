@@ -2,35 +2,20 @@ package io.okkio.services.impl;
 
 import io.okkio.common.EntityStatus;
 import io.okkio.common.ImageType;
-import io.okkio.domain.Blogs;
-import io.okkio.domain.Careers;
-import io.okkio.domain.CustomerSupports;
-import io.okkio.domain.Image;
-import io.okkio.domain.Location;
-import io.okkio.domain.PartnerShip;
+import io.okkio.domain.*;
 import io.okkio.dto.BlogDto;
 import io.okkio.dto.CareerDto;
 import io.okkio.dto.CustomerSupportDto;
-import io.okkio.dto.LocationDto;
 import io.okkio.dto.PartnerShipDto;
-import io.okkio.dto.request.RequestLocationDto;
-import io.okkio.dto.response.ResponseLocationDto;
 import io.okkio.mapper.DiscoveryMapper;
-import io.okkio.repository.BlogsRepository;
-import io.okkio.repository.CareersRepository;
-import io.okkio.repository.CustomerSupportRepository;
-import io.okkio.repository.ImageRepository;
-import io.okkio.repository.PartnerShipRepository;
+import io.okkio.repository.*;
 import io.okkio.services.DiscoveryService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
@@ -91,11 +76,12 @@ public class DiscoveryServiceImpl implements DiscoveryService {
     }
 
     @Override
-    public Careers addNewCareer(CareerDto dto) {
+    public CareerDto addNewCareer(CareerDto dto) {
         try {
             Careers newEntity = discoveryMapper.toEntity(dto, new Careers());
             newEntity.setStatus(EntityStatus.ACTIVATED);
-            return careersRepository.save(newEntity);
+            newEntity = careersRepository.save(newEntity);
+            return discoveryMapper.careerToDto(newEntity);
         } catch (Exception e) {
             throw e;
         }
@@ -103,7 +89,7 @@ public class DiscoveryServiceImpl implements DiscoveryService {
     }
 
     @Override
-    public Blogs addNewBlog(BlogDto dto) {
+    public BlogDto addNewBlog(BlogDto dto) {
         try {
             Image imageSaved = new Image();
             imageSaved.setStatus(EntityStatus.ACTIVATED);
@@ -114,14 +100,15 @@ public class DiscoveryServiceImpl implements DiscoveryService {
             Blogs newEntity = discoveryMapper.toEntity(dto, new Blogs());
             newEntity.setImageId(imageSaved.getId());
             newEntity.setStatus(EntityStatus.ACTIVATED);
-            return blogsRepository.save(newEntity);
+            newEntity = blogsRepository.save(newEntity);
+            return discoveryMapper.blogToDto(newEntity);
         } catch (Exception e) {
             throw e;
         }
     }
 
     @Override
-    public PartnerShip addNewPartnerShip(PartnerShipDto dto) {
+    public PartnerShipDto addNewPartnerShip(PartnerShipDto dto) {
         try {
             Image imageIconSaved = new Image();
             imageIconSaved.setStatus(EntityStatus.ACTIVATED);
@@ -139,18 +126,20 @@ public class DiscoveryServiceImpl implements DiscoveryService {
             newEntity.setImageId(imageSaved.getId());
             newEntity.setIconImageId(imageIconSaved.getId());
             newEntity.setStatus(EntityStatus.ACTIVATED);
-            return partnerShipRepository.save(newEntity);
+            newEntity = partnerShipRepository.save(newEntity);
+            return discoveryMapper.partnerShipToDto(newEntity);
         } catch (Exception e) {
             throw e;
         }
     }
 
     @Override
-    public CustomerSupports addNewCustomerSupport(CustomerSupportDto dto) {
+    public CustomerSupportDto addNewCustomerSupport(CustomerSupportDto dto) {
         try {
             CustomerSupports newEntity = discoveryMapper.toEntity(dto, new CustomerSupports());
             newEntity.setStatus(EntityStatus.ACTIVATED);
-            return customerSupportRepository.save(newEntity);
+            newEntity = customerSupportRepository.save(newEntity);
+            return discoveryMapper.customerSupportToDto(newEntity);
         } catch (Exception e) {
             throw e;
         }
@@ -202,7 +191,8 @@ public class DiscoveryServiceImpl implements DiscoveryService {
         Long id = dto.getId();
         try {
             Careers updatedEntity = discoveryMapper.toEntity(dto, getCareerById(id));
-            return discoveryMapper.toDto(updatedEntity);
+            updatedEntity = careersRepository.save(updatedEntity);
+            return discoveryMapper.careerToDto(updatedEntity);
         } catch (Exception e) {
             log.warn("DiscoveryServiceImpl - updateCareer got exception:" + e.getMessage() + "  with id: " + id);
             return null;
@@ -220,8 +210,9 @@ public class DiscoveryServiceImpl implements DiscoveryService {
             }
             Image image = imageOpt.get();
             image.setImageContent(dto.getImage());
-            image = imageRepository.save(image);
+            imageRepository.save(image);
             Blogs updatedEntity = discoveryMapper.toEntity(dto, entitySaved);
+            updatedEntity = blogsRepository.save(updatedEntity);
             return discoveryMapper.blogToDto(updatedEntity);
         } catch (Exception e) {
             log.warn("DiscoveryServiceImpl - updateBlog got exception:" + e.getMessage() + "  with id: " + id);
@@ -240,7 +231,7 @@ public class DiscoveryServiceImpl implements DiscoveryService {
             }
             Image imageIcon = imageIconOpt.get();
             imageIcon.setImageContent(dto.getImage());
-            imageIcon = imageRepository.save(imageIcon);
+            imageRepository.save(imageIcon);
 
             Optional<Image> imageOpt = imageRepository.findById(entitySaved.getImageId());
             if (!imageOpt.isPresent()) {
@@ -248,9 +239,10 @@ public class DiscoveryServiceImpl implements DiscoveryService {
             }
             Image image = imageOpt.get();
             image.setImageContent(dto.getImage());
-            image = imageRepository.save(image);
+            imageRepository.save(image);
 
             PartnerShip updatedEntity = discoveryMapper.toEntity(dto, getPartnerShipById(id));
+            updatedEntity = partnerShipRepository.save(updatedEntity);
             return discoveryMapper.partnerShipToDto(updatedEntity);
         } catch (Exception e) {
             log.warn("DiscoveryServiceImpl - updatePartnerShip got exception:" + e.getMessage() + "  with id: " + id);
@@ -263,7 +255,8 @@ public class DiscoveryServiceImpl implements DiscoveryService {
         Long id = dto.getId();
         try {
             CustomerSupports updatedEntity = discoveryMapper.toEntity(dto, getCustomerSupportsById(id));
-            return discoveryMapper.toDto(updatedEntity);
+            updatedEntity = customerSupportRepository.save(updatedEntity);
+            return discoveryMapper.customerSupportToDto(updatedEntity);
         } catch (Exception e) {
             log.warn("DiscoveryServiceImpl - updateCustomerSupports got exception:" + e.getMessage() + "  with id: "
                     + id);

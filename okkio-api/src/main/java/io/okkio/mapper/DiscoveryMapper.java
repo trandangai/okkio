@@ -1,28 +1,20 @@
 package io.okkio.mapper;
 
-import io.okkio.domain.Blogs;
-import io.okkio.domain.Careers;
-import io.okkio.domain.Categories;
-import io.okkio.domain.CustomerSupports;
-import io.okkio.domain.Image;
-import io.okkio.domain.PartnerShip;
+import io.okkio.domain.*;
 import io.okkio.dto.BlogDto;
 import io.okkio.dto.CareerDto;
 import io.okkio.dto.CustomerSupportDto;
 import io.okkio.dto.PartnerShipDto;
-import io.okkio.dto.request.RequestCategoryDto;
 import io.okkio.repository.ImageRepository;
-
-import java.security.cert.PKIXRevocationChecker.Option;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
 @Mapper(componentModel = "spring")
 public abstract class DiscoveryMapper {
@@ -32,7 +24,7 @@ public abstract class DiscoveryMapper {
 
     public abstract Careers toEntity(CareerDto dto, @MappingTarget Careers entity);
 
-    public abstract CareerDto toDto(Careers dto);
+    public abstract CareerDto careerToDto(Careers dto);
 
     public abstract List<CareerDto> careersToDto(List<Careers> dto);
 
@@ -46,7 +38,7 @@ public abstract class DiscoveryMapper {
 
     public abstract CustomerSupports toEntity(CustomerSupportDto dto, @MappingTarget CustomerSupports entity);
 
-    public abstract CustomerSupportDto toDto(CustomerSupports dto);
+    public abstract CustomerSupportDto customerSupportToDto(CustomerSupports dto);
 
     public abstract List<CustomerSupportDto> customerSupportsToDto(List<CustomerSupports> dto);
 
