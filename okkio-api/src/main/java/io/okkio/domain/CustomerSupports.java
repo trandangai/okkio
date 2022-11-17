@@ -23,7 +23,7 @@ public class CustomerSupports extends AbstractAuditingEntity implements Serializ
     @Column(name = "NAME")
     private String name;
 
-    @Column(name = "DESCRIPTION")
+    @Column(name = "DESCRIPTION" ,columnDefinition="TEXT")
     private String description;
 
     @Column(name = "TITLE")

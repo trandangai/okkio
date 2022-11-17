@@ -4,29 +4,19 @@ import io.okkio.common.Constants;
 import io.okkio.common.EntityStatus;
 import io.okkio.domain.Blogs;
 import io.okkio.domain.Careers;
-import io.okkio.domain.Categories;
 import io.okkio.domain.CustomerSupports;
 import io.okkio.domain.PartnerShip;
-import io.okkio.dto.*;
-import io.okkio.dto.request.RequestCategoryDto;
-import io.okkio.dto.request.RequestLocationDto;
-import io.okkio.dto.response.ResponseCategoryDto;
-import io.okkio.dto.response.UserDtoResponse;
-import io.okkio.mybatis.UserMybatis;
-import io.okkio.security.JwtTokenProvider;
-import io.okkio.services.CategoryServices;
+import io.okkio.dto.BlogDto;
+import io.okkio.dto.CareerDto;
+import io.okkio.dto.CustomerSupportDto;
+import io.okkio.dto.PartnerShipDto;
 import io.okkio.services.DiscoveryService;
-import io.okkio.services.UserServices;
 import io.okkio.util.ResponseUtil;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -64,11 +54,13 @@ public class DiscoveryController {
         if (StringUtils.isEmpty(dto.getName())) {
             return ResponseUtil.badRequest(Constants.MESSAGE_BAD_REQUEST);
         }
-        Careers result;
+        if (!validatedStatus(dto.getStatus())) {
+            return ResponseUtil.badRequest(Constants.MESSAGE_BAD_REQUEST);
+        }
+        CareerDto result;
         try {
             result = discoveryService.addNewCareer(dto);
-            dto.setId(result.getId());
-            return ResponseUtil.ok(Constants.MESSAGE_INSERT_USER_SUCCESS, dto);
+            return ResponseUtil.ok(Constants.MESSAGE_INSERT_USER_SUCCESS, result);
         } catch (Exception e) {
             return ResponseUtil.internalServerError(Constants.MESSAGE_INSERT_DATA_FAILED);
         }
@@ -79,14 +71,16 @@ public class DiscoveryController {
         if (StringUtils.isEmpty(dto.getName())) {
             return ResponseUtil.badRequest(Constants.MESSAGE_BAD_REQUEST);
         }
+        if (!validatedStatus(dto.getStatus())) {
+            return ResponseUtil.badRequest(Constants.MESSAGE_BAD_REQUEST);
+        }
         if (StringUtils.isEmpty(dto.getImage())) {
             return ResponseUtil.badRequest(Constants.MESSAGE_BAD_REQUEST);
         }
-        Blogs result;
+        BlogDto result;
         try {
             result = discoveryService.addNewBlog(dto);
-            dto.setId(result.getId());
-            return ResponseUtil.ok(Constants.MESSAGE_INSERT_USER_SUCCESS, dto);
+            return ResponseUtil.ok(Constants.MESSAGE_INSERT_USER_SUCCESS, result);
         } catch (Exception e) {
             return ResponseUtil.internalServerError(Constants.MESSAGE_INSERT_DATA_FAILED);
         }
@@ -97,17 +91,19 @@ public class DiscoveryController {
         if (StringUtils.isEmpty(dto.getName())) {
             return ResponseUtil.badRequest(Constants.MESSAGE_BAD_REQUEST);
         }
+        if (!validatedStatus(dto.getStatus())) {
+            return ResponseUtil.badRequest(Constants.MESSAGE_BAD_REQUEST);
+        }
         if (StringUtils.isEmpty(dto.getImage())) {
             return ResponseUtil.badRequest(Constants.MESSAGE_BAD_REQUEST);
         }
         if (StringUtils.isEmpty(dto.getImageIcon())) {
             return ResponseUtil.badRequest(Constants.MESSAGE_BAD_REQUEST);
         }
-        PartnerShip result;
+        PartnerShipDto result;
         try {
             result = discoveryService.addNewPartnerShip(dto);
-            dto.setId(result.getId());
-            return ResponseUtil.ok(Constants.MESSAGE_INSERT_USER_SUCCESS, dto);
+            return ResponseUtil.ok(Constants.MESSAGE_INSERT_USER_SUCCESS, result);
         } catch (Exception e) {
             return ResponseUtil.internalServerError(Constants.MESSAGE_INSERT_DATA_FAILED);
         }
@@ -118,14 +114,16 @@ public class DiscoveryController {
         if (StringUtils.isEmpty(dto.getName())) {
             return ResponseUtil.badRequest(Constants.MESSAGE_BAD_REQUEST);
         }
+        if (!validatedStatus(dto.getStatus())) {
+            return ResponseUtil.badRequest(Constants.MESSAGE_BAD_REQUEST);
+        }
         if (CUSTOMER_SUPPORT_TITLE.indexOf(dto.getTitle()) < 0) {
             return ResponseUtil.badRequest(Constants.MESSAGE_BAD_REQUEST);
         }
-        CustomerSupports result;
+        CustomerSupportDto result;
         try {
             result = discoveryService.addNewCustomerSupport(dto);
-            dto.setId(result.getId());
-            return ResponseUtil.ok(Constants.MESSAGE_INSERT_USER_SUCCESS, dto);
+            return ResponseUtil.ok(Constants.MESSAGE_INSERT_USER_SUCCESS, result);
         } catch (Exception e) {
             return ResponseUtil.internalServerError(Constants.MESSAGE_INSERT_DATA_FAILED);
         }
