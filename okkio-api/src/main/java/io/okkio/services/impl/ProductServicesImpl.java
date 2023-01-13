@@ -36,7 +36,7 @@ public class ProductServicesImpl extends BaseServiceImpl<Product, Long> implemen
 
     @Override
     public List<Product> getAllProduct() {
-        return super.findAll();
+        return productRepository.findProductByStatusActivated("ACTIVATED");
     }
 
     @Override

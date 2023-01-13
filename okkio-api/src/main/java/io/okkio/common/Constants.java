@@ -4,7 +4,8 @@ public class Constants {
     public static final String APP_ERROR_HEADER = "X-App-Error";
     public static final String MESSAGE_BAD_REQUEST = "Bad request";
     public static final String MESSAGE_NOT_FOUND = "Not found";
-    public static final String MESSAGE_USER_IS_EXISTED = "User is existed! ";
+    public static final String MESSAGE_USER_IS_EXISTED = "2022001";
+    public static final String MESSAGE_PRODUCT_DETAIL_IS_EXISTED = "2022002";
     public static final String MESSAGE_CATEGORY_IS_EXISTED = "Category is existed! ";
     public static final String MESSAGE_CATEGORY_IS_NOT_EXISTED = "Category is not existed! ";
     public static final String MESSAGE_DATA_IS_NOT_EXISTED = "Data is not existed! ";

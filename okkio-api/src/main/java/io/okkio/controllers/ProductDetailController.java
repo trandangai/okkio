@@ -39,15 +39,14 @@ public class ProductDetailController {
             isExistedByProductDetail = productDetailServices.isExistedProductDetail(dto.getName());
         }
         if (isExistedByProductDetail) {
-            return ResponseUtil.ok(Constants.MESSAGE_USER_IS_EXISTED, null);
+            return ResponseUtil.ok(Constants.MESSAGE_PRODUCT_DETAIL_IS_EXISTED, "Product detail is existed with name: " + dto.getName());
         }
         ProductDetail result = productDetailServices.addProductDetail(dto);
         return ResponseUtil.ok(Constants.MESSAGE_INSERT_DATA_SUCCESS, result);
     }
 
-    @PreAuthorize("hasAnyRole('OKKIO_USER', 'OKKIO_GUEST', 'OKKIO_ADMIN')")
-    @GetMapping
-    public ResponseEntity<List<ProductDetail>> getAllProductDetail() {
+    @GetMapping("/get-all")
+    public ResponseEntity<List<ProductDetailDto>> getAllProductDetail() {
         return ResponseUtil.ok(Constants.MESSAGE_GET_DATA_SUCCESS, productDetailServices.getAllProductDetail());
     }
 

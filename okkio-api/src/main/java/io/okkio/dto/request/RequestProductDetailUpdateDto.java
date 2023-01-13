@@ -17,4 +17,15 @@ public class RequestProductDetailUpdateDto {
     private String description;
     private List<String> headerImages;
     private String footerImages;
+    private String grind;
+    private String size;
+    private String subscription;
+    private int quantity;
+    private int roastLevel;
+    private Object tastingNotes;
+    private String readyToDrink;
+    private String suitableFor;
+    private Object shippingDelivery;
+    private Object suggestion;
+    private BigDecimal price;
 }

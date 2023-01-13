@@ -37,6 +37,30 @@
         <if test="footerImages != null">
             ,cd.footer_images = #{footerImages}
         </if>
+        <if test="grind != null">
+            ,cd.grind = #{grind}
+        </if>
+        <if test="size != null">
+            ,cd.size = #{size}
+        </if>
+        <if test="subscription != null">
+            ,cd.subscription = #{subscription}
+        </if>
+        <if test="quantity > 0">
+            ,cd.quantity = #{quantity}
+        </if>
+        <if test="roastLevel > 0">
+            ,cd.roast_level = #{roastLevel}
+        </if>
+        <if test="readyToDrink != null">
+            ,cd.ready_to_drink = #{readyToDrink}
+        </if>
+        <if test="suitableFor != null">
+            ,cd.suitable_for = #{suitableFor}
+        </if>
+        <if test="price > 0">
+            ,cd.price = #{price}
+        </if>
         where 1=1
         <if test="ids > -1">
             and cd.id = #{ids}

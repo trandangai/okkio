@@ -11,7 +11,7 @@ import io.okkio.dto.response.ResponseProductDetailCategoryDto;
 import java.util.List;
 
 public interface ProductDetailServices {
-    List<ProductDetail> getAllProductDetail();
+    List<ProductDetailDto> getAllProductDetail();
     ProductDetail addProductDetail(RequestProductDetailDto dto);
     ProductDetailDto getProductDetailById(Long id);
     PDShoppingCartDto getProductDetailShoppingCartById(Long id, Long shoppingCartId);

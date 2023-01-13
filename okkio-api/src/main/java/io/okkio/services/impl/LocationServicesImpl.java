@@ -47,7 +47,7 @@ public class LocationServicesImpl extends BaseServiceImpl<Location, Long> implem
         if (locations != null && !locations.isEmpty()) {
             for (Location location : locations) {
                 ResponseLocationDto dto = locationMapper.toResponseDto(location);
-                dto.setImages(Stream.of(location.getImages().split("'")).collect(Collectors.toList()));
+                dto.setImages(Stream.of(location.getImages().split(",")).collect(Collectors.toList()));
                 result.add(dto);
             }
         }
@@ -70,7 +70,7 @@ public class LocationServicesImpl extends BaseServiceImpl<Location, Long> implem
             return null;
         }
         LocationDto result = locationMapper.toDto(location);
-        result.setImages(Stream.of(location.getImages().split("'")).collect(Collectors.toList()));
+        result.setImages(Stream.of(location.getImages().split(",")).collect(Collectors.toList()));
         return result;
     }
 

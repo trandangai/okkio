@@ -41,13 +41,13 @@
             ,cd.description = #{description}
         </if>
         <if test="openTime != null">
-            ,cd.openTime = #{openTime}
+            ,cd.open_time = #{openTime}
         </if>
         <if test="openDay != null">
-            ,cd.openDay = #{openDay}
+            ,cd.open_day = #{openDay}
         </if>
         <if test="conceptStore != null">
-            ,cd.conceptStore = #{conceptStore}
+            ,cd.concept_store = #{conceptStore}
         </if>
         <if test="images != null">
             ,cd.images = #{images}

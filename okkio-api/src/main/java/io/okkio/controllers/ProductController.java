@@ -57,7 +57,7 @@ public class ProductController {
     }
 
 //    @PreAuthorize("hasAnyRole('OKKIO_USER', 'OKKIO_GUEST', 'OKKIO_ADMIN')")
-    @GetMapping
+    @GetMapping("/get-all")
     public ResponseEntity<List<Product>> getAllProduct() {
         return ResponseUtil.ok(Constants.MESSAGE_GET_DATA_SUCCESS, productServices.getAllProduct());
     }
@@ -128,6 +128,15 @@ public class ProductController {
         }
         productServices.deleteProductById(id);
         return ResponseUtil.ok(Constants.MESSAGE_DELETE_DATA_SUCCESS + " with id" + id, null);
+    }
+
+    @GetMapping("/get-by-id")
+    public ResponseEntity<Product> getProductById(@Param("id") Long id) {
+        Product util = productServices.getProductById(id);
+        if (util == null) {
+            return ResponseUtil.ok(Constants.MESSAGE_DATA_IS_NOT_EXISTED, null);
+        }
+        return ResponseUtil.ok(Constants.MESSAGE_GET_DATA_SUCCESS, util);
     }
 
     private boolean validatedStatus(String status) {

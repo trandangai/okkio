@@ -47,7 +47,7 @@ public class UtilController {
     @PreAuthorize("hasAnyRole('OKKIO_ADMIN')")
     @PutMapping
     public ResponseEntity<?> update(@RequestBody RequestUtilDto dto) {
-        if (StringUtils.isEmpty(dto.getName())) {
+        if (dto.getId() == null) {
             return ResponseUtil.badRequest(Constants.MESSAGE_BAD_REQUEST);
         } else {
             Util util = utilServices.getUtilById(dto.getId());

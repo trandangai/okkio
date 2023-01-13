@@ -54,8 +54,19 @@ public class ProductDetailServicesImpl extends BaseServiceImpl<ProductDetail, Lo
     private String shippingDelivery;
 
     @Override
-    public List<ProductDetail> getAllProductDetail() {
-        return super.findAll();
+    public List<ProductDetailDto> getAllProductDetail() {
+        List<ProductDetail> productDetails = productDetailRepository.findProductDetailsByStatusActivated("ACTIVATED");
+        List<ProductDetailDto> result = new ArrayList<>();
+        if (productDetails == null || productDetails.isEmpty()) {
+            log.warn("getAllProductDetail is null ");
+            return null;
+        }
+        for (ProductDetail productDetail: productDetails) {
+            ProductDetailDto productDetailDto = productDetailMapper.toDto(productDetail);
+            productDetailDto.setHeaderImages(Stream.of(productDetail.getHeaderImages().split(",")).collect(Collectors.toList()));
+            result.add(productDetailDto);
+        }
+        return result;
     }
 
     @Override
@@ -142,9 +153,13 @@ public class ProductDetailServicesImpl extends BaseServiceImpl<ProductDetail, Lo
 
     @Override
     public boolean update(RequestProductDetailUpdateDto dto) {
-        String headerImages = String.join(",", dto.getHeaderImages());
+        String headerImages = null;
+        if (dto.getHeaderImages() != null) {
+            headerImages = String.join(",", dto.getHeaderImages());
+        }
         int isUpdated = productDetailMybatis.updateProductDetailByIds(dto.getId(), dto.getStatus(), dto.getName(), dto.getDescription(),
-                headerImages, dto.getFooterImages());
+                headerImages, dto.getFooterImages(), dto.getGrind(), dto.getSize(), dto.getSubscription(), dto.getQuantity(), dto.getRoastLevel(),
+                dto.getReadyToDrink(), dto.getSuitableFor(), dto.getPrice());
         if (isUpdated < 0) {
             log.warn("Can't update Util with dto: " + dto);
             return false;
