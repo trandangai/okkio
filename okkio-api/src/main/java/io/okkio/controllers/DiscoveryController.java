@@ -129,7 +129,7 @@ public class DiscoveryController {
 
     @PutMapping("/career")
     public ResponseEntity<?> update(@RequestBody CareerDto dto) {
-        if (!validatePutPayload(dto)) {
+        if (!validPutPayload(dto)) {
             return ResponseUtil.badRequest(Constants.MESSAGE_BAD_REQUEST);
         }
 
@@ -151,7 +151,7 @@ public class DiscoveryController {
 
     @PutMapping("/blog")
     public ResponseEntity<?> update(@RequestBody BlogDto dto) {
-        if (!validatePutPayload(dto)) {
+        if (!validPutPayload(dto)) {
             return ResponseUtil.badRequest(Constants.MESSAGE_BAD_REQUEST);
         }
 
@@ -169,7 +169,7 @@ public class DiscoveryController {
 
     @PutMapping("/partner-ship")
     public ResponseEntity<?> update(@RequestBody PartnerShipDto dto) {
-        if (!validatePutPayload(dto)) {
+        if (!validPutPayload(dto)) {
             return ResponseUtil.badRequest(Constants.MESSAGE_BAD_REQUEST);
         }
 
@@ -187,7 +187,7 @@ public class DiscoveryController {
 
     @PutMapping("/customer-support")
     public ResponseEntity<?> update(@RequestBody CustomerSupportDto dto) {
-        if (!validatePutPayload(dto)) {
+        if (!validPutPayload(dto)) {
             return ResponseUtil.badRequest(Constants.MESSAGE_BAD_REQUEST);
         }
 
@@ -203,7 +203,7 @@ public class DiscoveryController {
         return ResponseUtil.ok(Constants.MESSAGE_UPDATED_DATA_SUCCESS, response);
     }
 
-    private boolean validatePutPayload(@NonNull IdDto request) {
+    private boolean validPutPayload(@NonNull IdDto request) {
         if (request.getId() == null) {
             return false;
         }
