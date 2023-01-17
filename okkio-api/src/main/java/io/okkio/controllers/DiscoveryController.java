@@ -6,12 +6,10 @@ import io.okkio.domain.Blogs;
 import io.okkio.domain.Careers;
 import io.okkio.domain.CustomerSupports;
 import io.okkio.domain.PartnerShip;
-import io.okkio.dto.BlogDto;
-import io.okkio.dto.CareerDto;
-import io.okkio.dto.CustomerSupportDto;
-import io.okkio.dto.PartnerShipDto;
+import io.okkio.dto.*;
 import io.okkio.services.DiscoveryService;
 import io.okkio.util.ResponseUtil;
+import lombok.NonNull;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -60,7 +58,7 @@ public class DiscoveryController {
         CareerDto result;
         try {
             result = discoveryService.addNewCareer(dto);
-            return ResponseUtil.ok(Constants.MESSAGE_INSERT_USER_SUCCESS, result);
+            return ResponseUtil.ok(Constants.MESSAGE_INSERT_DATA_SUCCESS, result);
         } catch (Exception e) {
             return ResponseUtil.internalServerError(Constants.MESSAGE_INSERT_DATA_FAILED);
         }
@@ -80,7 +78,7 @@ public class DiscoveryController {
         BlogDto result;
         try {
             result = discoveryService.addNewBlog(dto);
-            return ResponseUtil.ok(Constants.MESSAGE_INSERT_USER_SUCCESS, result);
+            return ResponseUtil.ok(Constants.MESSAGE_INSERT_DATA_SUCCESS, result);
         } catch (Exception e) {
             return ResponseUtil.internalServerError(Constants.MESSAGE_INSERT_DATA_FAILED);
         }
@@ -103,7 +101,7 @@ public class DiscoveryController {
         PartnerShipDto result;
         try {
             result = discoveryService.addNewPartnerShip(dto);
-            return ResponseUtil.ok(Constants.MESSAGE_INSERT_USER_SUCCESS, result);
+            return ResponseUtil.ok(Constants.MESSAGE_INSERT_DATA_SUCCESS, result);
         } catch (Exception e) {
             return ResponseUtil.internalServerError(Constants.MESSAGE_INSERT_DATA_FAILED);
         }
@@ -123,7 +121,7 @@ public class DiscoveryController {
         CustomerSupportDto result;
         try {
             result = discoveryService.addNewCustomerSupport(dto);
-            return ResponseUtil.ok(Constants.MESSAGE_INSERT_USER_SUCCESS, result);
+            return ResponseUtil.ok(Constants.MESSAGE_INSERT_DATA_SUCCESS, result);
         } catch (Exception e) {
             return ResponseUtil.internalServerError(Constants.MESSAGE_INSERT_DATA_FAILED);
         }
@@ -131,16 +129,13 @@ public class DiscoveryController {
 
     @PutMapping("/career")
     public ResponseEntity<?> update(@RequestBody CareerDto dto) {
+        if (!validPutPayload(dto)) {
+            return ResponseUtil.badRequest(Constants.MESSAGE_BAD_REQUEST);
+        }
+
         Careers career = discoveryService.getCareerById(dto.getId());
         if (career == null) {
-            return ResponseUtil.ok(Constants.MESSAGE_DATA_IS_NOT_EXISTED, null);
-        }
-        if (StringUtils.isEmpty(dto.getStatus())) {
-            return ResponseUtil.badRequest(Constants.MESSAGE_BAD_REQUEST);
-        } else {
-            if (!validatedStatus(dto.getStatus())) {
-                return ResponseUtil.badRequest(Constants.MESSAGE_BAD_REQUEST);
-            }
+            return ResponseUtil.badRequest(Constants.MESSAGE_DATA_IS_NOT_EXISTED);
         }
         CareerDto response = discoveryService.updateCareer(dto);
         if (response == null) {
@@ -156,23 +151,15 @@ public class DiscoveryController {
 
     @PutMapping("/blog")
     public ResponseEntity<?> update(@RequestBody BlogDto dto) {
+        if (!validPutPayload(dto)) {
+            return ResponseUtil.badRequest(Constants.MESSAGE_BAD_REQUEST);
+        }
+
         Blogs blogs = discoveryService.getBlogById(dto.getId());
         if (blogs == null) {
-            return ResponseUtil.ok(Constants.MESSAGE_DATA_IS_NOT_EXISTED, null);
+            return ResponseUtil.badRequest(Constants.MESSAGE_DATA_IS_NOT_EXISTED);
         }
-        if (StringUtils.isEmpty(dto.getName())) {
-            return ResponseUtil.badRequest(Constants.MESSAGE_BAD_REQUEST);
-        }
-        if (StringUtils.isEmpty(dto.getImage())) {
-            return ResponseUtil.badRequest(Constants.MESSAGE_BAD_REQUEST);
-        }
-        if (StringUtils.isEmpty(dto.getStatus())) {
-            return ResponseUtil.badRequest(Constants.MESSAGE_BAD_REQUEST);
-        } else {
-            if (!validatedStatus(dto.getStatus())) {
-                return ResponseUtil.badRequest(Constants.MESSAGE_BAD_REQUEST);
-            }
-        }
+
         BlogDto response = discoveryService.updateBlog(dto);
         if (response == null) {
             return ResponseUtil.internalServerError(Constants.MESSAGE_UPDATED_DATA_FAILED);
@@ -182,25 +169,13 @@ public class DiscoveryController {
 
     @PutMapping("/partner-ship")
     public ResponseEntity<?> update(@RequestBody PartnerShipDto dto) {
+        if (!validPutPayload(dto)) {
+            return ResponseUtil.badRequest(Constants.MESSAGE_BAD_REQUEST);
+        }
+
         PartnerShip partnerShip = discoveryService.getPartnerShipById(dto.getId());
         if (partnerShip == null) {
-            return ResponseUtil.ok(Constants.MESSAGE_DATA_IS_NOT_EXISTED, null);
-        }
-        if (StringUtils.isEmpty(dto.getName())) {
-            return ResponseUtil.badRequest(Constants.MESSAGE_BAD_REQUEST);
-        }
-        if (StringUtils.isEmpty(dto.getImage())) {
-            return ResponseUtil.badRequest(Constants.MESSAGE_BAD_REQUEST);
-        }
-        if (StringUtils.isEmpty(dto.getImageIcon())) {
-            return ResponseUtil.badRequest(Constants.MESSAGE_BAD_REQUEST);
-        }
-        if (StringUtils.isEmpty(dto.getStatus())) {
-            return ResponseUtil.badRequest(Constants.MESSAGE_BAD_REQUEST);
-        } else {
-            if (!validatedStatus(dto.getStatus())) {
-                return ResponseUtil.badRequest(Constants.MESSAGE_BAD_REQUEST);
-            }
+            return ResponseUtil.badRequest(Constants.MESSAGE_DATA_IS_NOT_EXISTED);
         }
 
         PartnerShipDto response = discoveryService.updatePartnerShip(dto);
@@ -212,17 +187,15 @@ public class DiscoveryController {
 
     @PutMapping("/customer-support")
     public ResponseEntity<?> update(@RequestBody CustomerSupportDto dto) {
+        if (!validPutPayload(dto)) {
+            return ResponseUtil.badRequest(Constants.MESSAGE_BAD_REQUEST);
+        }
+
         CustomerSupports customerSupports = discoveryService.getCustomerSupportsById(dto.getId());
         if (customerSupports == null) {
-            return ResponseUtil.ok(Constants.MESSAGE_DATA_IS_NOT_EXISTED, null);
+            return ResponseUtil.badRequest(Constants.MESSAGE_DATA_IS_NOT_EXISTED);
         }
-        if (StringUtils.isEmpty(dto.getStatus())) {
-            return ResponseUtil.badRequest(Constants.MESSAGE_BAD_REQUEST);
-        } else {
-            if (!validatedStatus(dto.getStatus())) {
-                return ResponseUtil.badRequest(Constants.MESSAGE_BAD_REQUEST);
-            }
-        }
+
         CustomerSupportDto response = discoveryService.updateCustomerSupports(dto);
         if (response == null) {
             return ResponseUtil.internalServerError(Constants.MESSAGE_UPDATED_DATA_FAILED);
@@ -230,4 +203,13 @@ public class DiscoveryController {
         return ResponseUtil.ok(Constants.MESSAGE_UPDATED_DATA_SUCCESS, response);
     }
 
+    private boolean validPutPayload(@NonNull IdDto request) {
+        if (request.getId() == null) {
+            return false;
+        }
+        if (StringUtils.isEmpty(request.getStatus()) || !validatedStatus(request.getStatus())) {
+            return false;
+        }
+        return true;
+    }
 }

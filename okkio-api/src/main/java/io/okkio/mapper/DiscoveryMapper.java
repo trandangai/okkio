@@ -6,17 +6,14 @@ import io.okkio.dto.CareerDto;
 import io.okkio.dto.CustomerSupportDto;
 import io.okkio.dto.PartnerShipDto;
 import io.okkio.repository.ImageRepository;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.Named;
+import org.mapstruct.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public abstract class DiscoveryMapper {
 
     @Autowired
