@@ -19,4 +19,6 @@ public interface ProductDetailRepository extends JpaRepository<ProductDetail, Lo
 	ProductDetail findProductDetailByName(String name);
 	@Query(value = "select cd.* from product_detail cd where cd.status = ?1", nativeQuery = true)
 	List<ProductDetail> findProductDetailsByStatusActivated(@Param("status") String status);
+	@Query(value = "select cd.* from product_detail cd where cd.status = ?1 and cd.product_id = ?2", nativeQuery = true)
+	List<ProductDetail> findProductDetailsByStatusActivatedAndProductId(@Param("status") String status, @Param("productId") Long productId);
 }

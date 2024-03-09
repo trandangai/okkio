@@ -1,12 +1,14 @@
 package io.okkio.controllers;
 
 import io.okkio.common.Constants;
+import io.okkio.domain.Product;
 import io.okkio.domain.ProductDetail;
 import io.okkio.dto.ProductDetailDto;
 import io.okkio.dto.request.RequestProductDetailDto;
 import io.okkio.dto.request.RequestProductDetailUpdateDto;
 import io.okkio.services.CategoryServices;
 import io.okkio.services.ProductDetailServices;
+import io.okkio.services.ProductServices;
 import io.okkio.util.ResponseUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.annotations.Param;
@@ -24,22 +26,38 @@ public class ProductDetailController {
 
     private CategoryServices categoryServices;
 
-    public ProductDetailController(ProductDetailServices productDetailServices, CategoryServices categoryServices) {
+    private ProductServices productServices;
+
+    public ProductDetailController(ProductDetailServices productDetailServices, CategoryServices categoryServices,
+                                   ProductServices productServices) {
         this.productDetailServices = productDetailServices;
         this.categoryServices = categoryServices;
+        this.productServices = productServices;
     }
 
     @PreAuthorize("hasAnyRole('OKKIO_ADMIN')")
     @PostMapping
     public ResponseEntity<ProductDetail> add(@RequestBody RequestProductDetailDto dto) {
         boolean isExistedByProductDetail;
+        boolean isExistedByProduct = true;
         if (StringUtils.isEmpty(dto.getName())) {
             return ResponseUtil.badRequest(Constants.MESSAGE_BAD_REQUEST);
         } else {
             isExistedByProductDetail = productDetailServices.isExistedProductDetail(dto.getName());
         }
+        if (dto.getProductId() < 0) {
+            return ResponseUtil.badRequest(Constants.MESSAGE_BAD_REQUEST);
+        } else {
+            Product product = productServices.getProductById(dto.getProductId());
+            if (product == null) {
+                isExistedByProduct = false;
+            }
+        }
+        if (!isExistedByProduct) {
+            return ResponseUtil.ok(Constants.MESSAGE_PRODUCT_IS_NOT_EXISTS, "Product is not exists with product id: " + dto.getProductId());
+        }
         if (isExistedByProductDetail) {
-            return ResponseUtil.ok(Constants.MESSAGE_PRODUCT_DETAIL_IS_EXISTED, "Product detail is existed with name: " + dto.getName());
+            return ResponseUtil.ok(Constants.MESSAGE_PRODUCT_DETAIL_IS_EXISTED, "Product detail is exited with name: " + dto.getName());
         }
         ProductDetail result = productDetailServices.addProductDetail(dto);
         return ResponseUtil.ok(Constants.MESSAGE_INSERT_DATA_SUCCESS, result);

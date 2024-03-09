@@ -19,4 +19,5 @@ public interface ProductDetailServices {
     boolean isExistedProductDetail(String name);
     boolean update(RequestProductDetailUpdateDto dto);
     ResponseProductDetailCategoryDto getProductDetailByCategoryId(Long id);
+    List<ProductDetail> getProductDetailByProductId(Long id);
 }

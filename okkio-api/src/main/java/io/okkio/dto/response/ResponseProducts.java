@@ -7,10 +7,12 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.List;
+
 @Getter
 @Setter
 @ToString
 public class ResponseProducts {
     private Product product;
-    private ResponseProductDetailCategoryDto productDetail;
+    private List<ResponseProductDetailCategoryDto> productDetail;
 }

@@ -1,7 +1,12 @@
 package io.okkio.domain;
 
 import io.okkio.common.AbstractAuditingEntity;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -67,4 +72,7 @@ public class ProductDetail extends AbstractAuditingEntity implements Serializabl
 
     @Column(name = "PRICE")
     private BigDecimal price;
+
+    @Column(name = "PRODUCT_ID")
+    private Long productId;
 }

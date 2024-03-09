@@ -19,8 +19,8 @@ public class Product extends AbstractAuditingEntity implements Serializable  {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "PRODUCT_DETAIL_ID")
-    private Long productDetailId;
+//    @Column(name = "PRODUCT_DETAIL_ID")
+//    private Long productDetailId;
 
     @Column(name = "CATEGORY_ID")
     private Long categoryId;

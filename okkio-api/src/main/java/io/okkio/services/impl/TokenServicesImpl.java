@@ -6,10 +6,12 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.okkio.common.Constants;
 import io.okkio.configs.AppProperties;
 import io.okkio.domain.RefreshToken;
+import io.okkio.domain.Role;
 import io.okkio.dto.TokenDto;
 import io.okkio.dto.UserDto;
 import io.okkio.repository.RefreshTokenRepository;
 import io.okkio.security.JwtTokenProvider;
+import io.okkio.services.RoleServices;
 import io.okkio.services.TokenServices;
 import io.okkio.services.UserServices;
 import io.okkio.util.RedisUtil;
@@ -49,6 +51,9 @@ public class TokenServicesImpl implements TokenServices {
 
     private ObjectMapper objectMapper;
 
+    @Autowired
+    private RoleServices roleServices;
+
     @Override
     public TokenDto getTokenInfo(Long userId, RefreshToken refreshToken) {
         boolean isExpired = true;
@@ -56,6 +61,7 @@ public class TokenServicesImpl implements TokenServices {
         if (dto.getUsername() != null && dto.getUsername().equals("guest")) {
             isExpired = false;
         }
+        Role role = roleServices.get(dto.getRoleId());
         String jwt = tokenProvider.generateToken(userId, appProperties.getExpiresIn(), isExpired);
         if (jwt == null) {
             log.warn("TokenServicesImpl: User ID is null or not existed! ");
@@ -65,6 +71,9 @@ public class TokenServicesImpl implements TokenServices {
         result.setExpiresIn(appProperties.getExpiresIn());
         result.setTokenType(Constants.TOKEN_TYPE);
         result.setAccessToken(jwt);
+        if (role != null) {
+            result.setRoleName(role.getRoleName());
+        }
         if (refreshToken != null) {
             result.setRefreshToken(refreshToken.getToken());
         } else {

@@ -14,6 +14,7 @@ import io.okkio.services.CategoryServices;
 import io.okkio.services.ProductDetailServices;
 import io.okkio.services.ProductServices;
 import io.okkio.util.ResponseUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
+@Slf4j
 @RequestMapping("/api/product")
 public class ProductController {
 
@@ -63,7 +65,7 @@ public class ProductController {
     }
 
     @GetMapping("/by-category-id")
-    public ResponseEntity<List<Product>> getByCategoryId(@Param("categoryId") Long categoryId) {
+    public ResponseEntity<List<ResponseProducts>> getByCategoryId(@Param("categoryId") Long categoryId) {
         Categories categories = categoryServices.getCategoriesById(categoryId);
         if (categories == null) {
             return ResponseUtil.ok(Constants.MESSAGE_DATA_IS_NOT_EXISTED, null);
@@ -73,25 +75,51 @@ public class ProductController {
             List<Categories> total = categoryServices.getAllCategories();
             for (long i = 2; i <= total.size(); i++) {
                 List<Product> tmp = productServices.getProductByCategoryId(i);
+                if (tmp == null || tmp.isEmpty()) {
+                    log.warn("ALL PRODUCTS - getByCategoryId - getProductByCategoryId is null with category id: " + categoryId);
+                    continue;
+                }
                 for (Product dto : tmp) {
+                    List<ProductDetail> productDetails = productDetailServices.getProductDetailByProductId(dto.getId());
+                    if (productDetails == null || productDetails.isEmpty()) {
+                        log.warn("getByCategoryId - getByCategoryId is null with category id: " + categoryId);
+                        continue;
+                    }
                     ResponseProducts responseProducts = new ResponseProducts();
                     responseProducts.setProduct(dto);
-                    ResponseProductDetailCategoryDto detail = productDetailServices.getProductDetailByCategoryId(dto.getProductDetailId());
-                    if (detail != null) {
-                        responseProducts.setProductDetail(detail);
+                    List<ResponseProductDetailCategoryDto> repProductDetail = new ArrayList<>();
+                    for (ProductDetail productDetail: productDetails) {
+                        ResponseProductDetailCategoryDto detail = productDetailServices.getProductDetailByCategoryId(productDetail.getId());
+                        if (detail != null) {
+                            repProductDetail.add(detail);
+                        }
                     }
+                    responseProducts.setProductDetail(repProductDetail);
                     result.add(responseProducts);
                 }
             }
         } else {
             List<Product> tmp = productServices.getProductByCategoryId(categoryId);
+            if (tmp == null || tmp.isEmpty()) {
+                log.warn("getByCategoryId - getProductByCategoryId is null with category id: " + categoryId);
+                return null;
+            }
             for (Product dto : tmp) {
+                List<ProductDetail> productDetails = productDetailServices.getProductDetailByProductId(dto.getId());
+                if (productDetails == null || productDetails.isEmpty()) {
+                    log.warn("getByCategoryId - getByCategoryId is null with category id: " + categoryId);
+                    continue;
+                }
                 ResponseProducts responseProducts = new ResponseProducts();
                 responseProducts.setProduct(dto);
-                ResponseProductDetailCategoryDto detail = productDetailServices.getProductDetailByCategoryId(dto.getProductDetailId());
-                if (detail != null) {
-                    responseProducts.setProductDetail(detail);
+                List<ResponseProductDetailCategoryDto> repProductDetail = new ArrayList<>();
+                for(ProductDetail productDetail: productDetails) {
+                    ResponseProductDetailCategoryDto detail = productDetailServices.getProductDetailByCategoryId(productDetail.getId());
+                    if (detail != null) {
+                        repProductDetail.add(detail);
+                    }
                 }
+                responseProducts.setProductDetail(repProductDetail);
                 result.add(responseProducts);
             }
         }

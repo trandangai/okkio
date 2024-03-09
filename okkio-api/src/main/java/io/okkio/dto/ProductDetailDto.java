@@ -28,4 +28,5 @@ public class ProductDetailDto {
     private String footerImages;
     private Object suggestion;
     private BigDecimal price;
+    private Long productId;
 }

@@ -96,7 +96,7 @@ public class ProductDetailServicesImpl extends BaseServiceImpl<ProductDetail, Lo
         //Temporary to get suggestion logic
         List<ProductDetail> data = productDetailRepository.findAll();
         List<ResponseProductDetailCategoryDto> suggestions = new ArrayList<>();
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 1; i++) {
             ResponseProductDetailCategoryDto dto = productDetailMapper.toCategoryDto(data.get(i));
             dto.setHeaderImages(Stream.of(data.get(i).getHeaderImages().split(",")).collect(Collectors.toList()));
             suggestions.add(dto);
@@ -177,5 +177,10 @@ public class ProductDetailServicesImpl extends BaseServiceImpl<ProductDetail, Lo
         ResponseProductDetailCategoryDto result = productDetailMapper.toCategoryDto(productDetail);
         result.setHeaderImages(Stream.of(productDetail.getHeaderImages().split(",")).collect(Collectors.toList()));
         return result;
+    }
+
+    @Override
+    public List<ProductDetail> getProductDetailByProductId(Long id) {
+        return productDetailRepository.findProductDetailsByStatusActivatedAndProductId("ACTIVATED",id);
     }
 }
