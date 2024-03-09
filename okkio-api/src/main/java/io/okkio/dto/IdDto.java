@@ -19,4 +19,5 @@ import lombok.experimental.SuperBuilder;
 @MappedSuperclass
 public class IdDto {
     private Long id;
+    private String status;
 }

@@ -21,5 +21,5 @@ public class CustomerSupportDto extends IdDto {
     private String name;
     private String description;
     private String title;
-    private String status;
+
 }
