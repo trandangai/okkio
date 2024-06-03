@@ -70,6 +70,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/utils/get-by-name").permitAll()
                 .antMatchers("/api/contact/**").permitAll()
                 .antMatchers("/api/discovery/**").permitAll()
+                // Version 2
+                .antMatchers("/api/v2/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilter(new JwtAuthenticationFilter(authenticationManager(), tokenProvider, customUserDetailsService,

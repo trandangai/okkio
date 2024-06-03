@@ -1,12 +1,12 @@
-package io.okkio.services.impl;
+package io.okkio.services.version2.impl;
 
-import io.okkio.domain.Product;
-import io.okkio.dto.ProductDto;
-import io.okkio.dto.request.RequestProductDto;
-import io.okkio.mapper.ProductMapper;
+import io.okkio.domain.version2.ProductV2;
+import io.okkio.dto.request.version2.RequestProductDto;
+import io.okkio.mapper.version2.ProductMapperV2;
 import io.okkio.mybatis.ProductMybatis;
-import io.okkio.repository.ProductRepository;
-import io.okkio.services.ProductServices;
+import io.okkio.repository.version2.ProductRepositoryV2;
+import io.okkio.services.impl.BaseServiceImpl;
+import io.okkio.services.version2.ProductServicesV2;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -19,36 +19,42 @@ import java.util.List;
  */
 @Slf4j
 @Service
-public class ProductServicesImpl extends BaseServiceImpl<Product, Long> implements ProductServices {
+public class ProductServicesImplV2 extends BaseServiceImpl<ProductV2, Long> implements ProductServicesV2 {
 
-    public ProductServicesImpl(JpaRepository<Product, Long> jpaRepository) {
+    public ProductServicesImplV2(JpaRepository<ProductV2, Long> jpaRepository) {
         super(jpaRepository);
     }
 
     @Autowired
-    private ProductRepository productRepository;
+    private ProductRepositoryV2 productRepository;
 
     @Autowired
-    private ProductMapper productMapper;
+    private ProductMapperV2 productMapper;
 
     @Autowired
     private ProductMybatis productMybatis;
 
     @Override
-    public List<Product> getAllProduct() {
+    public List<ProductV2> getAllProduct() {
         return productRepository.findProductByStatusActivated("ACTIVATED");
     }
 
     @Override
-    public Product addProduct(RequestProductDto dto) {
-        Product product = productMapper.toEntity(dto);
-        product.setCreatedBy("System");
+    public ProductV2 addProduct(RequestProductDto dto) {
+        ProductV2 product = productMapper.toEntity(dto);
+        product.setCreatedBy(dto.getEmail());
+        product.setSlug(dto.getName().toLowerCase().replace(" ", "-"));
         return super.save(product);
     }
 
     @Override
-    public Product getProductById(Long id) {
+    public ProductV2 getProductById(Long id) {
         return productRepository.findProductById(id);
+    }
+
+    @Override
+    public ProductV2 getProductBySlug(String slug) {
+        return productRepository.findProductV2BySlug(slug);
     }
 
     @Override
@@ -59,7 +65,7 @@ public class ProductServicesImpl extends BaseServiceImpl<Product, Long> implemen
 
     @Override
     public boolean isExistedProduct(String name) {
-        Product util = productRepository.findProductByName(name);
+        ProductV2 util = productRepository.findProductByName(name);
         if (util != null) {
             return util.getName().equals(name);
         }
@@ -77,7 +83,7 @@ public class ProductServicesImpl extends BaseServiceImpl<Product, Long> implemen
     }
 
     @Override
-    public List<Product> getProductByCategoryId(Long id) {
-        return productRepository.findProductByCategoryId(id);
+    public List<ProductV2> getProductByCategoryId(Long id) {
+        return productRepository.findProductByCategoriesV2Id(id);
     }
 }

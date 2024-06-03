@@ -1,0 +1,36 @@
+package io.okkio.dto.request.version2;
+
+import io.okkio.dto.version2.BaseDto;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+import javax.persistence.Column;
+import java.math.BigDecimal;
+import java.util.List;
+
+@Getter
+@Setter
+@ToString
+public class RequestProductDetailDto extends BaseDto {
+    private Long id;
+    private String name;
+    private String shortName;
+    private String description;
+    private String status;
+    // WHOLE BEANS / ESPRESSO MACHINE / POUR OVER / PHIN / OTHERS
+    private String grind;
+    private String size;
+    // lightest, medium, darknest
+    private String flavorNote;
+    // 6 levels
+    private int roastLevel;
+    private int altitude;
+    private int varietal;
+    private int processing;
+    private int material;
+    private String productImages;
+    private String suggestion1stProduct;
+    private String suggestion2ndProduct;
+    private Long productId;
+}

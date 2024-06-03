@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * ProductDetailServicesImpl
+ * ProductDetailServicesImplV2
  */
 @Slf4j
 @Service
@@ -90,7 +90,7 @@ public class ProductDetailServicesImpl extends BaseServiceImpl<ProductDetail, Lo
     public ProductDetailDto getProductDetailById(Long id) {
         ProductDetail productDetail = productDetailRepository.findProductDetailById(id);
         if (productDetail == null) {
-            log.warn("ProductDetailServicesImpl - getProductDetailById null with id: " + id);
+            log.warn("ProductDetailServicesImplV2 - getProductDetailById null with id: " + id);
             return null;
         }
         //Temporary to get suggestion logic
@@ -109,7 +109,7 @@ public class ProductDetailServicesImpl extends BaseServiceImpl<ProductDetail, Lo
             result.setTastingNotes(mapper.readValue(productDetail.getTastingNotes(), Object.class));
             result.setShippingDelivery(mapper.readValue(productDetail.getShippingDelivery(), new TypeReference<List<Object>>(){}));
         } catch (JsonProcessingException e) {
-            log.warn("ProductDetailServicesImpl - JsonProcessingException with id: " + id + e);
+            log.warn("ProductDetailServicesImplV2 - JsonProcessingException with id: " + id + e);
             throw new RuntimeException(e);
         }
         return result;
@@ -119,7 +119,7 @@ public class ProductDetailServicesImpl extends BaseServiceImpl<ProductDetail, Lo
     public PDShoppingCartDto getProductDetailShoppingCartById(Long id, Long shoppingCartId) {
         ProductDetail productDetail = productDetailRepository.findProductDetailById(id);
         if (productDetail == null) {
-            log.warn("ProductDetailServicesImpl - getProductDetailById null with id: " + id);
+            log.warn("ProductDetailServicesImplV2 - getProductDetailById null with id: " + id);
             return null;
         }
         //Temporary to get suggestion logic
@@ -139,7 +139,7 @@ public class ProductDetailServicesImpl extends BaseServiceImpl<ProductDetail, Lo
     @Override
     public void deleteProductDetailById(Long id) {
         productDetailRepository.deleteProductDetailById(id);
-        log.warn("ProductDetailServicesImpl - Delete success with id: " + String.valueOf(id));
+        log.warn("ProductDetailServicesImplV2 - Delete success with id: " + String.valueOf(id));
     }
 
     @Override
@@ -171,7 +171,7 @@ public class ProductDetailServicesImpl extends BaseServiceImpl<ProductDetail, Lo
     public ResponseProductDetailCategoryDto getProductDetailByCategoryId(Long id) {
         ProductDetail productDetail = productDetailRepository.findProductDetailById(id);
         if (productDetail == null) {
-            log.warn("ProductDetailServicesImpl - getProductDetailById null with id: " + id);
+            log.warn("ProductDetailServicesImplV2 - getProductDetailById null with id: " + id);
             return null;
         }
         ResponseProductDetailCategoryDto result = productDetailMapper.toCategoryDto(productDetail);
