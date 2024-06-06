@@ -8,11 +8,9 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class RequestProductDto extends BaseDto {
+public class RequestAlbumDto extends BaseDto {
     private Long id;
     private String name;
-    private String status;
     private String description;
-    private Long level;
-    private String levelCode;
+    private String status;
 }

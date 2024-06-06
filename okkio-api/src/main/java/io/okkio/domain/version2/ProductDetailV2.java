@@ -17,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import java.util.List;
 
 @Builder
 @Data
@@ -36,7 +37,7 @@ public class ProductDetailV2 extends AbstractAuditingEntity {
     @Column(name = "SHORT_NAME")
     private String shortName;
 
-    @Column(name = "DESCRIPTION")
+    @Column(name = "DESCRIPTION", length = 2555)
     private String description;
 
     @Column(name = "STATUS")
@@ -55,16 +56,16 @@ public class ProductDetailV2 extends AbstractAuditingEntity {
 
     // 6 levels
     @Column(name = "ROAST_LEVEL")
-    private int roastLevel;
+    private String roastLevel;
 
     @Column(name = "ALTITUDE")
-    private int altitude;
+    private String altitude;
 
     @Column(name = "VARIETAL")
-    private int varietal;
+    private String varietal;
 
     @Column(name = "PROCESSING")
-    private int processing;
+    private String processing;
 
     @Column(name = "MATERIAL")
     private int material;

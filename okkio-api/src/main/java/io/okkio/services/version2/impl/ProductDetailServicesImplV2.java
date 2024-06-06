@@ -3,6 +3,7 @@ package io.okkio.services.version2.impl;
 import io.okkio.domain.version2.ProductDetailV2;
 import io.okkio.dto.request.RequestProductDetailUpdateDto;
 import io.okkio.dto.request.version2.RequestProductDetailDto;
+import io.okkio.dto.response.version2.ResponseProductDetailDto;
 import io.okkio.dto.version2.ProductDetailDto;
 import io.okkio.mapper.version2.ProductDetailMapperV2;
 import io.okkio.mybatis.ProductDetailMybatis;
@@ -72,8 +73,11 @@ public class ProductDetailServicesImplV2 extends BaseServiceImpl<ProductDetailV2
     }
 
     @Override
-    public ProductDetailV2 getProductDetailBySlug(String slug) {
-        return productDetailRepository.findProductDetailV2BySlug(slug);
+    public ResponseProductDetailDto getProductDetailBySlug(String slug) {
+        ProductDetailV2 productDetailV2 = productDetailRepository.findProductDetailV2BySlug(slug);
+        ResponseProductDetailDto result = productDetailMapper.toDtoResponseProductDetailDto(productDetailV2);
+        result.setProductImages(Stream.of(productDetailV2.getProductImages().split(",")).collect(Collectors.toList()));
+        return result;
     }
 
     @Override

@@ -1,16 +1,17 @@
-package io.okkio.dto.version2;
+package io.okkio.dto.response.version2;
 
+import io.okkio.domain.version2.ProductDetailV2;
+import io.okkio.dto.version2.BaseDto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Getter
 @Setter
 @ToString
-public class ProductDetailDto {
+public class ResponseProductDetailDto extends BaseDto {
     private Long id;
     private String name;
     private String shortName;
@@ -28,7 +29,6 @@ public class ProductDetailDto {
     private String processing;
     private int material;
     private List<String> productImages;
-    private Object suggestion;
-    private BigDecimal price;
+    private List<ProductDetailV2> suggestionProducts;
     private Long productId;
 }

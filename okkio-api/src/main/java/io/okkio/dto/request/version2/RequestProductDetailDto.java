@@ -24,10 +24,10 @@ public class RequestProductDetailDto extends BaseDto {
     // lightest, medium, darknest
     private String flavorNote;
     // 6 levels
-    private int roastLevel;
-    private int altitude;
-    private int varietal;
-    private int processing;
+    private String roastLevel;
+    private String altitude;
+    private String varietal;
+    private String processing;
     private int material;
     private String productImages;
     private String suggestion1stProduct;

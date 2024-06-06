@@ -68,7 +68,7 @@ public class ProductServicesImpl extends BaseServiceImpl<Product, Long> implemen
 
     @Override
     public boolean update(RequestProductDto dto) {
-        int isUpdated = productMybatis.updateProductByIds(dto.getId(), dto.getStatus(), dto.getName(), dto.getCategoryId());
+        int isUpdated = productMybatis.updateProductByIds(dto.getId(), dto.getStatus(), dto.getName());
         if (isUpdated < 0) {
             log.warn("Can't update Util with dto: " + dto);
             return false;

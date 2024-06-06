@@ -6,6 +6,7 @@ import io.okkio.domain.version2.ProductDetailV2;
 import io.okkio.domain.version2.ProductV2;
 import io.okkio.dto.request.RequestProductDetailUpdateDto;
 import io.okkio.dto.request.version2.RequestProductDetailDto;
+import io.okkio.dto.response.version2.ResponseProductDetailDto;
 import io.okkio.dto.version2.ProductDetailDto;
 import io.okkio.security.JwtTokenProvider;
 import io.okkio.services.version2.ProductDetailServicesV2;
@@ -46,7 +47,7 @@ public class ProductDetailControllerV2 {
 
     @PreAuthorize("hasAnyRole('OKKIO_ADMIN')")
     @PostMapping
-    public ResponseEntity<ProductDetail> add(@RequestBody RequestProductDetailDto dto, HttpServletRequest httpServletRequest) {
+    public ResponseEntity<ProductDetailV2> add(@RequestBody RequestProductDetailDto dto, HttpServletRequest httpServletRequest) {
         String email = jwtTokenProvider.getEmailFromToken(httpServletRequest.getHeader("Authorization"));
         boolean isExistedByProductDetail;
         boolean isExistedByProduct = true;
@@ -117,8 +118,8 @@ public class ProductDetailControllerV2 {
     }
 
     @GetMapping("/get-by-slug")
-    public ResponseEntity<ProductDetailV2> getProductDetailBySlug(@Param("slug") String slug) {
-        ProductDetailV2 result = productDetailServices.getProductDetailBySlug(slug);
+    public ResponseEntity<ResponseProductDetailDto> getProductDetailBySlug(@Param("slug") String slug) {
+        ResponseProductDetailDto result = productDetailServices.getProductDetailBySlug(slug);
         if (result == null) {
             return ResponseUtil.ok(Constants.MESSAGE_DATA_IS_NOT_EXISTED, null);
         }

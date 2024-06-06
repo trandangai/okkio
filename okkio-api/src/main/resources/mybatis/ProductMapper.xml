@@ -26,7 +26,6 @@
         update okkio.util cd
         set cd.status = #{status} and cd.name = #{name}
         and cd.description = #{description}
-        and cd.categoryId = #{categoryId}
         where 1=1
         <if test="ids > -1">
             and cd.id = #{ids}

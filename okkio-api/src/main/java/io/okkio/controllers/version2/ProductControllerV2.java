@@ -1,10 +1,9 @@
 package io.okkio.controllers.version2;
 
 import io.okkio.common.Constants;
-import io.okkio.domain.Product;
 import io.okkio.domain.version2.ProductV2;
 import io.okkio.dto.request.version2.RequestProductDto;
-import io.okkio.dto.response.ResponseProducts;
+import io.okkio.dto.response.version2.ResponseProductDto;
 import io.okkio.security.JwtTokenProvider;
 import io.okkio.services.version2.ProductServicesV2;
 import io.okkio.util.ResponseUtil;
@@ -40,7 +39,7 @@ public class ProductControllerV2 {
 
     @PreAuthorize("hasAnyRole('OKKIO_ADMIN')")
     @PostMapping
-    public ResponseEntity<Product> add(@RequestBody RequestProductDto dto, HttpServletRequest httpServletRequest) {
+    public ResponseEntity<ProductV2> add(@RequestBody RequestProductDto dto, HttpServletRequest httpServletRequest) {
         String email = jwtTokenProvider.getEmailFromToken(httpServletRequest.getHeader("Authorization"));
         boolean isExistedByProduct;
         if (StringUtils.isEmpty(dto.getName())) {
@@ -57,14 +56,8 @@ public class ProductControllerV2 {
     }
 
     @GetMapping("/get-all")
-    public ResponseEntity<List<ProductV2>> getAllProduct() {
-        List<ProductV2> result = productServices.getAllProduct();
+    public ResponseEntity<List<ResponseProductDto>> getAllProduct() {
         return ResponseUtil.ok(Constants.MESSAGE_GET_DATA_SUCCESS, productServices.getAllProduct());
-    }
-
-    @GetMapping("/by-category-id")
-    public ResponseEntity<List<ResponseProducts>> getByCategoryId(@Param("categoryId") Long categoryId) {
-        return null;
     }
 
     @PreAuthorize("hasAnyRole('OKKIO_ADMIN')")
@@ -90,7 +83,7 @@ public class ProductControllerV2 {
 
     @PreAuthorize("hasAnyRole('OKKIO_ADMIN')")
     @DeleteMapping
-    public ResponseEntity<List<Product>> delete(@Param("id") Long id) {
+    public ResponseEntity<List<ProductV2>> delete(@Param("id") Long id) {
         ProductV2 util = productServices.getProductById(id);
         if (util == null) {
             return ResponseUtil.ok(Constants.MESSAGE_DATA_IS_NOT_EXISTED, null);
@@ -100,7 +93,7 @@ public class ProductControllerV2 {
     }
 
     @GetMapping("/get-by-id")
-    public ResponseEntity<Product> getProductById(@Param("id") Long id) {
+    public ResponseEntity<ProductV2> getProductById(@Param("id") Long id) {
         ProductV2 util = productServices.getProductById(id);
         if (util == null) {
             return ResponseUtil.ok(Constants.MESSAGE_DATA_IS_NOT_EXISTED, null);
@@ -109,7 +102,7 @@ public class ProductControllerV2 {
     }
 
     @GetMapping("/get-by-slug")
-    public ResponseEntity<Product> getProductById(@Param("slug") String slug) {
+    public ResponseEntity<ProductV2> getProductById(@Param("slug") String slug) {
         ProductV2 util = productServices.getProductBySlug(slug);
         if (util == null) {
             return ResponseUtil.ok(Constants.MESSAGE_DATA_IS_NOT_EXISTED, null);
