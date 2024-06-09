@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Getter
@@ -31,4 +32,5 @@ public class ResponseProductDetailDto extends BaseDto {
     private List<String> productImages;
     private List<ProductDetailV2> suggestionProducts;
     private Long productId;
+    private BigDecimal price;
 }

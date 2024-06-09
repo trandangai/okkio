@@ -16,4 +16,6 @@ public class ResponseLocationDto {
     private String address;
     private String phone;
     private List<String> images;
+    private String parkingLot;
+    private String store;
 }

@@ -3,6 +3,7 @@ package io.okkio.services.version2.impl;
 import io.okkio.domain.version2.ProductV2;
 import io.okkio.dto.request.version2.RequestProductDto;
 import io.okkio.dto.response.version2.ResponseProductDto;
+import io.okkio.dto.response.version2.ResponseProductSlugDto;
 import io.okkio.mapper.version2.ProductMapperV2;
 import io.okkio.mybatis.ProductMybatis;
 import io.okkio.repository.version2.ProductRepositoryV2;
@@ -12,7 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,29 +40,22 @@ public class ProductServicesImplV2 extends BaseServiceImpl<ProductV2, Long> impl
     @Override
     public List<ResponseProductDto> getAllProduct() {
         List<ResponseProductDto> result = new ArrayList<>();
-        for(int i = 0; i < 3; i++) {
-            if (!ObjectUtils.isEmpty(result)) {
-                for(ResponseProductDto productDto : result) {
-                    List<ProductV2> productV2s = productRepository.findProductByStatusActivated("ACTIVATED", i);
-                    if (!ObjectUtils.isEmpty(productV2s)) {
-                        if (productDto.getSlug().equalsIgnoreCase(productV2s.get(0).getLevelCode())) {
-                            productDto.setProducts(productMapper.toDTOs(productV2s));
-                        }
-                        if (i == 2) {
-                            for (ResponseProductDto dto : result.get(1).getProducts()) {
-                                if (dto.getSlug().equalsIgnoreCase(productV2s.get(0).getLevelCode())) {
-                                    dto.setProducts(productMapper.toDTOs(productV2s));
-                                }
-                            }
-                        }
-                    }
-                }
-            } else {
-                List<ProductV2> productV2s = productRepository.findProductByStatusActivated("ACTIVATED", i);
-                if (!ObjectUtils.isEmpty(productV2s)) {
-                    result.addAll(productMapper.toDTOs(productV2s));
-                }
-            }
+        List<ProductV2> products = productRepository.findProductByStatusActivated("ACTIVATED", 0);
+        result = productMapper.toDTOs(products);
+        for(ResponseProductDto dto : result) {
+            dto.setProductV2s(productRepository.findProductV2ByLevelCode(dto.getSlug()));
+        }
+        return result;
+    }
+
+    @Override
+    public List<ResponseProductSlugDto> getProductByAllProductSlug(String slug) {
+        List<ResponseProductSlugDto> result;
+        List<ProductV2> products = productRepository.findProductByStatusActivated("ACTIVATED", 0);
+        products.removeIf(productV2 -> productV2.getSlug().equals(slug));
+        result = productMapper.toDTOResponseProductSlugDTOs(products);
+        for(ResponseProductSlugDto dto : result) {
+            dto.setProductV2s(productRepository.findProductV2ByLevelCode(dto.getSlug()));
         }
         return result;
     }
@@ -81,8 +74,14 @@ public class ProductServicesImplV2 extends BaseServiceImpl<ProductV2, Long> impl
     }
 
     @Override
-    public ProductV2 getProductBySlug(String slug) {
-        return productRepository.findProductV2BySlug(slug);
+    public ResponseProductSlugDto getProductBySlug(String slug) {
+        ResponseProductSlugDto result;
+        ProductV2 productV2 = productRepository.findProductV2BySlug(slug);
+        result = productMapper.toProductDTOs(productV2);
+        if (productV2.getLevel() == 0) {
+            result.setProductV2s(productRepository.findProductV2ByLevelCode(productV2.getSlug()));
+        }
+        return result;
     }
 
     @Override

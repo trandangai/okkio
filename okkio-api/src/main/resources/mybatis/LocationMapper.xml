@@ -52,6 +52,12 @@
         <if test="images != null">
             ,cd.images = #{images}
         </if>
+        <if test="parkingLot != null">
+            ,cd.parking_lot = #{parkingLot}
+        </if>
+        <if test="store != null">
+            ,cd.store = #{store}
+        </if>
         where 1=1
         <if test="ids > -1">
             and cd.id = #{ids}

@@ -17,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Builder
@@ -81,6 +82,9 @@ public class ProductDetailV2 extends AbstractAuditingEntity {
 
     @Column(name = "slug")
     private String slug;
+
+    @Column(name = "PRICE")
+    private BigDecimal price;
 
     @ManyToOne
     @JoinColumn(foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))

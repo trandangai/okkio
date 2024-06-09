@@ -1,10 +1,8 @@
 package io.okkio.dto.response.version2;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.okkio.domain.version2.ProductDetailV2;
 import io.okkio.domain.version2.ProductV2;
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -14,11 +12,11 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString
-public class ResponseProductDto {
+public class ResponseProductSlugDto {
     private Long id;
     private String name;
-    private String status;
     private String description;
+    private String status;
     private String slug;
     private Long level;
     private String levelCode;

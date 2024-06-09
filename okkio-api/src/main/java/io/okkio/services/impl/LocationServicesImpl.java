@@ -88,7 +88,7 @@ public class LocationServicesImpl extends BaseServiceImpl<Location, Long> implem
         }
         int isUpdated = locationMybatis.updateLocationByIds(dto.getId(), dto.getStatus(), dto.getName(), dto.getAddress(),
                 dto.getPhone(), dto.getTitle(), dto.getDescription(), dto.getOpenTime(), dto.getOpenDay(),
-                dto.getConceptStore(), images);
+                dto.getConceptStore(), images, dto.getParkingLot(), dto.getStore());
         if (isUpdated < 0) {
             log.warn("Can't update Location with dto: " + dto);
             return false;

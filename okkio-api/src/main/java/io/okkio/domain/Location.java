@@ -48,4 +48,10 @@ public class Location extends AbstractAuditingEntity implements Serializable  {
 
     @Column(name = "IMAGES")
     private String images;
+
+    @Column(name = "PARKING_LOT")
+    private String parkingLot;
+
+    @Column(name = "STORE")
+    private String store;
 }

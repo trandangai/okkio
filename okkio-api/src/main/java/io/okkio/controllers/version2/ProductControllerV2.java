@@ -4,6 +4,7 @@ import io.okkio.common.Constants;
 import io.okkio.domain.version2.ProductV2;
 import io.okkio.dto.request.version2.RequestProductDto;
 import io.okkio.dto.response.version2.ResponseProductDto;
+import io.okkio.dto.response.version2.ResponseProductSlugDto;
 import io.okkio.security.JwtTokenProvider;
 import io.okkio.services.version2.ProductServicesV2;
 import io.okkio.util.ResponseUtil;
@@ -102,8 +103,11 @@ public class ProductControllerV2 {
     }
 
     @GetMapping("/get-by-slug")
-    public ResponseEntity<ProductV2> getProductById(@Param("slug") String slug) {
-        ProductV2 util = productServices.getProductBySlug(slug);
+    public ResponseEntity<?> getProductById(@Param("slug") String slug) {
+        if (slug.equals("all-product")) {
+            return ResponseUtil.ok(Constants.MESSAGE_GET_DATA_SUCCESS, productServices.getProductByAllProductSlug(slug));
+        }
+        ResponseProductSlugDto util = productServices.getProductBySlug(slug);
         if (util == null) {
             return ResponseUtil.ok(Constants.MESSAGE_DATA_IS_NOT_EXISTED, null);
         }
