@@ -54,8 +54,8 @@ public class ShoppingCartServicesImpl extends BaseServiceImpl<ShoppingCart, Long
     }
 
     @Override
-    public List<ShoppingCart> getAllShoppingCartByUserId(String phone, String status) {
-        return shoppingCartRepository.findShoppingCartByPhoneAndStatusContaining(phone, status);
+    public List<ShoppingCart> getAllShoppingCartByUserId(String phone, String status, Long orderId) {
+        return shoppingCartRepository.findShoppingCartByPhoneAndStatusContainingAndOrderId(phone, status, orderId);
     }
 
     @Override
@@ -120,15 +120,25 @@ public class ShoppingCartServicesImpl extends BaseServiceImpl<ShoppingCart, Long
     }
 
     @Override
-    public List<ShoppingCart> addShoppingCarts(List<RequestShoppingCartDto> DTOs) {
+    public List<ShoppingCart> addShoppingCarts(List<RequestShoppingCartDto> DTOs, String phone) {
         log.debug("Start addShoppingCarts called with DTOs: {}", DTOs);
         List<ShoppingCart> shoppingCarts = shoppingCartMapper.toEntityRequestShoppingCartDTOs(DTOs);
         String transaction = UUID.randomUUID().toString();
         log.info("Start addShoppingCarts with transaction: {}", transaction);
         for (ShoppingCart shoppingCart : shoppingCarts) {
             shoppingCart.setTransaction(transaction);
+            shoppingCart.setPhone(phone);
         }
         log.debug("End addShoppingCarts called with DTOs: {}", DTOs);
         return shoppingCartRepository.saveAll(shoppingCarts);
+    }
+
+    @Override
+    public int updateShoppingCarts(ShoppingCart entity) {
+        ShoppingCart shoppingCart = shoppingCartRepository.save(entity);
+        if (shoppingCart != null) {
+            return 1;
+        }
+        return 0;
     }
 }

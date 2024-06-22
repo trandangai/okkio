@@ -15,4 +15,6 @@ public class RequestShipmentDto {
     private Long receiptId;
     private Long orderId;
     private String shippingTo;
+    private String address;
+    private String paymentMethod;
 }

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.okkio.mybatis.OrderItemMybatis">
+    <resultMap id="OrderItemDtoResponseMapping" type="io.okkio.dto.response.OrderItemDtoResponse">
+        <result property="id" column="ID"/>
+        <result property="orderId" column="ORDERID"/>
+        <result property="productDetailId" column="PRODUCT_DETAIL_ID"/>
+        <result property="orderStatus" column="NAME"/>
+        <result property="price" column="PRICE"/>
+        <result property="grind" column="GRIND"/>
+        <result property="size" column="SIZE"/>
+        <result property="quantity" column="QUANTITY"/>
+    </resultMap>
+    <select id="getOrderItemByOrderId" parameterType="Long" resultMap="OrderItemDtoResponseMapping">
+            select oi.id as ID, oi.order_id as ORDERID,
+                   oi.price as PRICE, os.name as NAME,
+                   oi.product_detail_id as PRODUCT_DETAIL_ID,
+                   oi.grind as GRIND, oi.size as SIZE,
+                   oi.quantity as QUANTITY
+            from `order` orders
+            inner join order_item oi on oi.order_id = orders.id
+            inner join okkio_status os on os.id = orders.OKKIO_STATUS_ID
+            where orders.id = #{ids}
+    </select>
+</mapper>

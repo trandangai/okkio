@@ -33,6 +33,7 @@ public class Constants {
     public static final String PAYMENT_METHOD_VISA = "visa";
     public static final String PAYMENT_METHOD_ATM = "atm";
     public static final String PAYMENT_METHOD_MOMO = "momo";
+    public static final String PAYMENT_METHOD_PICKUP = "store";
     public static final String MESSAGE_PAYMENT_METHOD_ERROR_CODE = "Invalid payment method! ";
     public static final String DELIVERY_METHOD_TLH = "tlh";
     public static final String DELIVERY_METHOD_NT = "nt";

@@ -37,4 +37,7 @@ public class Order extends AbstractAuditingEntity {
 
     @Column(name = "PHONE")
     private String phone;
+
+    @Column(name = "FULLNAME")
+    private String fullName;
 }

@@ -2,18 +2,22 @@ package io.okkio.controllers;
 
 import io.okkio.common.Constants;
 import io.okkio.domain.*;
+import io.okkio.dto.LocationDto;
 import io.okkio.dto.OrderDto;
 import io.okkio.dto.request.RequestCheckoutDto;
 import io.okkio.dto.request.RequestPaymentDto;
 import io.okkio.dto.request.RequestProcessStatus;
 import io.okkio.dto.request.RequestShipmentDto;
+import io.okkio.dto.response.OrderDtoResponse;
+import io.okkio.dto.response.OrderItemDtoResponse;
 import io.okkio.dto.response.ResponseCheckout;
-import io.okkio.security.JwtTokenProvider;
 import io.okkio.services.*;
 import io.okkio.util.ResponseUtil;
 import io.okkio.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -24,9 +28,9 @@ import java.util.List;
 @Slf4j
 public class OrderController {
 
-    private ShoppingCartServices shoppingCartServices;
+    private final LocationServices locationServices;
 
-    private JwtTokenProvider jwtTokenProvider;
+    private ShoppingCartServices shoppingCartServices;
 
     private OrderServices orderServices;
 
@@ -36,36 +40,20 @@ public class OrderController {
 
     private PaymentServices paymentServices;
 
+    private OrderItemServices orderItemServices;
+
     public OrderController(OrderServices orderServices, ShipmentServices shipmentServices,
                            ReceiptServices receiptServices, PaymentServices paymentServices,
                            ShoppingCartServices shoppingCartServices,
-                           JwtTokenProvider jwtTokenProvider) {
+                           OrderItemServices orderItemServices, LocationServices locationServices) {
         this.orderServices = orderServices;
         this.shipmentServices = shipmentServices;
         this.receiptServices = receiptServices;
         this.paymentServices = paymentServices;
         this.shoppingCartServices = shoppingCartServices;
-        this.jwtTokenProvider = jwtTokenProvider;
+        this.orderItemServices = orderItemServices;
+        this.locationServices = locationServices;
     }
-
-//    @PostMapping("/process-to-checkout")
-//    public ResponseEntity<ShoppingCartDto> processCheckout() {
-//        List<ShoppingCart> shoppingCarts = shoppingCartServices.getAllShoppingCartByUserId(user.getId(), Constants.ACTIVATED_STATUS);
-//        if (shoppingCarts == null || shoppingCarts.isEmpty()) {
-//            log.warn("MESSAGE_ORDER_IS_NOT_EXISTED with user id: " + jwtTokenProvider.getUserIdFromBearerToken(token));
-//            return ResponseUtil.ok(Constants.MESSAGE_ORDER_IS_NOT_EXISTED, null);
-//        }
-////        Order result = orderServices.addOrderAndOrderItems(shoppingCarts, user.getId(), user.getEmail());
-////        if (result == null) {
-////            return ResponseUtil.ok(Constants.MESSAGE_INSERT_DATA_FAILED, null);
-////        }
-//        // Waiting shopping cart after created order and order items.
-//        // Don't need to update waiting status shopping cart.
-////        for (ShoppingCart cart: shoppingCarts) {
-////            shoppingCartServices.updateStatusShoppingCart(cart.getId(), Constants.WAITING_STATUS);
-////        }
-//        return ResponseUtil.ok(Constants.MESSAGE_INSERT_DATA_SUCCESS, shoppingCartServices.getShoppingCartByUser(shoppingCarts));
-//    }
 
     @PostMapping("/checkout")
     public synchronized ResponseEntity<ResponseCheckout> checkout(@RequestBody RequestCheckoutDto dto) {
@@ -83,13 +71,13 @@ public class OrderController {
         }
         String email = dto.getEmail();
         // Add ShoppingCart first
-        List<ShoppingCart> shoppingCarts = shoppingCartServices.addShoppingCarts(dto.getShoppingCartDto());
+        List<ShoppingCart> shoppingCarts = shoppingCartServices.addShoppingCarts(dto.getShoppingCartDto(), dto.getPhone());
         if (shoppingCarts == null || shoppingCarts.isEmpty()) {
             log.warn("Error addShoppingCarts with user: " + email);
             return ResponseUtil.notFound(Constants.MESSAGE_NOT_FOUND);
         }
-        // TODO Create order
-        Order order = orderServices.addOrderAndOrderItems(shoppingCarts, dto.getPhone(), email);
+        // Create order
+        Order order = orderServices.addOrderAndOrderItems(shoppingCarts, dto.getPhone(), email, dto.getFullName());
         if (order == null) {
             return ResponseUtil.ok(Constants.MESSAGE_INSERT_DATA_FAILED, null);
         }
@@ -109,8 +97,21 @@ public class OrderController {
         }
         Long receiptId = receipt.getId();
         // Create shipment.
-        String address = dto.getAddress() + " - " + dto.getFullName() + " - " + dto.getPhone() + " - " + dto.getNote();
-        Shipment shipment = createdShipment(address, dto.getDeliveryMethod(), orderId, receiptId, dto.getShippingTo());
+        if (StringUtils.isEmpty(dto.getNote())) {
+            dto.setNote("");
+        }
+        if (dto.getPaymentMethod().equalsIgnoreCase(Constants.PAYMENT_METHOD_PICKUP)) {
+            if (dto.getLocationId() != null && dto.getLocationId() > 0) {
+                LocationDto location = locationServices.getLocationById(dto.getLocationId());
+                if (location == null) {
+                    return ResponseUtil.badRequest(Constants.MESSAGE_BAD_REQUEST + " with locationId: " + dto.getLocationId());
+                }
+                dto.setAddress(location.getAddress());
+            } else {
+                return ResponseUtil.badRequest(Constants.MESSAGE_BAD_REQUEST + " with locationId: " + dto.getLocationId());
+            }
+        }
+        Shipment shipment = createdShipment(dto.getNote(), dto.getDeliveryMethod(), orderId, receiptId, dto.getShippingTo(), dto.getAddress(), dto.getPaymentMethod());
         if (shipment == null) {
             log.warn("Error createdShipment with order id: " + orderId + " and receipt id: " + receiptId);
             return ResponseUtil.notFound(Constants.MESSAGE_NOT_FOUND);
@@ -133,7 +134,7 @@ public class OrderController {
     }
 
     @PutMapping("/checkout-process")
-    public ResponseEntity<?> update(@RequestBody RequestProcessStatus dto) {
+    public ResponseEntity<OrderDto> update(@RequestBody RequestProcessStatus dto) {
         if (dto.getReceiptId() == null || dto.getOrderId() == null) {
             return ResponseUtil.badRequest(Constants.MESSAGE_BAD_REQUEST);
         }
@@ -163,6 +164,30 @@ public class OrderController {
         return ResponseUtil.ok(Constants.MESSAGE_UPDATED_DATA_SUCCESS, null);
     }
 
+    @GetMapping("/get-order-by-code")
+    public ResponseEntity<?> getOrderById(@RequestParam("code") String code) {
+        Order order = orderServices.getOrderByOrderCode(code);
+        if (order == null) {
+            return ResponseUtil.notFound(Constants.MESSAGE_NOT_FOUND + " with code " + code);
+        }
+        Long orderId = order.getId();
+        OrderDtoResponse result = orderServices.getOrderDetailById(orderId);
+        if (!ObjectUtils.isEmpty(result)) {
+            List<OrderItemDtoResponse> orderItemDtoResponses = orderItemServices.getOrderItemsByOrderId(orderId);
+            if (!ObjectUtils.isEmpty(orderItemDtoResponses)) {
+                result.setOrderItems(orderItemDtoResponses);
+            }
+        }
+        return ResponseUtil.ok(Constants.MESSAGE_GET_DATA_SUCCESS, result);
+    }
+
+    @GetMapping("/get-all")
+    public ResponseEntity<?> getAllOrder(@RequestParam(defaultValue = "0") Integer pageNumber,
+                                         @RequestParam(defaultValue = "10") Integer pageSize,
+                                         @RequestParam(defaultValue = "id") String sortBy) {
+        return ResponseUtil.ok(Constants.MESSAGE_GET_DATA_SUCCESS, orderServices.getAllOrderAndOrderItem(pageNumber, pageSize, sortBy));
+    }
+
     private boolean validatedReceiptStatus(String status) {
         return Constants.RECEIPT_PAID_STATUS.equals(status)
                 || Constants.RECEIPT_ISSUED_STATUS.equals(status);
@@ -172,7 +197,8 @@ public class OrderController {
         return Constants.PAYMENT_METHOD_COD.equals(paymentMethod)
                 || Constants.PAYMENT_METHOD_VISA.equals(paymentMethod)
                 || Constants.PAYMENT_METHOD_ATM.equals(paymentMethod)
-                || Constants.PAYMENT_METHOD_MOMO.equals(paymentMethod);
+                || Constants.PAYMENT_METHOD_MOMO.equals(paymentMethod)
+                || Constants.PAYMENT_METHOD_PICKUP.equals(paymentMethod);
     }
 
     private boolean validatedDeliveryMethod(String deliveryMethod) {
@@ -192,7 +218,7 @@ public class OrderController {
         return receiptServices.addReceipt(receipt);
     }
 
-    private Shipment createdShipment(String note, String type, Long orderId, Long receiptId, String shippingTo) {
+    private Shipment createdShipment(String note, String type, Long orderId, Long receiptId, String shippingTo, String address, String paymentMethod) {
         RequestShipmentDto dto = new RequestShipmentDto();
         dto.setDetail(note);
         dto.setOrderId(orderId);
@@ -200,6 +226,8 @@ public class OrderController {
         dto.setType(type);
         dto.setReceiptId(receiptId);
         dto.setShippingTo(shippingTo);
+        dto.setAddress(address);
+        dto.setPaymentMethod(paymentMethod);
         return shipmentServices.addShipment(dto);
     }
 

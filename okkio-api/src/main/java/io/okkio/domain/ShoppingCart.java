@@ -39,4 +39,7 @@ public class ShoppingCart extends AbstractAuditingEntity {
 
     @Column(name = "PHONE")
     private String phone;
+
+    @Column(name = "ORDER_ID")
+    private Long orderId;
 }

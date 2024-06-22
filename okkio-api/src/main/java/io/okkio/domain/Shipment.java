@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 @Builder
 @Getter
@@ -28,6 +29,9 @@ public class Shipment extends AbstractAuditingEntity implements Serializable  {
     @Column(name = "SHIPPING_TO")
     private String shippingTo;
 
+    @Column(name = "ADDRESS")
+    private String address;
+
     @Column(name = "TYPE")
     private String type;
 
@@ -39,4 +43,7 @@ public class Shipment extends AbstractAuditingEntity implements Serializable  {
 
     @Column(name = "ORDER_ID")
     private Long orderId;
+
+    @Column(name = "PRICE")
+    private BigDecimal price;
 }

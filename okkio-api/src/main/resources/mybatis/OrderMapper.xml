@@ -28,16 +28,52 @@
         <result property="orderCode" column="ORDER_CODE"/>
         <result property="orderStatus" column="NAME"/>
         <result property="description" column="DESCRIPTION"/>
+        <result property="shippingFee" column="SHIPPINGFEE"/>
+        <result property="price" column="PRICE"/>
         <result property="email" column="EMAIL"/>
+        <result property="note" column="NOTE"/>
+        <result property="address" column="ADDRESS"/>
+        <result property="phone" column="PHONE"/>
+        <result property="fullName" column="FULLNAME"/>
     </resultMap>
     <select id="getOrderDto" parameterType="Long" resultMap="OrderDtoMapping">
-            select orders.id as ID, sm.detail as ADDRESS, sm.shipping_to as SHIPPING_TO,
+            select orders.id as ID, sm.detail as NOTE, sm.shipping_to as SHIPPING_TO,sm.price as SHIPPINGFEE,
                    orders.order_code as ORDER_CODE, os.name as NAME, orders.description as DESCRIPTION,
-                   orders.email as EMAIL
+                   orders.email as EMAIL,
+                   (select sum(price*quantity) from order_item oi join okkio.`order` o on oi.order_id = o.id
+                    where o.id = #{ids}) as PRICE, sm.address as ADDRESS,
+                   orders.phone as PHONE, orders.fullname as FULLNAME
             from `order` orders
             inner join shipment sm on sm.order_id = orders.id
             inner join okkio_status os on os.id = orders.OKKIO_STATUS_ID
             where orders.id = #{ids}
+    </select>
+
+    <resultMap id="OrderDetailDtoMapping" type="io.okkio.dto.response.OrderDtoResponse">
+        <result property="id" column="ID"/>
+        <result property="address" column="ADDRESS"/>
+        <result property="shippingTo" column="SHIPPING_TO"/>
+        <result property="orderCode" column="ORDER_CODE"/>
+        <result property="orderStatus" column="NAME"/>
+        <result property="description" column="DESCRIPTION"/>
+        <result property="email" column="EMAIL"/>
+        <result property="shippingFee" column="SHIPPINGFEE"/>
+        <result property="price" column="PRICE"/>
+        <result property="note" column="NOTE"/>
+        <result property="phone" column="PHONE"/>
+        <result property="fullName" column="FULLNAME"/>
+    </resultMap>
+    <select id="getOrderDetailDto" parameterType="Long" resultMap="OrderDetailDtoMapping">
+        select orders.id as ID, sm.detail as NOTE, sm.shipping_to as SHIPPING_TO,
+               orders.order_code as ORDER_CODE, os.name as NAME, orders.description as DESCRIPTION,
+               orders.email as EMAIL, sm.price as SHIPPINGFEE,
+               (select sum(price*quantity) from order_item oi join okkio.`order` o on oi.order_id = o.id
+                                           where o.id = #{ids}) as PRICE,
+               sm.address as ADDRESS, orders.phone as PHONE, orders.fullname as FULLNAME
+        from `order` orders
+                 inner join shipment sm on sm.order_id = orders.id
+                 inner join okkio_status os on os.id = orders.OKKIO_STATUS_ID
+        where orders.id = #{ids}
     </select>
 
 
