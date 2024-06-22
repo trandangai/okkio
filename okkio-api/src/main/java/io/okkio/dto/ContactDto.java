@@ -17,5 +17,5 @@ public class ContactDto {
     private String email;
     private String facebook;
     private String instagram;
-    private List<ResponseLocationDto> locations;
+    private List<LocationDto> locations;
 }

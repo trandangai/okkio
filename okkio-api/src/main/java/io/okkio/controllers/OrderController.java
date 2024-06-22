@@ -3,7 +3,6 @@ package io.okkio.controllers;
 import io.okkio.common.Constants;
 import io.okkio.domain.*;
 import io.okkio.dto.OrderDto;
-import io.okkio.dto.ShoppingCartDto;
 import io.okkio.dto.request.RequestCheckoutDto;
 import io.okkio.dto.request.RequestPaymentDto;
 import io.okkio.dto.request.RequestProcessStatus;
@@ -15,14 +14,13 @@ import io.okkio.util.ResponseUtil;
 import io.okkio.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/order")
+@RequestMapping("/api/v2/order")
 @Slf4j
 public class OrderController {
 
@@ -50,35 +48,27 @@ public class OrderController {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
-    @PreAuthorize("hasAnyRole('OKKIO_USER','OKKIO_ADMIN')")
-    @PostMapping("/process-to-checkout")
-    public ResponseEntity<ShoppingCartDto> processCheckout(@RequestHeader("Authorization") String token) {
-        User user = jwtTokenProvider.getUserFromJWT(token);
-        if (user == null) {
-            log.warn("MESSAGE_USER_OR_ORDER_IS_NOT_EXISTED with user id: " + jwtTokenProvider.getUserIdFromBearerToken(token));
-            return ResponseUtil.ok(Constants.MESSAGE_USER_OR_ORDER_IS_NOT_EXISTED, null);
-        }
-        List<ShoppingCart> shoppingCarts = shoppingCartServices.getAllShoppingCartByUserId(user.getId(), Constants.ACTIVATED_STATUS);
-        if (shoppingCarts == null || shoppingCarts.isEmpty()) {
-            log.warn("MESSAGE_ORDER_IS_NOT_EXISTED with user id: " + jwtTokenProvider.getUserIdFromBearerToken(token));
-            return ResponseUtil.ok(Constants.MESSAGE_ORDER_IS_NOT_EXISTED, null);
-        }
-        Order result = orderServices.addOrderAndOrderItems(shoppingCarts, user.getId(), user.getEmail());
-        if (result == null) {
-            return ResponseUtil.ok(Constants.MESSAGE_INSERT_DATA_FAILED, null);
-        }
-        // Waiting shopping cart after created order and order items.
-        // Don't need to update waiting status shopping cart.
-//        for (ShoppingCart cart: shoppingCarts) {
-//            shoppingCartServices.updateStatusShoppingCart(cart.getId(), Constants.WAITING_STATUS);
+//    @PostMapping("/process-to-checkout")
+//    public ResponseEntity<ShoppingCartDto> processCheckout() {
+//        List<ShoppingCart> shoppingCarts = shoppingCartServices.getAllShoppingCartByUserId(user.getId(), Constants.ACTIVATED_STATUS);
+//        if (shoppingCarts == null || shoppingCarts.isEmpty()) {
+//            log.warn("MESSAGE_ORDER_IS_NOT_EXISTED with user id: " + jwtTokenProvider.getUserIdFromBearerToken(token));
+//            return ResponseUtil.ok(Constants.MESSAGE_ORDER_IS_NOT_EXISTED, null);
 //        }
-        return ResponseUtil.ok(Constants.MESSAGE_INSERT_DATA_SUCCESS, shoppingCartServices.getShoppingCartByUser(shoppingCarts));
-    }
+////        Order result = orderServices.addOrderAndOrderItems(shoppingCarts, user.getId(), user.getEmail());
+////        if (result == null) {
+////            return ResponseUtil.ok(Constants.MESSAGE_INSERT_DATA_FAILED, null);
+////        }
+//        // Waiting shopping cart after created order and order items.
+//        // Don't need to update waiting status shopping cart.
+////        for (ShoppingCart cart: shoppingCarts) {
+////            shoppingCartServices.updateStatusShoppingCart(cart.getId(), Constants.WAITING_STATUS);
+////        }
+//        return ResponseUtil.ok(Constants.MESSAGE_INSERT_DATA_SUCCESS, shoppingCartServices.getShoppingCartByUser(shoppingCarts));
+//    }
 
-    @PreAuthorize("hasAnyRole('OKKIO_USER','OKKIO_ADMIN')")
     @PostMapping("/checkout")
-    public synchronized ResponseEntity<ResponseCheckout> checkout(@RequestHeader("Authorization") String token,
-                                                                  @RequestBody RequestCheckoutDto dto) {
+    public synchronized ResponseEntity<ResponseCheckout> checkout(@RequestBody RequestCheckoutDto dto) {
         if (StringUtil.isEmpty(dto.getAddress()) || StringUtil.isEmpty(dto.getFullName())
             || StringUtil.isEmpty(dto.getEmail()) || StringUtil.isEmpty(dto.getPhone())
             || StringUtil.isEmpty(dto.getDeliveryMethod()) || StringUtil.isEmpty(dto.getPaymentMethod())
@@ -91,20 +81,27 @@ public class OrderController {
         if (!validatedDeliveryMethod(dto.getDeliveryMethod())) {
             return ResponseUtil.badRequest(Constants.MESSAGE_DELIVERY_METHOD_ERROR_CODE);
         }
-        User user = jwtTokenProvider.getUserFromJWT(token);
-        if (user == null) {
-            log.warn("MESSAGE_USER_OR_ORDER_IS_NOT_EXISTED with user id: " + jwtTokenProvider.getUserIdFromBearerToken(token));
-            return ResponseUtil.ok(Constants.MESSAGE_USER_OR_ORDER_IS_NOT_EXISTED, null);
-        }
-        String email = user.getEmail();
-        // Get order by draft status
-        List<Order> orders = orderServices.getOrderByUserIdAndOrderStatus(user.getId(), 4, Constants.ACTIVATED_STATUS);
-        if (orders == null || orders.isEmpty()) {
-            log.warn("Error getOrderByUserIdAndOrderStatus with user: " + email);
+        String email = dto.getEmail();
+        // Add ShoppingCart first
+        List<ShoppingCart> shoppingCarts = shoppingCartServices.addShoppingCarts(dto.getShoppingCartDto());
+        if (shoppingCarts == null || shoppingCarts.isEmpty()) {
+            log.warn("Error addShoppingCarts with user: " + email);
             return ResponseUtil.notFound(Constants.MESSAGE_NOT_FOUND);
         }
+        // TODO Create order
+        Order order = orderServices.addOrderAndOrderItems(shoppingCarts, dto.getPhone(), email);
+        if (order == null) {
+            return ResponseUtil.ok(Constants.MESSAGE_INSERT_DATA_FAILED, null);
+        }
+        // TODO Still waiting to check that logic
+        // Get order by draft status
+//        List<Order> orders = orderServices.getOrderByUserIdAndOrderStatus(user.getId(), 4, Constants.ACTIVATED_STATUS);
+//        if (orders == null || orders.isEmpty()) {
+//            log.warn("Error getOrderByUserIdAndOrderStatus with user: " + email);
+//            return ResponseUtil.notFound(Constants.MESSAGE_NOT_FOUND);
+//        }
         // Create Receipt with status waiting
-        Long orderId = orders.get(0).getId();
+        Long orderId = order.getId();
         Receipt receipt = createdReceipt(orderId, dto.getPaymentMethod(), email);
         if (receipt == null) {
             log.warn("Error createdReceipt with order id: " + orderId);
@@ -135,20 +132,18 @@ public class OrderController {
         return ResponseUtil.ok(Constants.MESSAGE_INSERT_DATA_SUCCESS, result);
     }
 
-    @PreAuthorize("hasAnyRole('OKKIO_USER','OKKIO_ADMIN')")
     @PutMapping("/checkout-process")
-    public ResponseEntity<?> update(@RequestHeader("Authorization") String token, @RequestBody RequestProcessStatus dto) {
-        if (dto.getReceiptId() == null) {
+    public ResponseEntity<?> update(@RequestBody RequestProcessStatus dto) {
+        if (dto.getReceiptId() == null || dto.getOrderId() == null) {
             return ResponseUtil.badRequest(Constants.MESSAGE_BAD_REQUEST);
         }
         Receipt receipt = receiptServices.getReceiptById(dto.getReceiptId());
         if (receipt == null) {
-            return ResponseUtil.notFound(Constants.MESSAGE_NOT_FOUND);
+            return ResponseUtil.notFound(Constants.MESSAGE_NOT_FOUND + " with receipt id: " + dto.getReceiptId());
         }
-        User user = jwtTokenProvider.getUserFromJWT(token);
-        if (user == null) {
-            log.warn("MESSAGE_USER_OR_ORDER_IS_NOT_EXISTED with user id: " + jwtTokenProvider.getUserIdFromBearerToken(token));
-            return ResponseUtil.ok(Constants.MESSAGE_USER_OR_ORDER_IS_NOT_EXISTED, null);
+        Order order = orderServices.getOrderById(dto.getOrderId());
+        if (order == null) {
+            return ResponseUtil.notFound(Constants.MESSAGE_NOT_FOUND);
         }
         if (!StringUtil.isEmpty(dto.getStatusReceipt())) {
             // Update flow from Waiting to PAID or ISSUED
@@ -162,7 +157,7 @@ public class OrderController {
                 receiptStatus = 11;
             }
             // Updated receipt and get order dto with PAID receipt status.
-            OrderDto result = orderServices.updateAndGetOrder(receipt.getId(), receiptStatus, user.getEmail(), dto.getOrderId(), user.getId());
+            OrderDto result = orderServices.updateAndGetOrder(receipt.getId(), receiptStatus, order.getEmail(), dto.getOrderId(), order.getPhone());
             return ResponseUtil.ok(Constants.MESSAGE_UPDATED_DATA_SUCCESS, result);
         }
         return ResponseUtil.ok(Constants.MESSAGE_UPDATED_DATA_SUCCESS, null);

@@ -19,7 +19,9 @@ public class OrderItemServicesImpl extends BaseServiceImpl<OrderItem, Long> impl
 
     @Override
     public OrderItem addOrderItem(OrderItem orderItem, String email) {
+        log.info("Start Add order item: {}", orderItem);
         orderItem.setCreatedBy(email);
+        log.info("End Add order item: {}", orderItem);
         return super.save(orderItem);
     }
 }

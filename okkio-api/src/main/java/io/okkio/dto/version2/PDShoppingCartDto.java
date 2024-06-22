@@ -1,4 +1,4 @@
-package io.okkio.dto;
+package io.okkio.dto.version2;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -17,7 +17,9 @@ public class PDShoppingCartDto {
     private String status;
     private String grind;
     private String size;
+    private String subscription;
     private int quantity;
+    private List<String> productImages;
     private BigDecimal price;
     private Long shoppingCartId;
 }

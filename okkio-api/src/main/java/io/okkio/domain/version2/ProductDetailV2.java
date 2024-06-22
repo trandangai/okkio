@@ -7,8 +7,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ConstraintMode;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
@@ -18,6 +20,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Builder
@@ -71,8 +74,10 @@ public class ProductDetailV2 extends AbstractAuditingEntity {
     @Column(name = "MATERIAL")
     private int material;
 
+    @ElementCollection
+    @CollectionTable(name = "PRODUCT_DETAIL_IMAGE", joinColumns = @JoinColumn(name = "productdetailv2_id"))
     @Column(name = "PRODUCT_IMAGES")
-    private String productImages;
+    private List<String> productImages;
 
     @Column(name = "SUGGESTION_1ST")
     private String suggestion1stProduct;

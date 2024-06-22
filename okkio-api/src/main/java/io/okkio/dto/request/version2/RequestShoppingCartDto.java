@@ -1,23 +1,18 @@
-package io.okkio.dto;
+package io.okkio.dto.request.version2;
 
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 @Getter
 @Setter
 @ToString
-public class PDShoppingCartDto {
-    private Long id;
-    private String name;
-    private String description;
-    private String status;
+public class RequestShoppingCartDto {
+    private Long productDetailId;
     private String grind;
     private String size;
     private int quantity;
     private BigDecimal price;
-    private Long shoppingCartId;
 }

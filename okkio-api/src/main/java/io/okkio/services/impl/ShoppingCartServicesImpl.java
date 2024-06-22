@@ -1,39 +1,26 @@
 package io.okkio.services.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.base.Strings;
-import io.okkio.domain.ProductDetail;
 import io.okkio.domain.ShoppingCart;
 import io.okkio.domain.User;
 import io.okkio.dto.PDShoppingCartDto;
-import io.okkio.dto.ProductDetailDto;
 import io.okkio.dto.ShoppingCartDto;
-import io.okkio.dto.request.RequestProductDetailDto;
-import io.okkio.dto.request.RequestProductDetailUpdateDto;
 import io.okkio.dto.request.RequestShoppingCartDto;
-import io.okkio.dto.response.ResponseProductDetailCategoryDto;
-import io.okkio.mapper.ProductDetailMapper;
 import io.okkio.mapper.ShoppingCartMapper;
-import io.okkio.mybatis.ProductDetailMybatis;
 import io.okkio.mybatis.ShoppingCartMybatis;
-import io.okkio.repository.ProductDetailRepository;
 import io.okkio.repository.ShoppingCartRepository;
 import io.okkio.security.JwtTokenProvider;
 import io.okkio.services.ProductDetailServices;
 import io.okkio.services.ShoppingCartServices;
+import io.okkio.services.version2.ProductDetailServicesV2;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.UUID;
 
 /**
  * ShoppingCartServicesImpl
@@ -59,7 +46,7 @@ public class ShoppingCartServicesImpl extends BaseServiceImpl<ShoppingCart, Long
     private JwtTokenProvider jwtTokenProvider;
 
     @Autowired
-    private ProductDetailServices productDetailServices;
+    private ProductDetailServicesV2 productDetailServices;
 
     @Override
     public ShoppingCart getShoppingCartById(Long id) {
@@ -67,16 +54,13 @@ public class ShoppingCartServicesImpl extends BaseServiceImpl<ShoppingCart, Long
     }
 
     @Override
-    public List<ShoppingCart> getAllShoppingCartByUserId(Long userId, String status) {
-        return shoppingCartRepository.findShoppingCartByUserIdAndStatusContaining(userId, status);
+    public List<ShoppingCart> getAllShoppingCartByUserId(String phone, String status) {
+        return shoppingCartRepository.findShoppingCartByPhoneAndStatusContaining(phone, status);
     }
 
     @Override
-    public ShoppingCart addShoppingCart(RequestShoppingCartDto dto, String token) {
-        User user = jwtTokenProvider.getUserFromJWT(token);
+    public ShoppingCart addShoppingCart(ShoppingCartDto dto) {
         ShoppingCart util = shoppingCartMapper.toEntity(dto);
-        util.setUserId(user.getId());
-        util.setCreatedBy(user.getEmail());
         return super.save(util);
     }
 
@@ -112,8 +96,10 @@ public class ShoppingCartServicesImpl extends BaseServiceImpl<ShoppingCart, Long
         for (ShoppingCart dto : shoppingCarts) {
             PDShoppingCartDto productDetailDto = productDetailServices.getProductDetailShoppingCartById(dto.getProductDetailId(), dto.getId());
             if (productDetailDto != null) {
+                productDetailDto.setSize(dto.getSize());
+                productDetailDto.setQuantity(dto.getQuantity());
                 detailDtoList.add(productDetailDto);
-                BigDecimal quantity = new BigDecimal(productDetailDto.getQuantity());
+                BigDecimal quantity = new BigDecimal(dto.getQuantity());
                 total = total.add(quantity.multiply(productDetailDto.getPrice()));
             }
         }
@@ -131,5 +117,18 @@ public class ShoppingCartServicesImpl extends BaseServiceImpl<ShoppingCart, Long
         }
         log.info("updateStatusShoppingCart failed with shopping cart id: " + id);
         return false;
+    }
+
+    @Override
+    public List<ShoppingCart> addShoppingCarts(List<RequestShoppingCartDto> DTOs) {
+        log.debug("Start addShoppingCarts called with DTOs: {}", DTOs);
+        List<ShoppingCart> shoppingCarts = shoppingCartMapper.toEntityRequestShoppingCartDTOs(DTOs);
+        String transaction = UUID.randomUUID().toString();
+        log.info("Start addShoppingCarts with transaction: {}", transaction);
+        for (ShoppingCart shoppingCart : shoppingCarts) {
+            shoppingCart.setTransaction(transaction);
+        }
+        log.debug("End addShoppingCarts called with DTOs: {}", DTOs);
+        return shoppingCartRepository.saveAll(shoppingCarts);
     }
 }

@@ -2,6 +2,7 @@ package io.okkio.services.version2;
 
 
 import io.okkio.domain.version2.ProductDetailV2;
+import io.okkio.dto.PDShoppingCartDto;
 import io.okkio.dto.request.RequestProductDetailUpdateDto;
 import io.okkio.dto.request.version2.RequestProductDetailDto;
 import io.okkio.dto.response.version2.ResponseProductDetailDto;
@@ -18,4 +19,5 @@ public interface ProductDetailServicesV2 {
     boolean isExistedProductDetail(String name);
     boolean update(RequestProductDetailUpdateDto dto);
     List<ProductDetailV2> getProductDetailByProductId(Long id);
+    PDShoppingCartDto getProductDetailShoppingCartById(Long id, Long shoppingCartId);
 }

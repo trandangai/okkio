@@ -27,10 +27,13 @@
         <result property="shippingTo" column="SHIPPING_TO"/>
         <result property="orderCode" column="ORDER_CODE"/>
         <result property="orderStatus" column="NAME"/>
+        <result property="description" column="DESCRIPTION"/>
+        <result property="email" column="EMAIL"/>
     </resultMap>
     <select id="getOrderDto" parameterType="Long" resultMap="OrderDtoMapping">
             select orders.id as ID, sm.detail as ADDRESS, sm.shipping_to as SHIPPING_TO,
-                   orders.order_code as ORDER_CODE, os.name as NAME
+                   orders.order_code as ORDER_CODE, os.name as NAME, orders.description as DESCRIPTION,
+                   orders.email as EMAIL
             from `order` orders
             inner join shipment sm on sm.order_id = orders.id
             inner join okkio_status os on os.id = orders.OKKIO_STATUS_ID

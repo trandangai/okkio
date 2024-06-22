@@ -1,8 +1,11 @@
 package io.okkio.services.version2.impl;
 
+import io.okkio.domain.ProductDetail;
 import io.okkio.domain.version2.ProductDetailV2;
+import io.okkio.dto.PDShoppingCartDto;
 import io.okkio.dto.request.RequestProductDetailUpdateDto;
 import io.okkio.dto.request.version2.RequestProductDetailDto;
+import io.okkio.dto.response.version2.ResponseProductDetailCategoryDto;
 import io.okkio.dto.response.version2.ResponseProductDetailDto;
 import io.okkio.dto.version2.ProductDetailDto;
 import io.okkio.mapper.version2.ProductDetailMapperV2;
@@ -51,7 +54,6 @@ public class ProductDetailServicesImplV2 extends BaseServiceImpl<ProductDetailV2
         }
         for (ProductDetailV2 productDetail: productDetails) {
             ProductDetailDto productDetailDto = productDetailMapper.toDto(productDetail);
-            productDetailDto.setProductImages(Stream.of(productDetail.getProductImages().split(",")).collect(Collectors.toList()));
             result.add(productDetailDto);
         }
         return result;
@@ -61,7 +63,6 @@ public class ProductDetailServicesImplV2 extends BaseServiceImpl<ProductDetailV2
     public ProductDetailV2 addProductDetail(RequestProductDetailDto dto) {
         ProductDetailV2 util = productDetailMapper.toEntity(dto);
         util.setCreatedBy(dto.getEmail());
-        util.setProductImages(String.join(",", dto.getProductImages()));
         util.setSlug(dto.getName().toLowerCase().replace(" ", "-"));
         return super.save(util);
     }
@@ -76,7 +77,7 @@ public class ProductDetailServicesImplV2 extends BaseServiceImpl<ProductDetailV2
     public ResponseProductDetailDto getProductDetailBySlug(String slug) {
         ProductDetailV2 productDetailV2 = productDetailRepository.findProductDetailV2BySlug(slug);
         ResponseProductDetailDto result = productDetailMapper.toDtoResponseProductDetailDto(productDetailV2);
-        result.setProductImages(Stream.of(productDetailV2.getProductImages().split(",")).collect(Collectors.toList()));
+//        result.setProductImages(Stream.of(productDetailV2.getProductImages().split(",")).collect(Collectors.toList()));
         return result;
     }
 
@@ -114,5 +115,24 @@ public class ProductDetailServicesImplV2 extends BaseServiceImpl<ProductDetailV2
     @Override
     public List<ProductDetailV2> getProductDetailByProductId(Long id) {
         return productDetailRepository.findProductDetailsByStatusActivatedAndProductId("ACTIVATED",id);
+    }
+
+    @Override
+    public PDShoppingCartDto getProductDetailShoppingCartById(Long id, Long shoppingCartId) {
+        ProductDetailV2 productDetail = productDetailRepository.findProductDetailById(id);
+        if (productDetail == null) {
+            log.warn("ProductDetailServicesImplV2 - getProductDetailById null with id: " + id);
+            return null;
+        }
+        //Temporary to get suggestion logic
+        List<ProductDetailV2> data = productDetailRepository.findAll();
+        List<ResponseProductDetailCategoryDto> suggestions = new ArrayList<>();
+        for (int i = 0; i < 2; i++) {
+            ResponseProductDetailCategoryDto dto = productDetailMapper.toCategoryDto(data.get(i));
+            suggestions.add(dto);
+        }
+        PDShoppingCartDto result = productDetailMapper.toDtoSCart(productDetail);
+        result.setShoppingCartId(shoppingCartId);
+        return result;
     }
 }

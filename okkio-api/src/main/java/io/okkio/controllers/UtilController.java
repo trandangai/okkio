@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/utils")
+@RequestMapping("/api/v2/utils")
 public class UtilController {
 
     private UtilServices utilServices;
@@ -38,7 +38,6 @@ public class UtilController {
         return ResponseUtil.ok(Constants.MESSAGE_INSERT_DATA_SUCCESS, result);
     }
 
-    @PreAuthorize("hasAnyRole('OKKIO_USER', 'OKKIO_GUEST', 'OKKIO_ADMIN')")
     @GetMapping
     public ResponseEntity<List<Util>> getAllUtils() {
         return ResponseUtil.ok(Constants.MESSAGE_GET_DATA_SUCCESS, utilServices.getAllUtil());

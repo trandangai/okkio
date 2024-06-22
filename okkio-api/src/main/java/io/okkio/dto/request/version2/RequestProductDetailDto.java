@@ -29,7 +29,7 @@ public class RequestProductDetailDto extends BaseDto {
     private String varietal;
     private String processing;
     private int material;
-    private String productImages;
+    private List<String> productImages;
     private String suggestion1stProduct;
     private String suggestion2ndProduct;
     private BigDecimal price;

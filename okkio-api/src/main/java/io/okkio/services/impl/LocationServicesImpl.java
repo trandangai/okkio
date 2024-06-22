@@ -41,14 +41,15 @@ public class LocationServicesImpl extends BaseServiceImpl<Location, Long> implem
     private LocationMybatis locationMybatis;
 
     @Override
-    public List<ResponseLocationDto> getAllLocation() {
+    public List<LocationDto> getAllLocation() {
         List<Location> locations = super.findAll();
-        List<ResponseLocationDto> result = new ArrayList<>();
+        List<LocationDto> result = new ArrayList<>();
+
         if (locations != null && !locations.isEmpty()) {
             for (Location location : locations) {
-                ResponseLocationDto dto = locationMapper.toResponseDto(location);
-                dto.setImages(Stream.of(location.getImages().split(",")).collect(Collectors.toList()));
-                result.add(dto);
+                LocationDto locationDto = locationMapper.toDto(location);
+                locationDto.setImages(Stream.of(location.getImages().split(",")).collect(Collectors.toList()));
+                result.add(locationDto);
             }
         }
         return result;

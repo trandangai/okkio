@@ -9,7 +9,7 @@ import io.okkio.dto.response.ResponseLocationDto;
 import java.util.List;
 
 public interface LocationServices {
-    List<ResponseLocationDto> getAllLocation();
+    List<LocationDto> getAllLocation();
     Location addLocation(RequestLocationDto dto);
     LocationDto getLocationById(Long id);
     void deleteLocationById(Long id);

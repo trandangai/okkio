@@ -22,7 +22,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/location")
-public class LocationController {
+public class    LocationController {
 
     private LocationServices locationServices;
 
@@ -51,7 +51,7 @@ public class LocationController {
     }
 
     @GetMapping("/get-all")
-    public ResponseEntity<List<ResponseLocationDto>> getAllLocations() {
+    public ResponseEntity<List<LocationDto>> getAllLocations() {
         return ResponseUtil.ok(Constants.MESSAGE_GET_DATA_SUCCESS, locationServices.getAllLocation());
     }
 

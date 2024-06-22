@@ -16,8 +16,8 @@ import java.util.List;
  */
 @Repository
 public interface ShoppingCartRepository extends JpaRepository<ShoppingCart, Long>, JpaSpecificationExecutor<ShoppingCart> {
-	@Query(value = "select * from shopping_cart cd where cd.status = ?2 and cd.user_id = ?1", nativeQuery = true)
-	List<ShoppingCart> findShoppingCartByUserIdAndStatusContaining(@Param("userId") Long userId, @Param("status") String status);
+	@Query(value = "select * from shopping_cart cd where cd.status = ?2 and cd.phone = ?1", nativeQuery = true)
+	List<ShoppingCart> findShoppingCartByPhoneAndStatusContaining(@Param("phone") String phone, @Param("status") String status);
 	ShoppingCart findShoppingCartById(Long id);
 	@Transactional
 	@Modifying

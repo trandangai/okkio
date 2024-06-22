@@ -131,7 +131,7 @@ public class ProductDetailServicesImpl extends BaseServiceImpl<ProductDetail, Lo
             suggestions.add(dto);
         }
         PDShoppingCartDto result = productDetailMapper.toDtoSCart(productDetail);
-        result.setHeaderImages(Stream.of(productDetail.getHeaderImages().split(",")).collect(Collectors.toList()));
+//        result.setHeaderImages(Stream.of(productDetail.getHeaderImages().split(",")).collect(Collectors.toList()));
         result.setShoppingCartId(shoppingCartId);
         return result;
     }
