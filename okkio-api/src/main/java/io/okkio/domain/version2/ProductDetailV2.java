@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
@@ -80,10 +81,10 @@ public class ProductDetailV2 extends AbstractAuditingEntity {
     private List<String> productImages;
 
     @Column(name = "SUGGESTION_1ST")
-    private String suggestion1stProduct;
+    private Long suggestion1stProduct;
 
     @Column(name = "SUGGESTION_2ND")
-    private String suggestion2ndProduct;
+    private Long suggestion2ndProduct;
 
     @Column(name = "slug")
     private String slug;
@@ -92,6 +93,7 @@ public class ProductDetailV2 extends AbstractAuditingEntity {
     private BigDecimal price;
 
     @ManyToOne
+    @ToString.Exclude
     @JoinColumn(foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     @JsonIgnore
     ProductV2 productV2;

@@ -1,6 +1,5 @@
 package io.okkio.services.version2.impl;
 
-import io.okkio.domain.ProductDetail;
 import io.okkio.domain.version2.ProductDetailV2;
 import io.okkio.dto.PDShoppingCartDto;
 import io.okkio.dto.request.RequestProductDetailUpdateDto;
@@ -21,8 +20,6 @@ import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * ProductDetailServicesImplV2
@@ -76,8 +73,27 @@ public class ProductDetailServicesImplV2 extends BaseServiceImpl<ProductDetailV2
     @Override
     public ResponseProductDetailDto getProductDetailBySlug(String slug) {
         ProductDetailV2 productDetailV2 = productDetailRepository.findProductDetailV2BySlug(slug);
+        if (productDetailV2 == null) {
+            log.warn("getProductDetailBySlug is null with slug {}", slug);
+            return null;
+        }
         ResponseProductDetailDto result = productDetailMapper.toDtoResponseProductDetailDto(productDetailV2);
-//        result.setProductImages(Stream.of(productDetailV2.getProductImages().split(",")).collect(Collectors.toList()));
+        if (result == null) {
+            log.warn("getProductDetailBySlug - productDetailMapper is null with slug {}", slug);
+            return null;
+        }
+        if (productDetailV2.getSuggestion1stProduct() != null) {
+            ProductDetailV2 suggestion1st = productDetailRepository.findProductDetailById(productDetailV2.getSuggestion1stProduct());
+            if (suggestion1st != null) {
+                result.getSuggestionProducts().add(suggestion1st);
+            }
+        }
+        if (productDetailV2.getSuggestion1stProduct() != null) {
+            ProductDetailV2 suggestion2nd = productDetailRepository.findProductDetailById(productDetailV2.getSuggestion2ndProduct());
+            if (suggestion2nd != null) {
+                result.getSuggestionProducts().add(suggestion2nd);
+            }
+        }
         return result;
     }
 

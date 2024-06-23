@@ -7,6 +7,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -30,7 +31,7 @@ public class ResponseProductDetailDto extends BaseDto {
     private String processing;
     private int material;
     private List<String> productImages;
-    private List<ProductDetailV2> suggestionProducts;
+    private List<ProductDetailV2> suggestionProducts = new ArrayList<>();
     private Long productId;
     private BigDecimal price;
 }

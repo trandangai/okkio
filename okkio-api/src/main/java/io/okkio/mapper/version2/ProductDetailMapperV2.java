@@ -13,6 +13,7 @@ import org.mapstruct.Mapping;
 public abstract class ProductDetailMapperV2 {
     @Mapping(target = "productV2.id", source = "productId")
     public abstract ProductDetailV2 toEntity(RequestProductDetailDto dto);
+    @Mapping(target = "productId", source = "productV2.id")
     public abstract ResponseProductDetailDto toDtoResponseProductDetailDto(ProductDetailV2 entity);
     @Mapping(target = "suggestion", ignore = true)
     public abstract ProductDetailDto toDto(ProductDetailV2 entity);

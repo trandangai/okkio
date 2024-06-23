@@ -57,7 +57,7 @@ public class OrderController {
 
     @PostMapping("/checkout")
     public synchronized ResponseEntity<ResponseCheckout> checkout(@RequestBody RequestCheckoutDto dto) {
-        if (StringUtil.isEmpty(dto.getAddress()) || StringUtil.isEmpty(dto.getFullName())
+        if (StringUtil.isEmpty(dto.getFullName())
             || StringUtil.isEmpty(dto.getEmail()) || StringUtil.isEmpty(dto.getPhone())
             || StringUtil.isEmpty(dto.getDeliveryMethod()) || StringUtil.isEmpty(dto.getPaymentMethod())
             || dto.getTotal() == null || StringUtil.isEmpty(dto.getShippingTo())) {
@@ -109,6 +109,10 @@ public class OrderController {
                 dto.setAddress(location.getAddress());
             } else {
                 return ResponseUtil.badRequest(Constants.MESSAGE_BAD_REQUEST + " with locationId: " + dto.getLocationId());
+            }
+        } else {
+            if (StringUtils.isEmpty(dto.getAddress())) {
+                return ResponseUtil.badRequest(Constants.MESSAGE_BAD_REQUEST + " Address is null ");
             }
         }
         Shipment shipment = createdShipment(dto.getNote(), dto.getDeliveryMethod(), orderId, receiptId, dto.getShippingTo(), dto.getAddress(), dto.getPaymentMethod());
