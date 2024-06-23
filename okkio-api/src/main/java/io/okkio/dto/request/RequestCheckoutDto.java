@@ -5,6 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Getter
 @Setter
@@ -18,5 +19,7 @@ public class RequestCheckoutDto {
     private String phone;
     private String deliveryMethod;
     private String paymentMethod;
+    private Long locationId;
     private BigDecimal total;
+    private List<RequestShoppingCartDto> shoppingCartDto;
 }

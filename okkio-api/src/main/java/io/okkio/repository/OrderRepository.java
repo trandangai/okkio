@@ -1,6 +1,8 @@
 package io.okkio.repository;
 
 import io.okkio.domain.Order;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
@@ -24,4 +26,9 @@ public interface OrderRepository extends JpaRepository<Order, Long>, JpaSpecific
 	@Modifying
 	@Query(value = "update `order` cd set cd.OKKIO_STATUS_ID = ?1, cd.updated_by = ?2 where cd.id = ?3", nativeQuery = true)
 	int update(@Param("orderStatus") Long orderStatus, @Param("updatedBy") String updatedBy, @Param("orderId") Long orderId);
+	Order findOrderByOrderCode(String orderCode);
+	@Query(
+			value = "SELECT * FROM `order` u WHERE u.status = 'ACTIVATED'",
+			nativeQuery = true)
+	Page<Order> findOrderByStatus(Pageable paging);
 }

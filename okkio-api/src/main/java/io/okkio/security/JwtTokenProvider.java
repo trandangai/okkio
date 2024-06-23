@@ -63,7 +63,7 @@ public class JwtTokenProvider {
     }
 
     public User getUserFromJWT(String token) {
-        Long userId = getUserIdFromBearerToken(token);
+        Long userId = getUserIdFromJWT(token);
         return userServices.findUserById(userId);
     }
 
@@ -92,5 +92,22 @@ public class JwtTokenProvider {
             log.error("JWT claims string is empty." + ex.getMessage());
         }
         return false;
+    }
+
+    public String getEmailFromToken(String authorization) {
+        String token;
+        try {
+            if (StringUtils.hasText(authorization) && authorization.startsWith("Bearer ")) {
+                token = authorization.substring(7);
+            } else {
+                log.warn("Not bearer token: " + authorization);
+                return null;
+            }
+            return getUserFromJWT(token).getEmail();
+        } catch (Exception e) {
+            log.error("Exception - getEmailFromToken with authorization: {}", authorization);
+            e.printStackTrace();
+        }
+        return null;
     }
 }

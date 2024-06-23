@@ -14,4 +14,7 @@ public class RequestShoppingCartDto {
     private Long id;
     private String status;
     private Long productDetailId;
+    private String grind;
+    private String size;
+    private int quantity;
 }

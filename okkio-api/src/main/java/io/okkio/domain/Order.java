@@ -13,7 +13,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Entity
 @Table(name = "`ORDER`")
-public class Order extends AbstractAuditingEntity implements Serializable  {
+public class Order extends AbstractAuditingEntity {
     @Id
     @Column(name = "ID")
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -22,7 +22,7 @@ public class Order extends AbstractAuditingEntity implements Serializable  {
     @Column(name = "ORDER_CODE")
     private String orderCode;
 
-    // DRAFT , WAITING, APPROVED, CANCELLED, CANCELLED
+    // DRAFT , WAITING, APPROVED, FAILED, CANCELLED
     @Column(name = "OKKIO_STATUS_ID")
     private Long okkioStatusId;
 
@@ -32,6 +32,12 @@ public class Order extends AbstractAuditingEntity implements Serializable  {
     @Column(name = "STATUS")
     private String status;
 
-    @Column(name = "USER_ID")
-    private Long userId;
+    @Column(name = "EMAIL")
+    private String email;
+
+    @Column(name = "PHONE")
+    private String phone;
+
+    @Column(name = "FULLNAME")
+    private String fullName;
 }

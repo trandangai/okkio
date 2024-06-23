@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/contact")
+@RequestMapping("/api/v2/contact")
 public class ContactController {
 
     private LocationServices locationServices;
@@ -47,7 +47,7 @@ public class ContactController {
 
     @GetMapping
     public ResponseEntity<ContactDto> getContact() {
-        List<ResponseLocationDto> locations = locationServices.getAllLocation();
+        List<LocationDto> locations = locationServices.getAllLocation();
         ContactDto result = new ContactDto();
         result.setTitle(title);
         result.setAddress(address);

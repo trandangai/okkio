@@ -11,4 +11,5 @@ public class RequestCategoryDto {
     private Long id;
     private String name;
     private String status;
+    private int priority;
 }

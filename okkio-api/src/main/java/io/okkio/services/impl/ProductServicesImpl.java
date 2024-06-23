@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * ProductServicesImpl
+ * ProductServicesImplV2
  */
 @Slf4j
 @Service
@@ -54,7 +54,7 @@ public class ProductServicesImpl extends BaseServiceImpl<Product, Long> implemen
     @Override
     public void deleteProductById(Long id) {
         productRepository.deleteProductById(id);
-        log.warn("ProductServicesImpl - Delete success with id: " + String.valueOf(id));
+        log.warn("ProductServicesImplV2 - Delete success with id: " + String.valueOf(id));
     }
 
     @Override
@@ -68,8 +68,7 @@ public class ProductServicesImpl extends BaseServiceImpl<Product, Long> implemen
 
     @Override
     public boolean update(RequestProductDto dto) {
-        int isUpdated = productMybatis.updateProductByIds(dto.getId(), dto.getStatus(), dto.getName(),
-                dto.getProductDetailId(), dto.getCategoryId());
+        int isUpdated = productMybatis.updateProductByIds(dto.getId(), dto.getStatus(), dto.getName());
         if (isUpdated < 0) {
             log.warn("Can't update Util with dto: " + dto);
             return false;

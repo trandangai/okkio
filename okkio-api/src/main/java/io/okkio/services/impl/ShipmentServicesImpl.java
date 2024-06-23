@@ -9,9 +9,11 @@ import io.okkio.repository.ShipmentRepository;
 import io.okkio.services.ShipmentServices;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
@@ -35,6 +37,9 @@ public class ShipmentServicesImpl extends BaseServiceImpl<Shipment, Long> implem
     @Autowired
     private ShipmentMybatis shipmentMybatis;
 
+    @Value("${shipment.price}")
+    private BigDecimal price;
+
     @Override
     public List<Shipment> getAllShipment() {
         return super.findAll();
@@ -49,6 +54,11 @@ public class ShipmentServicesImpl extends BaseServiceImpl<Shipment, Long> implem
     public Shipment addShipment(RequestShipmentDto dto) {
         Shipment shipment = shipmentMapper.toEntity(dto);
         shipment.setTrackingNumber("SM" + UUID.randomUUID().toString());
+        if (!dto.getPaymentMethod().equalsIgnoreCase(Constants.PAYMENT_METHOD_PICKUP)) {
+            shipment.setPrice(price);
+        } else {
+            shipment.setPrice(BigDecimal.valueOf(0));
+        }
         return save(shipment);
     }
 

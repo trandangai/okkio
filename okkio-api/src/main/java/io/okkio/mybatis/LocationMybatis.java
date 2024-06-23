@@ -8,5 +8,5 @@ public interface LocationMybatis {
                         @Param("address") String address, @Param("phone") String phone, @Param("title") String title,
                         @Param("description") String description, @Param("openTime") String openTime,
                             @Param("openDay") String openDay, @Param("conceptStore") String conceptStore,
-                            @Param("images") String images);
+                            @Param("images") String images, @Param("parkingLot") String parkingLot, @Param("store") String store);
 }

@@ -21,4 +21,6 @@ public class LocationDto {
     private String openDay;
     private String conceptStore;
     private List<String> images;
+    private String parkingLot;
+    private String store;
 }

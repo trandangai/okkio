@@ -18,6 +18,9 @@ public class OrderDto {
     private String email;
     private String shippingTo;
     private String address;
+    private String phone;
+    private String note;
+    private String fullName;
     private BigDecimal discount;
     private BigDecimal shippingFee;
     private BigDecimal price;

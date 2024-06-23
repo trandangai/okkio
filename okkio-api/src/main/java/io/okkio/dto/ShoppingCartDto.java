@@ -13,5 +13,4 @@ import java.util.List;
 public class ShoppingCartDto {
     private BigDecimal total;
     private List<PDShoppingCartDto> shoppingCarts;
-    private Long shoppingCartId;
 }

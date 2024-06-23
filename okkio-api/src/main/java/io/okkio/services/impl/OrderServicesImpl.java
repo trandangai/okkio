@@ -5,18 +5,32 @@ import io.okkio.domain.Order;
 import io.okkio.domain.OrderItem;
 import io.okkio.domain.ShoppingCart;
 import io.okkio.dto.OrderDto;
-import io.okkio.dto.PDShoppingCartDto;
 import io.okkio.dto.ShoppingCartDto;
+import io.okkio.dto.response.OrderDtoPagingResponse;
+import io.okkio.dto.response.OrderDtoResponse;
+import io.okkio.dto.response.OrderItemDtoResponse;
 import io.okkio.mybatis.OrderMybatis;
 import io.okkio.repository.OrderRepository;
 import io.okkio.repository.ReceiptRepository;
-import io.okkio.services.*;
+import io.okkio.services.OrderItemServices;
+import io.okkio.services.OrderServices;
+import io.okkio.services.ShoppingCartServices;
+import io.okkio.services.version2.ProductDetailServicesV2;
+import io.okkio.util.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,7 +46,7 @@ public class OrderServicesImpl extends BaseServiceImpl<Order, Long> implements O
     }
 
     @Autowired
-    private ProductDetailServices productDetailServices;
+    private ProductDetailServicesV2 productDetailServices;
 
     @Autowired
     private OrderItemServices orderItemServices;
@@ -53,28 +67,29 @@ public class OrderServicesImpl extends BaseServiceImpl<Order, Long> implements O
     private ReceiptRepository receiptRepository;
 
     @Override
-    public synchronized Order addOrderAndOrderItems(List<ShoppingCart> shoppingCarts, Long userId, String email) {
-        Order result = addOrder(userId, email);
+    public synchronized Order addOrderAndOrderItems(List<ShoppingCart> shoppingCarts, String phone, String email, String name) {
+        log.info("Start addOrderAndOrderItems with email={}, phone={}", email, phone);
+        Order result = addOrder(phone, email, name);
         if (result == null) {
-            log.warn("Add order failed with user id: " + userId);
+            log.warn("Add order failed with email: {}  and phone: {}", email, phone);
             return null;
         }
         for (ShoppingCart dto : shoppingCarts) {
-            PDShoppingCartDto productDetailDto = productDetailServices.getProductDetailShoppingCartById(dto.getProductDetailId(), dto.getId());
-            if (productDetailDto != null) {
-                OrderItem item = new OrderItem();
-                item.setOrderId(result.getId());
+            dto.setOrderId(result.getId());
+            OrderItem item = new OrderItem();
+            item.setOrderId(result.getId());
                 // STOCKING
-                item.setOkkioStatusId(2L);
-                item.setProductDetailId(productDetailDto.getId());
-                item.setPrice(productDetailDto.getPrice());
-                item.setGrind(productDetailDto.getGrind());
-                item.setSize(productDetailDto.getSize());
-                item.setSubscription(productDetailDto.getSubscription());
-                item.setQuantity(productDetailDto.getQuantity());
-                orderItemServices.addOrderItem(item, email);
-            }
+            item.setOkkioStatusId(2L);
+            item.setProductDetailId(dto.getProductDetailId());
+            item.setPrice(productDetailServices.getProductDetailById(dto.getProductDetailId()).getPrice());
+            item.setGrind(dto.getGrind());
+            item.setSize(dto.getSize());
+            item.setQuantity(dto.getQuantity());
+            orderItemServices.addOrderItem(item, email);
+            // Need update shopping cart id with order id
+            shoppingCartServices.updateShoppingCarts(dto);
         }
+        log.info("End addOrderAndOrderItems with email={}, phone={}", email, phone);
         return result;
     }
 
@@ -89,7 +104,7 @@ public class OrderServicesImpl extends BaseServiceImpl<Order, Long> implements O
     }
 
     @Override
-    public OrderDto updateAndGetOrder(Long receiptId, Long okkioStatusId, String updatedBy, Long orderId, Long userId) {
+    public OrderDto updateAndGetOrder(Long receiptId, Long okkioStatusId, String updatedBy, Long orderId, String phoneNumber) {
         // Update Receipt Status
         int isUpdated = receiptRepository.updateStatusReceipt(receiptId, okkioStatusId, updatedBy);
         if (isUpdated > 0 && okkioStatusId == 10L) {
@@ -98,13 +113,42 @@ public class OrderServicesImpl extends BaseServiceImpl<Order, Long> implements O
             log.warn("OrderServicesImpl - Updated with receipt id: " + receiptId + " and status: " + okkioStatusId);
             // Get order detail with PAID receipt status
             OrderDto result = orderMybatis.getOrderDto(orderId);
-            List<ShoppingCart> shoppingCarts = shoppingCartServices.getAllShoppingCartByUserId(userId, Constants.ACTIVATED_STATUS);
-            ShoppingCartDto dto = shoppingCartServices.getShoppingCartByUser(shoppingCarts);
-            result.setOrderDetail(dto);
-            result.setTotal(dto.getTotal());
-            // Update deactivate status shopping cart
-            for (ShoppingCart cart : shoppingCarts) {
-                shoppingCartServices.updateStatusShoppingCart(cart.getId(), Constants.DEACTIVATED_STATUS);
+            if (result == null) {
+                log.error("updateAndGetOrder error getOrderDto orderId: " + orderId + " and status: " + okkioStatusId);
+                return null;
+            }
+            result.setTotal(result.getShippingFee().add(result.getPrice()));
+            List<ShoppingCart> shoppingCarts = shoppingCartServices.getAllShoppingCartByUserId(phoneNumber, Constants.ACTIVATED_STATUS, orderId);
+            if (!shoppingCarts.isEmpty()) {
+                ShoppingCartDto dto = shoppingCartServices.getShoppingCartByUser(shoppingCarts);
+                result.setOrderDetail(dto);
+//                result.setTotal(dto.getTotal());
+                // Update deactivate status shopping cart
+//                for (ShoppingCart cart : shoppingCarts) {
+//                    shoppingCartServices.updateStatusShoppingCart(cart.getId(), Constants.DEACTIVATED_STATUS);
+//                }
+            }
+            return result;
+        } else if (isUpdated > 0 && okkioStatusId == 11L) {
+            // updated order FAILED status
+            update(7L, updatedBy, orderId);
+            log.warn("OrderServicesImpl - Updated with receipt id: " + receiptId + " and status: " + okkioStatusId);
+            // Get order detail with ISSUED receipt status
+            OrderDto result = orderMybatis.getOrderDto(orderId);
+            if (result == null) {
+                log.error("updateAndGetOrder error getOrderDto orderId: " + orderId + " and status: " + okkioStatusId);
+                return null;
+            }
+            result.setTotal(result.getShippingFee().add(result.getPrice()));
+            List<ShoppingCart> shoppingCarts = shoppingCartServices.getAllShoppingCartByUserId(phoneNumber, Constants.ACTIVATED_STATUS,orderId);
+            if (!shoppingCarts.isEmpty()) {
+                ShoppingCartDto dto = shoppingCartServices.getShoppingCartByUser(shoppingCarts);
+                result.setOrderDetail(dto);
+//                result.setTotal(dto.getTotal());
+                // Update deactivate status shopping cart
+//                for (ShoppingCart cart : shoppingCarts) {
+//                    shoppingCartServices.updateStatusShoppingCart(cart.getId(), Constants.DEACTIVATED_STATUS);
+//                }
             }
             return result;
         }
@@ -124,15 +168,65 @@ public class OrderServicesImpl extends BaseServiceImpl<Order, Long> implements O
     }
 
     @Override
-    public Order addOrder(Long userId, String email) {
+    public OrderDtoResponse getOrderDetailById(Long orderId) {
+        log.info("Start OrderServicesImpl - Get order detail by orderId: {}", orderId);
+        OrderDtoResponse result = orderMybatis.getOrderDetailDto(orderId);
+        result.setTotal(result.getPrice().add(result.getShippingFee()));
+        log.debug("End OrderServicesImpl - Get order detail by orderId: {} and result: {}", orderId, result);
+        log.info("End OrderServicesImpl - Get order detail by orderId: {}", orderId);
+        return result;
+    }
+
+    @Override
+    public Order getOrderByOrderCode(String orderCode) {
+        return orderRepository.findOrderByOrderCode(orderCode);
+    }
+
+    @Override
+    public OrderDtoPagingResponse getAllOrderAndOrderItem(Integer pageNumber, Integer pageSize, String sortBy) {
+        log.info("Start OrderServicesImpl - Get All order and order item");
+        Pageable paging = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
+        Page<Order> orders = orderRepository.findOrderByStatus(paging);
+        if (orders.isEmpty()) {
+            log.error("getAllOrderAndOrderItem error no orders found");
+            return null;
+        }
+        OrderDtoPagingResponse result = new OrderDtoPagingResponse();
+        result.setSize(orders.getSize());
+        result.setTotalElements(orders.getTotalElements());
+        result.setTotalPages(orders.getTotalPages());
+        result.setLast(orders.isLast());
+        result.setNumber(orders.getNumber());
+        result.setNumberOfElements(orders.getNumberOfElements());
+        List<OrderDtoResponse> DTOs = new ArrayList<>();
+        for (Order order : orders) {
+            OrderDtoResponse orderDtoResponse = orderMybatis.getOrderDetailDto(order.getId());
+            if (orderDtoResponse != null) {
+                orderDtoResponse.setTotal(orderDtoResponse.getPrice().add(orderDtoResponse.getShippingFee()));
+                List<OrderItemDtoResponse> orderItemDtoResponses = orderItemServices.getOrderItemsByOrderId(order.getId());
+                if (!ObjectUtils.isEmpty(orderItemDtoResponses)) {
+                    orderDtoResponse.setOrderItems(orderItemDtoResponses);
+                }
+            }
+            DTOs.add(orderDtoResponse);
+        }
+        result.setContent(DTOs);
+        log.info("End OrderServicesImpl - Get All order and order item");
+        return result;
+    }
+
+    @Override
+    public Order addOrder(String phone, String email, String name) {
         Order order = new Order();
         order.setStatus(Constants.ACTIVATED_STATUS);
         // Status Draft
         order.setOkkioStatusId(4L);
         order.setDescription(description);
         order.setCreatedBy(email);
-        order.setUserId(userId);
-        order.setOrderCode("OC" + UUID.randomUUID().toString());
+        order.setEmail(email);
+        order.setPhone(phone);
+        order.setFullName(name);
+        order.setOrderCode("OKKIO-" + DateUtil.toString(new Date(), "dd-MM-yyyy-HH:mm:ss") + "-" + UUID.randomUUID().toString());
         return super.save(order);
     }
 }
