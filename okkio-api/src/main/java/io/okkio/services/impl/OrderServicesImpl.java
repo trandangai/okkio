@@ -183,10 +183,10 @@ public class OrderServicesImpl extends BaseServiceImpl<Order, Long> implements O
     }
 
     @Override
-    public OrderDtoPagingResponse getAllOrderAndOrderItem(Integer pageNumber, Integer pageSize, String sortBy) {
-        log.info("Start OrderServicesImpl - Get All order and order item");
+    public OrderDtoPagingResponse getAllOrderAndOrderItem(Integer pageNumber, Integer pageSize, String sortBy, String keyword) {
+        log.info("Start OrderServicesImpl - Get All order and order item with keyword: {}", keyword);
         Pageable paging = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
-        Page<Order> orders = orderRepository.findOrderByStatus(paging);
+        Page<Order> orders = orderRepository.findOrderByStatus(keyword, paging);
         if (orders.isEmpty()) {
             log.error("getAllOrderAndOrderItem error no orders found");
             return null;

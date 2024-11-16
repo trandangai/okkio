@@ -4,8 +4,13 @@ import io.okkio.domain.Location;
 import io.okkio.dto.LocationDto;
 import io.okkio.dto.request.RequestLocationDto;
 import io.okkio.dto.response.ResponseLocationDto;
+import org.mapstruct.BeanMapping;
+import org.mapstruct.CollectionMappingStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.NullValueCheckStrategy;
+import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.ReportingPolicy;
 
 import java.util.List;
 

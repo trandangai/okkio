@@ -153,17 +153,6 @@ public class ProductDetailServicesImpl extends BaseServiceImpl<ProductDetail, Lo
 
     @Override
     public boolean update(RequestProductDetailUpdateDto dto) {
-        String headerImages = null;
-        if (dto.getHeaderImages() != null) {
-            headerImages = String.join(",", dto.getHeaderImages());
-        }
-        int isUpdated = productDetailMybatis.updateProductDetailByIds(dto.getId(), dto.getStatus(), dto.getName(), dto.getDescription(),
-                headerImages, dto.getFooterImages(), dto.getGrind(), dto.getSize(), dto.getSubscription(), dto.getQuantity(), dto.getRoastLevel(),
-                dto.getReadyToDrink(), dto.getSuitableFor(), dto.getPrice());
-        if (isUpdated < 0) {
-            log.warn("Can't update Util with dto: " + dto);
-            return false;
-        }
         return true;
     }
 

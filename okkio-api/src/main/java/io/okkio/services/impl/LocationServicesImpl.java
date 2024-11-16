@@ -14,6 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +59,7 @@ public class LocationServicesImpl extends BaseServiceImpl<Location, Long> implem
     @Override
     public Location addLocation(RequestLocationDto dto) {
         Location util = locationMapper.toEntity(dto);
-        util.setCreatedBy("System");
+        util.setCreatedBy(dto.getEmail());
         util.setImages(String.join(",", dto.getImages()));
         return super.save(util);
     }
@@ -83,17 +84,48 @@ public class LocationServicesImpl extends BaseServiceImpl<Location, Long> implem
 
     @Override
     public boolean update(RequestLocationDto dto) {
-        String images = null;
-        if (dto.getImages() != null && !dto.getImages().isEmpty()) {
-            images = String.join(",", dto.getImages());
-        }
-        int isUpdated = locationMybatis.updateLocationByIds(dto.getId(), dto.getStatus(), dto.getName(), dto.getAddress(),
-                dto.getPhone(), dto.getTitle(), dto.getDescription(), dto.getOpenTime(), dto.getOpenDay(),
-                dto.getConceptStore(), images, dto.getParkingLot(), dto.getStore());
-        if (isUpdated < 0) {
-            log.warn("Can't update Location with dto: " + dto);
+        log.info("Start LocationServicesImpl - update with dto: {}", dto);
+        Location location = locationRepository.findLocationById(dto.getId());
+        if (ObjectUtils.isEmpty(location)) {
+            log.warn("End LocationServicesImpl - update location is null");
             return false;
         }
+        location.setUpdatedBy(dto.getEmail());
+        if (!StringUtils.isEmpty(dto.getName())) {
+            location.setName(dto.getName());
+        }
+        if (!StringUtils.isEmpty(dto.getDescription())) {
+            location.setDescription(dto.getDescription());
+        }
+        if (!StringUtils.isEmpty(dto.getStatus())) {
+            location.setStatus(dto.getStatus());
+        }
+        if (!StringUtils.isEmpty(dto.getAddress())) {
+            location.setAddress(dto.getAddress());
+        }
+        if (!StringUtils.isEmpty(dto.getPhone())) {
+            location.setPhone(dto.getPhone());
+        }
+        if (!StringUtils.isEmpty(dto.getOpenDay())) {
+            location.setOpenDay(dto.getOpenDay());
+        }
+        if (!StringUtils.isEmpty(dto.getOpenTime())) {
+            location.setOpenTime(dto.getOpenTime());
+        }
+        if (!StringUtils.isEmpty(dto.getParkingLot())) {
+            location.setParkingLot(dto.getParkingLot());
+        }
+        if (!StringUtils.isEmpty(dto.getStore())) {
+            location.setStore(dto.getStore());
+        }
+        if (!StringUtils.isEmpty(dto.getTitle())) {
+            location.setTitle(dto.getTitle());
+        }
+        if (!ObjectUtils.isEmpty(dto.getImages())) {
+            location.setImages(String.join(",", dto.getImages()));
+        }
+        log.info("End LocationServicesImpl - update with dto: {}", dto);
+        locationRepository.save(location);
         return true;
     }
 }

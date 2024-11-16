@@ -17,5 +17,5 @@ public interface OrderServices {
     boolean update(Long okkioStatusId, String updatedBy, Long orderId);
     OrderDtoResponse getOrderDetailById(Long orderId);
     Order getOrderByOrderCode(String orderCode);
-    OrderDtoPagingResponse getAllOrderAndOrderItem(Integer pageNumber, Integer pageSize, String sortBy);
+    OrderDtoPagingResponse getAllOrderAndOrderItem(Integer pageNumber, Integer pageSize, String sortBy, String keyword);
 }

@@ -3,6 +3,7 @@ package io.okkio.controllers.version2;
 import io.okkio.common.Constants;
 import io.okkio.domain.version2.ProductV2;
 import io.okkio.dto.request.version2.RequestProductDto;
+import io.okkio.dto.response.version2.ProductDtoPagingResponse;
 import io.okkio.dto.response.version2.ResponseProductDto;
 import io.okkio.dto.response.version2.ResponseProductSlugDto;
 import io.okkio.security.JwtTokenProvider;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -57,8 +59,14 @@ public class ProductControllerV2 {
     }
 
     @GetMapping("/get-all")
-    public ResponseEntity<List<ResponseProductDto>> getAllProduct() {
-        return ResponseUtil.ok(Constants.MESSAGE_GET_DATA_SUCCESS, productServices.getAllProduct());
+    public ResponseEntity<ProductDtoPagingResponse> getAllProduct(@RequestParam(defaultValue = "0") Integer pageNumber,
+                                                                  @RequestParam(defaultValue = "1000") Integer pageSize,
+                                                                  @RequestParam(defaultValue = "id") String sortBy,
+                                                                  @RequestParam(required = false) String keyword) {
+        if (keyword == null || keyword.isEmpty()) {
+            keyword = "";
+        }
+        return ResponseUtil.ok(Constants.MESSAGE_GET_DATA_SUCCESS, productServices.getAllProduct(pageNumber, pageSize, sortBy, keyword));
     }
 
     @PreAuthorize("hasAnyRole('OKKIO_ADMIN')")

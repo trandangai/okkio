@@ -2,13 +2,14 @@ package io.okkio.services.version2;
 
 import io.okkio.domain.version2.ProductV2;
 import io.okkio.dto.request.version2.RequestProductDto;
+import io.okkio.dto.response.version2.ProductDtoPagingResponse;
 import io.okkio.dto.response.version2.ResponseProductDto;
 import io.okkio.dto.response.version2.ResponseProductSlugDto;
 
 import java.util.List;
 
 public interface ProductServicesV2 {
-    List<ResponseProductDto> getAllProduct();
+    ProductDtoPagingResponse getAllProduct(Integer pageNumber, Integer pageSize, String sortBy, String keyword);
     ProductV2 addProduct(RequestProductDto dto);
     ProductV2 getProductById(Long id);
     ResponseProductSlugDto getProductBySlug(String slug);

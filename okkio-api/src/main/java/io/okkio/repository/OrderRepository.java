@@ -28,7 +28,7 @@ public interface OrderRepository extends JpaRepository<Order, Long>, JpaSpecific
 	int update(@Param("orderStatus") Long orderStatus, @Param("updatedBy") String updatedBy, @Param("orderId") Long orderId);
 	Order findOrderByOrderCode(String orderCode);
 	@Query(
-			value = "SELECT * FROM `order` u WHERE u.status = 'ACTIVATED'",
+			value = "SELECT * FROM `order` u WHERE u.status = 'ACTIVATED' and u.ORDER_CODE LIKE %:keyword% or u.phone LIKE %:keyword% or u.email LIKE %:keyword%",
 			nativeQuery = true)
-	Page<Order> findOrderByStatus(Pageable paging);
+	Page<Order> findOrderByStatus(String keyword, Pageable paging);
 }

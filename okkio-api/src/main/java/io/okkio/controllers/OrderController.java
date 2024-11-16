@@ -186,10 +186,14 @@ public class OrderController {
     }
 
     @GetMapping("/get-all")
-    public ResponseEntity<?> getAllOrder(@RequestParam(defaultValue = "0") Integer pageNumber,
-                                         @RequestParam(defaultValue = "10") Integer pageSize,
-                                         @RequestParam(defaultValue = "id") String sortBy) {
-        return ResponseUtil.ok(Constants.MESSAGE_GET_DATA_SUCCESS, orderServices.getAllOrderAndOrderItem(pageNumber, pageSize, sortBy));
+        public ResponseEntity<?> getAllOrder(@RequestParam(defaultValue = "0") Integer pageNumber,
+                                         @RequestParam(defaultValue = "1000") Integer pageSize,
+                                         @RequestParam(defaultValue = "id") String sortBy,
+                                         @RequestParam(required = false) String keyword) {
+        if (keyword == null || keyword.isEmpty()) {
+            keyword = "";
+        }
+        return ResponseUtil.ok(Constants.MESSAGE_GET_DATA_SUCCESS, orderServices.getAllOrderAndOrderItem(pageNumber, pageSize, sortBy, keyword));
     }
 
     private boolean validatedReceiptStatus(String status) {

@@ -1,5 +1,6 @@
 package io.okkio.dto.request;
 
+import io.okkio.dto.version2.BaseDto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -10,22 +11,26 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-public class RequestProductDetailUpdateDto {
+public class RequestProductDetailUpdateDto extends BaseDto {
     private Long id;
     private String name;
-    private String status;
+    private String shortName;
     private String description;
-    private List<String> headerImages;
-    private String footerImages;
+    private String status;
+    // WHOLE BEANS / ESPRESSO MACHINE / POUR OVER / PHIN / OTHERS
     private String grind;
     private String size;
-    private String subscription;
-    private int quantity;
-    private int roastLevel;
-    private Object tastingNotes;
-    private String readyToDrink;
-    private String suitableFor;
-    private Object shippingDelivery;
-    private Object suggestion;
+    // lightest, medium, darknest
+    private String flavorNote;
+    // 6 levels
+    private String roastLevel;
+    private String altitude;
+    private String varietal;
+    private String processing;
+    private int material;
+    private List<String> productImages;
+    private Long suggestion1stProduct;
+    private Long suggestion2ndProduct;
     private BigDecimal price;
+    private Long productId;
 }

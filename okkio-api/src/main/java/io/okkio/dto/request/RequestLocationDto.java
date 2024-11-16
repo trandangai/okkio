@@ -1,5 +1,7 @@
 package io.okkio.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import io.okkio.dto.version2.BaseDto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -8,7 +10,7 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-public class RequestLocationDto {
+public class RequestLocationDto extends BaseDto {
     private Long id;
     private String name;
     private String status;

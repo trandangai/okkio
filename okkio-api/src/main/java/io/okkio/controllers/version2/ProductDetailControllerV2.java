@@ -82,10 +82,10 @@ public class ProductDetailControllerV2 {
 
     @PreAuthorize("hasAnyRole('OKKIO_ADMIN')")
     @PutMapping
-    public ResponseEntity<?> update(@RequestBody RequestProductDetailUpdateDto dto) {
-        ProductDetailDto util = productDetailServices.getProductDetailById(dto.getId());
-        if (util == null) {
-            return ResponseUtil.ok(Constants.MESSAGE_DATA_IS_NOT_EXISTED, null);
+    public ResponseEntity<?> update(@RequestBody RequestProductDetailUpdateDto dto, HttpServletRequest httpServletRequest) {
+        String email = jwtTokenProvider.getEmailFromToken(httpServletRequest.getHeader("Authorization"));
+        if (dto.getId() == null) {
+            return ResponseUtil.ok(Constants.MESSAGE_BAD_REQUEST + " with Id is null ", null);
         }
         if (StringUtils.isEmpty(dto.getStatus())) {
             return ResponseUtil.badRequest(Constants.MESSAGE_BAD_REQUEST);
@@ -94,6 +94,7 @@ public class ProductDetailControllerV2 {
                 return ResponseUtil.badRequest(Constants.MESSAGE_BAD_REQUEST);
             }
         }
+        dto.setEmail(email);
         return ResponseUtil.ok(Constants.MESSAGE_UPDATED_DATA_SUCCESS, productDetailServices.update(dto));
     }
 

@@ -10,10 +10,15 @@ import io.okkio.dto.version2.ProductDetailDto;
 import io.okkio.mapper.version2.ProductDetailMapperV2;
 import io.okkio.mybatis.ProductDetailMybatis;
 import io.okkio.repository.version2.ProductDetailRepositoryV2;
+import io.okkio.services.ProductDetailServices;
+import io.okkio.services.ProductServices;
 import io.okkio.services.impl.BaseServiceImpl;
 import io.okkio.services.version2.ProductDetailServicesV2;
+import io.okkio.services.version2.ProductServicesV2;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
@@ -27,6 +32,9 @@ import java.util.List;
 @Slf4j
 @Service
 public class ProductDetailServicesImplV2 extends BaseServiceImpl<ProductDetailV2, Long> implements ProductDetailServicesV2 {
+
+    @Autowired
+    private ProductServicesV2 productServices;
 
     public ProductDetailServicesImplV2(JpaRepository<ProductDetailV2, Long> jpaRepository) {
         super(jpaRepository);
@@ -114,17 +122,59 @@ public class ProductDetailServicesImplV2 extends BaseServiceImpl<ProductDetailV2
 
     @Override
     public boolean update(RequestProductDetailUpdateDto dto) {
-        String headerImages = null;
-        if (dto.getHeaderImages() != null) {
-            headerImages = String.join(",", dto.getHeaderImages());
-        }
-        int isUpdated = productDetailMybatis.updateProductDetailByIds(dto.getId(), dto.getStatus(), dto.getName(), dto.getDescription(),
-                headerImages, dto.getFooterImages(), dto.getGrind(), dto.getSize(), dto.getSubscription(), dto.getQuantity(), dto.getRoastLevel(),
-                dto.getReadyToDrink(), dto.getSuitableFor(), dto.getPrice());
-        if (isUpdated < 0) {
-            log.warn("Can't update Util with dto: " + dto);
+        log.info("Start ProductDetailServicesImplV2 - Update with dto: {} ", dto);
+        ProductDetailV2 productDetailV2 = productDetailRepository.findProductDetailById(dto.getId());
+        if (productDetailV2 == null) {
+            log.warn("Product detail with id {} not found", dto.getId());
             return false;
         }
+        if (!StringUtils.isEmpty(dto.getName())) {
+            productDetailV2.setName(dto.getName());
+        }
+        if (!StringUtils.isEmpty(dto.getDescription())) {
+            productDetailV2.setDescription(dto.getDescription());
+        }
+        if (!StringUtils.isEmpty(dto.getShortName())) {
+            productDetailV2.setShortName(dto.getShortName());
+        }
+        if (!StringUtils.isEmpty(dto.getStatus())) {
+            productDetailV2.setStatus(dto.getStatus());
+        }
+        if (!StringUtils.isEmpty(dto.getFlavorNote())) {
+            productDetailV2.setFlavorNote(dto.getFlavorNote());
+        }
+        if (!StringUtils.isEmpty(dto.getRoastLevel())) {
+            productDetailV2.setRoastLevel(dto.getRoastLevel());
+        }
+        if (!StringUtils.isEmpty(dto.getAltitude())) {
+            productDetailV2.setAltitude(dto.getAltitude());
+        }
+        if (!StringUtils.isEmpty(dto.getVarietal())) {
+            productDetailV2.setVarietal(dto.getVarietal());
+        }
+        if (!StringUtils.isEmpty(dto.getProcessing())) {
+            productDetailV2.setProcessing(dto.getProcessing());
+        }
+        if (dto.getMaterial() > 0) {
+            productDetailV2.setMaterial(dto.getMaterial());
+        }
+        if (dto.getSuggestion2ndProduct() != null && dto.getSuggestion2ndProduct() > 0) {
+            productDetailV2.setSuggestion2ndProduct(dto.getSuggestion2ndProduct());
+        }
+        if (dto.getSuggestion1stProduct() != null && dto.getSuggestion1stProduct() > 0) {
+            productDetailV2.setSuggestion1stProduct(dto.getSuggestion1stProduct());
+        }
+        if (dto.getProductId() != null && dto.getProductId() > 0) {
+            productDetailV2.setProductV2(productServices.getProductById(dto.getProductId()));
+        }
+        if (dto.getPrice() != null) {
+            productDetailV2.setPrice(dto.getPrice());
+        }
+        if (!ObjectUtils.isEmpty(dto.getProductImages())) {
+            productDetailV2.setProductImages(dto.getProductImages());
+        }
+        productDetailRepository.save(productDetailV2);
+        log.info("End ProductDetailServicesImplV2 - Update with dto: {} ", dto);
         return true;
     }
 

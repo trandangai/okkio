@@ -13,7 +13,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Entity
 @Table(name = "LOCATION")
-public class Location extends AbstractAuditingEntity implements Serializable  {
+public class Location extends AbstractAuditingEntity {
     @Id
     @Column(name = "ID")
     @GeneratedValue(strategy=GenerationType.IDENTITY)
