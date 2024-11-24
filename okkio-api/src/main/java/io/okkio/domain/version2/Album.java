@@ -35,4 +35,7 @@ public class Album extends AbstractAuditingEntity {
 
     @Column(name = "STATUS")
     private String status;
+
+    @Column(name = "TYPE_IMAGE")
+    private String typeImage;
 }

@@ -13,4 +13,5 @@ public class RequestAlbumDto extends BaseDto {
     private String name;
     private String description;
     private String status;
+    private String typeImage;
 }

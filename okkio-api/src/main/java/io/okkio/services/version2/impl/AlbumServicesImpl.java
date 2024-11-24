@@ -17,6 +17,7 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -67,5 +68,24 @@ public class AlbumServicesImpl extends BaseServiceImpl<Album, Long> implements A
         String pathUrl = url.resolve(image.getOriginalFilename()).toString();
         log.info("End upload file with url: {}", pathUrl);
         return pathUrl;
+    }
+
+    @Override
+    public List<Album> getAllAlbumByType(String typeImage) {
+        log.info("Begin getAllAlbumByType: {}", typeImage);
+        return albumRepository.findAllAlbumByType(typeImage);
+    }
+
+    @Override
+    public Album findAlbumById(Long id) {
+        log.info("Begin findAlbumById: {}", id);
+        return albumRepository.findAlbumById(id);
+    }
+
+    @Override
+    public void deleteAlbumById(Long id) {
+        log.info("Begin deleteAlbumById: {}", id);
+        albumRepository.deleteAlbumById(id);
+        log.info("End deleteAlbumById: {}", id);
     }
 }
